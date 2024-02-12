@@ -40,6 +40,15 @@ requirements: create-environment
 
 ################################################################################################################
 # Set Up
+
+## Install pytest
+pytest:
+    $(call execute_in_env, $(PIP) install pytest)
+
+## Install pytest-testdox
+pytest-testdox:
+    $(call execute_in_env, $(PIP) install pytest-testdox)
+
 ## Install bandit
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
@@ -59,6 +68,7 @@ coverage:
 ## Set up dev requirements (bandit, safety, flake8)
 dev-setup: bandit safety flake coverage
 
+
 # Build / Run
 
 ## Run the security test (bandit + safety)
@@ -70,8 +80,12 @@ security-test:
 run-flake:
 	$(call execute_in_env, flake8  ./src/*/*.py)
 
-## Run the unit tests
+## Run a single test
 unit-test:
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v ${test_run})
+
+## Run all the unit tests
+unit-tests:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v)
 
 ## Run the coverage check
@@ -79,4 +93,4 @@ check-coverage:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest --testdox && coverage report -m)
 
 ## Run all checks
-run-checks: security-test run-flake unit-test check-coverage
+run-checks: security-test run-flake unit-tests check-coverage
