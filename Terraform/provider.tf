@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "NEEDS TO BE UPDATED WITH INITIAL BUCKET NAME"
+    bucket = "tf-state-bucket-de-totes-project"
     key = "cicdexample/tfstate"
     region = "eu-west-2"
   }
