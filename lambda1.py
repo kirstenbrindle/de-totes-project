@@ -1,9 +1,12 @@
 from pg8000.native import Connection, DatabaseError
-import os
-from dotenv import load_dotenv
-load_dotenv()
+import boto3
+import json
 
-
+# secrets manager
+# db_name = boto3.client("totes_db")
+#  user_id = db_name.get_secret_value(username="")
+# util functions - select all from each table
+# 
 def lambda_handler():
     try:
         db_user = os.environ.get('PGUSER')
