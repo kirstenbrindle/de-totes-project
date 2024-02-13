@@ -1,4 +1,4 @@
-from deployment.tf_bucket import bucket_maker
+from src.setup.tf_bucket import bucket_maker
 from moto import mock_aws
 from unittest.mock import patch
 import pytest

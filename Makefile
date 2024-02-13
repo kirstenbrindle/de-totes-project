@@ -85,7 +85,7 @@ run-flake:
 
 ## Run the make tf-state bucket
 run-make-bucket:
-	$(call execute_in_env, python ./deployment/tf_bucket.py)
+	$(call execute_in_env, python ./deployment/run_tf_bucket.py)
 
 ## Run the unit tests
 unit-test:
