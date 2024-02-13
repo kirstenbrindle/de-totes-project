@@ -49,6 +49,10 @@ pytest:
 pytest-testdox:
 	$(call execute_in_env, $(PIP) install pytest-testdox)
 
+## Install dotenv
+dotenv:
+	$(call execute_in_env, $(PIP) install python-dotenv)
+
 ## Install bandit
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
