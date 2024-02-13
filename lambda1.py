@@ -2,20 +2,23 @@ from pg8000.native import Connection, DatabaseError
 import boto3
 import json
 
-# secrets manager
-# db_name = boto3.client("totes_db")
-#  user_id = db_name.get_secret_value(username="")
-# util functions - select all from each table
-# 
-def lambda_handler():
-    try:
-        db_user = os.environ.get('PGUSER')
-        db_database_name = os.environ.get('PGDATABASE')
-        db_password = os.environ.get('PGPASSWORD')
-        conn = Connection(
-            user=db_user, database=db_database_name, password=db_password)
-        # query = utils to be called. Need to decide utility functions to get staff, department etc.
+# Creating client connection to secret manager
+# gets secret file name value (secret identifier)
+# reads secret database, user and password details from json file
+secretm = boto3.client("secretsmanager")
+secret_file_name = secretm.get_secret_value(SecretId="totes_db")
+secrets_dict = json.loads(secret_file_name["SecretString"])
+conn = Connection(**secrets_dict)
 
+def lambda_handler():
+    # try:
+    #     conn = Connection(**secrets_dict)
+    #     # query = utils to be called. Need to decide utility functions to get staff, department etc.
+        db_query = "SELECT * FROM currency;"
+        data = conn.run(db_query)
         conn.close
-    except DatabaseError as db_error:
-        raise db_error
+        print(data)
+        return data
+    # except DatabaseError as db_error:
+    #     raise db_error
+lambda_handler()
