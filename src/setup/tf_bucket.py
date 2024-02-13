@@ -11,6 +11,3 @@ def bucket_maker():
     s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={
                      'LocationConstraint': 'eu-west-2'})
     print(f"Bucket '{bucket_name}' created.")
-
-
-# bucket_maker()
