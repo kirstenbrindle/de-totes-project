@@ -123,6 +123,15 @@ requirements: create-environment
 
 ################################################################################################################
 # Set Up
+
+## Install pytest
+pytest:
+	$(call execute_in_env, $(PIP) install pytest)
+
+## Install pytest-testdox
+pytest-testdox:
+	$(call execute_in_env, $(PIP) install pytest-testdox)
+
 ## Install bandit
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
@@ -152,6 +161,10 @@ security-test:
 ## Run the flake8 code check
 run-flake:
 	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py)
+
+## Run the make tf-state bucket
+run-make-bucket:
+	$(call execute_in_env, python ./deployment/tf_bucket.py)
 
 ## Run the unit tests
 unit-test:
