@@ -1,0 +1,29 @@
+name: Test and Deploy
+on:
+  - push
+
+jobs:
+  run-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup venv
+        run: make requirements
+
+      - name: Run Security Checks
+        run: make security-test
+
+      - name: Run Flake
+        run: make run-flake
+      
+      # - name: Check Coverage
+      #   run: make check-coverage
+      # Leave commented out until we require to check testing coverage.
+      
