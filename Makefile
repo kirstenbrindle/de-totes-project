@@ -81,15 +81,15 @@ security-test:
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py)
+	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py ./deployment/*.py)
 
 ## Run the make tf-state bucket
 run-make-bucket:
-	$(call execute_in_env, python ./deployment/tf_bucket.py)
+	$(call execute_in_env, python ./deployment/run_tf_bucket.py)
 
 ## Run the unit tests
 unit-test:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest -v)
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v)
 
 ## Run the coverage check
 check-coverage:
