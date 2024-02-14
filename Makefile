@@ -87,8 +87,12 @@ run-flake:
 run-make-bucket:
 	$(call execute_in_env, python ./deployment/run_tf_bucket.py)
 
-## Run the unit tests
+## Run a single test
 unit-test:
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v ${test_run})
+
+## Run the unit tests
+unit-tests:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v)
 
 ## Run the coverage check
@@ -96,4 +100,4 @@ check-coverage:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest && coverage report -m)
 
 ## Run all checks
-run-checks: security-test run-flake unit-test check-coverage
+run-checks: security-test run-flake unit-tests check-coverage
