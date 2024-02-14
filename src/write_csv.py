@@ -1,37 +1,23 @@
-import csv
-import sys
+import csv 
+import pandas as pd
 from datetime import datetime
+from pathlib import Path
 
-
-def write_csv(tableName):
+def write_csv():
     """
     -> takes the output of SQL query
     -> write to .csv file with file name of "{tableName}-datetime.now()"
     -> uploads csv file to S3 ingestion bucket in folder/file format
     """
-    
+    #collect data output from query sql function
+    data=QUERYFUNCTIONPATH
+
+    #the file name 
+    tableName=
     current_dateTime = datetime.now()
     file_name = f'("${tableName}-${current_dateTime}")'
 
-# Continue only if there are rows returned.
-#     if rows:
-# # New empty list called result. This will be written to a file.
-#         result = list()
-
-#     # The row name is the first entry for each entity in the description tuple.
-#         column_names = list()
-#         for i in cur.description:
-#             column_names.append(i[0])
-
-#         result.append(column_names)
-#         for row in rows:
-#             result.append(row)
-
-    # write results to csv
-    with open({file_name}.csv, 'w', newline='') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        # for row in result:
-        csvwriter.writerow('hello')
-
-    # else:
-    #     sys.exit("No rows found")
+   # convert to a data frame
+    df=pd.DataFrame.from_dict(data,orient='index')
+    # write data frame result to csv
+    df.to_csv(f'{file_name}.csv')
