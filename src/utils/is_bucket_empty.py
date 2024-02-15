@@ -24,3 +24,4 @@ def is_bucket_empty(bucket_name):
         print(error.response['Error']['Message']) 
         
     
+    
