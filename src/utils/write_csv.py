@@ -1,14 +1,7 @@
 import pandas as pd
 from datetime import datetime
-from pathlib import Path
-from src.utils.L1_extract_data import L1_extract_data
 import boto3
 import io
-import botocore
-
-# data = L1_extract_data(conn, table_name)
-# ^^ data is the end result of the extract function
-# poss add write csv to func????
 
 
 def write_csv(table_name, bucket, data):
