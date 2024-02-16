@@ -33,8 +33,5 @@ def write_csv(table_name, bucket, data):
     # write data frame result to csv using filename declared above
     csv_buffer = io.StringIO()
     df.to_csv(csv_buffer)
+    # upload straight to S3 bucket
     s3.put_object(Body=csv_buffer.getvalue(), Bucket=bucket_name, Key=key)
-
-    # upload the file to the s3 ingestion bucket
-    # s3.upload_file(key, bucket_name, f'{table_name}/{file_name}')
-    # ^^ poss delete
