@@ -46,7 +46,6 @@ resource "aws_iam_role_policy_attachment" "L1_S3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_L1_policy.arn
 }
 
-
 #Creating Cloudwatch policy document...
 data "aws_iam_policy_document" "L1_cloudwatch_document" {
   statement {
