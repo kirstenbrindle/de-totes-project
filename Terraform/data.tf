@@ -2,8 +2,20 @@ data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
 
-# data "archive_file" "lambda" {
+data "archive_file" "lambda1" {
+  type        = "zip"
+  source_file = "${path.module}/../src/lambda1/lambda1.py"
+  output_path = "${path.module}/../lambda1.zip"
+}
+
+# data "archive_file" "lambda2" {
 #   type        = "zip"
-#   source_file = "${path.module}/../src/totesys/NAME OF CODE.py"
-#   output_path = "${path.module}/../function.zip"
+#   source_file = "${path.module}/../src/lambda2/lambda2.py"
+#   output_path = "${path.module}/../lambda2.zip"
+# }
+
+# data "archive_file" "lambda3" {
+#   type        = "zip"
+#   source_file = "${path.module}/../src/lambda3/lambda3.py"
+#   output_path = "${path.module}/../lambda3.zip"
 # }
