@@ -55,3 +55,4 @@ def test_return_message_invalid_bucket_name(mock_print, aws_credentials, s3):
                      CreateBucketConfiguration={"LocationConstraint": "eu-west-2"})
     is_bucket_empty('test_totes_3', s3)
     mock_print.assert_called_with('The specified bucket does not exist')
+

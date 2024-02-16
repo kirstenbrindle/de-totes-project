@@ -22,5 +22,6 @@ def is_bucket_empty(bucket_name, s3):
     except Exception as error:
         print(error.response['Error']['Message']) 
         
+        
     
     
