@@ -1,5 +1,5 @@
 import boto3
-def is_bucket_empty(bucket_name):
+def is_bucket_empty(bucket_name, s3):
     """
     This function checks if the bucket is empty and return a boolean
 
@@ -15,7 +15,6 @@ def is_bucket_empty(bucket_name):
 
     """
     try:
-        s3=boto3.client('s3')
         response= s3.list_objects_v2(Bucket=bucket_name)
         if response['KeyCount']== 0:
             return True
