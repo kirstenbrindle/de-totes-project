@@ -1,5 +1,7 @@
 import boto3
+
 def is_bucket_empty(bucket_name, s3):
+
     """
     This function checks if the bucket is empty and return a boolean
 
@@ -21,7 +23,3 @@ def is_bucket_empty(bucket_name, s3):
         return False
     except Exception as error:
         print(error.response['Error']['Message']) 
-        
-        
-    
-    

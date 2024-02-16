@@ -11,4 +11,6 @@ print(datetime.now(), 'datetime.now() format')
 timestamp = str(datetime.now())[:-3]
 print(timestamp, 'datetime.now() formatted to match db')
 
-
+# when comparing datetimes with database data
+# just ignore the last three digits of timestamp
+# pandas.Timestamp.round <<------ potentially use this??
