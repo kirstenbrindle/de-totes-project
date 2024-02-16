@@ -89,7 +89,7 @@ run-make-bucket:
 
 ## Run a single test
 unit-test:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -v ${test_run})
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -vvrP ${test_run})
 
 ## Run the unit tests
 unit-tests:
