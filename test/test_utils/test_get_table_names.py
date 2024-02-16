@@ -26,6 +26,7 @@ def test_correct_table_names_are_returned(db_conn):
     """
 
     result = get_table_names(db_conn)
-    expected = ['addresses', 'counterparty', 'currency', 'department', 'design',
-                'payment', 'payment_type', 'purchase_order', 'sales_order', 'staff', 'transactions']
+    expected = ['addresses', 'counterparty', 'currency', 'department',
+                'design', 'payment', 'payment_type', 'purchase_order',
+                'sales_order', 'staff', 'transactions']
     assert result == expected
