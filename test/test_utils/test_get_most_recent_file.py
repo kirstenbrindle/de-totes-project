@@ -7,6 +7,7 @@ from pprint import pprint
 from datetime import datetime
 import time
 
+
 @mock_aws
 def test_returns_type_of_string():
     """

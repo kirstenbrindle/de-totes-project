@@ -1,9 +1,8 @@
-from datetime import datetime
-
-
 def get_most_recent_file(conn, table_name):
     '''
-    Get_most_recent_file function takes aws connection and folder name as arguments and returns most recently updated file name in s3 bucket folder as output.
+    Get_most_recent_file function takes aws connection \n
+    and folder name as arguments and returns most recently updated \n
+    file name in s3 bucket folder as output.
 
     Arguments: conn (Aws connection) table_name(folder within s3 bucket).
     '''

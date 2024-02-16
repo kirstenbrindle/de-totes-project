@@ -71,7 +71,7 @@ def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
     readable_result = result.read()
     decoded_result = readable_result.decode('utf-8')
     assert decoded_result == (
-        f',payment_type_id,payment_type_name,created_at,last_updated\n'
+        ',payment_type_id,payment_type_name,created_at,last_updated\n'
         '0,1,SALES_RECEIPT,2022-11-03 14:20:49.962,2022-11-03 14:20:49.962\n')
 
 
