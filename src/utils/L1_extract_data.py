@@ -1,23 +1,24 @@
 from pg8000.native import identifier, literal  # Connection
 from src.utils.get_most_recent_file import get_most_recent_file
-from utils.flexible_formatter import format_data
+from src.utils.flexible_formatter import format_data
 from src.utils.get_timestamp import get_timestamp
 # import boto3
 # import json
 
 
-def L1_extract_data(conn, table_name, boolean):
+def L1_extract_data(conn,s3, table_name, boolean):
     query_string = f'SELECT * FROM {identifier(table_name)}'
     if boolean is True:
-        conn.run(f'{query_string};')
+       response= conn.run(f'{query_string};')
     else:
-        latest_file = get_most_recent_file(table_name)
+        latest_file = get_most_recent_file(s3,table_name)
         timestamp = get_timestamp(latest_file)
         query_string += f' WHERE last_updated > {literal(timestamp)};'
         response = conn.run(query_string)
-        metadata = conn.columns
-        column_names = [c['name'] for c in metadata]
-        format_data(response, column_names)
+
+    metadata = conn.columns
+    column_names = [c['name'] for c in metadata]
+    format_data(response, column_names)
     # if table_name == "payment_type":
     #     payment_type_list = format_payment_type(rows)
     #     return payment_type_list

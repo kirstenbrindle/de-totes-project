@@ -1,14 +1,16 @@
 from src.utils.L1_extract_data import L1_extract_data
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime
 
 
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data select * from table if boolean is True")
 def test_L1_extract_data_runs_correct_query_if_boolean_true():
-    mock_conn = Mock()
-    L1_extract_data(mock_conn, "currency", True)
+
+    mock_conn=MagicMock()
+    mock_s3 = Mock()
+    L1_extract_data(mock_conn, mock_s3, "currency", True)
     mock_conn.run.assert_called_with("SELECT * FROM currency;")
 
 
@@ -16,12 +18,14 @@ def test_L1_extract_data_runs_correct_query_if_boolean_true():
 @pytest.mark.it("""Test L1_extract_data invokes get most
                recent file if boolean is false""")
 @patch("src.utils.L1_extract_data.get_most_recent_file")
-def test_get_most_recent_file_if_boolean_is_false(mock_recent_file):
-    mock_conn = Mock()
+
+def test_L1_extract_data_invokes_get_most_recent_file_if_boolean_is_false(mock_recent_file):
+    mock_conn = MagicMock()
+    mock_s3 = Mock()
     assert mock_recent_file.call_count == 0
-    L1_extract_data(mock_conn, "currency", False)
+    L1_extract_data(mock_conn, mock_s3, "currency", False)
     assert mock_recent_file.call_count == 1
-    mock_recent_file.assert_called_with("currency")
+    mock_recent_file.assert_called_with(mock_s3, "currency")
 
 
 @pytest.mark.describe("L1_extract_data")
@@ -29,12 +33,14 @@ def test_get_most_recent_file_if_boolean_is_false(mock_recent_file):
                 get_timestamp if boolean is false""")
 @patch("src.utils.L1_extract_data.get_timestamp")
 @patch("src.utils.L1_extract_data.get_most_recent_file")
-def test_L1_is_false(mock_get_most_recent_file, mock_timestamp):
-    mock_conn = Mock()
+
+def test_L1_extract_data_invokes_get_timestamp_if_boolean_is_false(mock_get_most_recent_file, mock_timestamp):
+    mock_conn = MagicMock()
+    mock_s3 = Mock()
     assert mock_timestamp.call_count == 0
-    L1_extract_data(mock_conn, "currency", False)
+    L1_extract_data(mock_conn, mock_s3, "currency", False)
     assert mock_timestamp.call_count == 1
-    recent_file = mock_get_most_recent_file("currency")
+    recent_file = mock_get_most_recent_file(mock_s3, "currency")
     mock_timestamp.assert_called_with(recent_file)
 
 
@@ -43,35 +49,35 @@ def test_L1_is_false(mock_get_most_recent_file, mock_timestamp):
                 with where clause if boolean is False""")
 @patch("src.utils.L1_extract_data.get_timestamp")
 @patch("src.utils.L1_extract_data.get_most_recent_file")
-def test_L1_if_boolean_is_false(mock_get_most_recent_file, mock_timestamp):
-    mock_conn = Mock()
+
+def test_L1_extract_data_runs_correct_query_if_boolean_is_false(mock_get_most_recent_file, mock_timestamp):
+    mock_conn = MagicMock()
+    mock_s3 = MagicMock()
     mock_timestamp.return_value = "2022-11-03 14:20:49.962"
-    L1_extract_data(mock_conn, "currency", False)
+    L1_extract_data(mock_conn, mock_s3, "currency", False)
     mock_conn.run.assert_called_with(
         """SELECT * FROM currency
         WHERE last_updated > '2022-11-03 14:20:49.962';""")
 
-# Mock all functions - seems to be confused as we have partially mocked.
-    # test database too.
 
 
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data invokes format data if boolean is false")
+@patch("src.utils.L1_extract_data.get_timestamp")
+@patch("src.utils.L1_extract_data.get_most_recent_file")
 @patch("src.utils.L1_extract_data.format_data")
-def test_if_boolean_is_false(mock_format_data):
-    mock_conn = Mock()
-    mock_conn.run.return_value = [[
-        1, 'GBP', datetime(2022, 11, 3, 14, 20, 49, 962000),
-        datetime(2022, 11, 3, 14, 20, 49, 962000)],
-        [2, 'USD', datetime(2022, 11, 3, 14, 20, 49, 962000),
-         datetime(2022, 11, 3, 14, 20, 49, 962000)],
-        [3, 'EUR', datetime(2022, 11, 3, 14, 20, 49, 962000),
-         datetime(2022, 11, 3, 14, 20, 49, 962000)
-         ]]
+
+def test_L1_extract_data_invokes_format_data_if_boolean_is_false(mock_format_data,mock_get_most_recent_file,mock_get_timestamp):
+    mock_conn = MagicMock()
+    mock_s3 = MagicMock()
+    mock_conn.run.return_value = [[1, 'GBP', datetime(2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)], [2, 'USD', datetime(
+        2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)], [3, 'EUR', datetime(2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)]]
+    mock_conn.columns = [{'name':'example1'}]
+
     assert mock_format_data.call_count == 0
-    L1_extract_data(mock_conn, "currency", False)
+    L1_extract_data(mock_conn, mock_s3, "currency", False)
     assert mock_format_data.call_count == 1
-    mock_format_data.assert_called_with(mock_conn.run.return_value)
+    mock_format_data.assert_called_with(mock_conn.run.return_value,['example1'])
 
 
 # @pytest.mark.describe("L1_extract_data")
@@ -91,4 +97,4 @@ def test_if_boolean_is_false(mock_format_data):
 #         ])
 #     assert mock_payment_type.call_count == 0
 #     L1_extract_data(my_mock, "payment_type")
-#     assert mock_payment_type.call_count == 1
+#     assert mock_payment_type.call_count == 1'''
