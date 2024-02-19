@@ -1,9 +1,10 @@
 from pg8000.native import identifier, literal, Connection
 from src.utils.get_most_recent_file import get_most_recent_file
-from src.utils.flexible_formater import format_data
+from utils.flexible_formatter import format_data
 from src.utils.get_timestamp import get_timestamp
-import boto3 
-import json 
+import boto3
+import json
+
 
 def L1_extract_data(conn, table_name, boolean):
     query_string = f'SELECT * FROM {identifier(table_name)}'
@@ -24,13 +25,13 @@ def L1_extract_data(conn, table_name, boolean):
 # extract data function takes connection, table name and boolean
 #  variable called query string - select * from table nam. If boolean is true we run full query.
 #  if false we invoke get most recent file with table name
-    # then get timestamp is invoked with result of most recent file. 
-    # Add WHERE clause to query string with timestamp. Then we run conn.run with query string. 
+    # then get timestamp is invoked with result of most recent file.
+    # Add WHERE clause to query string with timestamp. Then we run conn.run with query string.
     # if query response is empty, we use logger.info(message)
-    # else, we invoke format data 
+    # else, we invoke format data
     # then we invoke write to csv and write to object.
 
-# testing - queries are pulling out valid data. 
+# testing - queries are pulling out valid data.
     # other functions have been invoked
 
 # flexible formatter created and format payment type no longer required:

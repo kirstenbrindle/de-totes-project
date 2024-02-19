@@ -1,4 +1,4 @@
-from src.utils.flexible_formater import format_data, L1_extract_data
+from utils.flexible_formatter import format_data, L1_extract_data
 import pytest
 from unittest.mock import Mock, patch
 from pg8000.native import Connection

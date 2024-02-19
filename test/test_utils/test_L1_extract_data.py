@@ -47,8 +47,10 @@ def test_L1_extract_data_runs_correct_query_if_boolean_is_false(mock_get_most_re
     mock_conn.run.assert_called_with(
         "SELECT * FROM currency WHERE last_updated > '2022-11-03 14:20:49.962';")
 
-# Mock all functions - seems to be confused as we have partially mocked. 
+# Mock all functions - seems to be confused as we have partially mocked.
     # test database too.
+
+
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data invokes format data if boolean is false")
 @patch("src.utils.L1_extract_data.format_data")
