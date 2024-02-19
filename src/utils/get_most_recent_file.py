@@ -1,4 +1,4 @@
-def get_most_recent_file(conn, table_name, bucket_name):
+def get_most_recent_file(conn, bucket_name, table_name):
     '''
     Get_most_recent_file function takes aws connection \n
     and folder name as arguments and returns most recently updated \n

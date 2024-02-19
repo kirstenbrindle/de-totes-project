@@ -4,7 +4,7 @@ import boto3
 import io
 
 
-def write_csv(table_name, bucket, data):
+def write_csv(table_name, bucket, s3, data):
     """
     -> takes the output of SQL query
     -> write to .csv file with file name of "{tableName}-datetime.now()"
@@ -19,7 +19,6 @@ def write_csv(table_name, bucket, data):
     df = pd.DataFrame.from_dict(data)
 
     # connect to s3 bucket
-    s3 = boto3.client('s3')
     bucket_name = bucket
     key = (f'{table_name}/{file_name}.csv')
 
