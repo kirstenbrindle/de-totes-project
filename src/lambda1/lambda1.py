@@ -31,5 +31,5 @@ def lambda_handler(event, context):
     # get bucket name from s3.list_buckets and find injestion
 
     logger.info("Checking database for new info...")
-
+    logger.error("Test error")
     conn.close()
