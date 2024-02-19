@@ -44,7 +44,7 @@ def test_get_bucket_name(mock_bucket_one, mock_bucket_two):
 
 
 @pytest.mark.describe('get bucket name')
-@pytest.mark.it('''test get bucket name return warning and
-                message there is not matching bucket''')
-def test_get_bucket_name_warning(mock_bucket_one, caplog):
-    assert 'No bucket name matching "ingestion"' in caplog.text
+@pytest.mark.it('''test get bucket name raises error''')
+def test_get_bucket_name_error(mock_bucket_one):
+    with pytest.raises(ValueError):
+        get_bucket_name()

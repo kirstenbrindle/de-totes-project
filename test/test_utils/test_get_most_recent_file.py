@@ -21,7 +21,7 @@ def test_returns_type_of_string():
                             Key="folder1/test_file_2.txt", Body="test_string2")
     mockedClient.put_object(Bucket="test_bucket",
                             Key="folder2/test_file_3.txt", Body="test_string3")
-    result = get_most_recent_file(mockedClient, "folder1")
+    result = get_most_recent_file(mockedClient, "folder1", "test_bucket")
     assert type(result) is str
 
 
@@ -42,7 +42,7 @@ def test_returns_file_name_in_folder():
                             Key="folder1/test_file_2.txt", Body="test_string2")
     mockedClient.put_object(Bucket="test_bucket",
                             Key="folder1/test_file_3.txt", Body="test_string2")
-    result = get_most_recent_file(mockedClient, "folder1")
+    result = get_most_recent_file(mockedClient, "folder1", "test_bucket")
     assert result == "folder1/test_file_2.txt"
 
 
@@ -70,5 +70,5 @@ def test_returns_most_recent_file_name():
     mockedClient.put_object(
         Bucket="test_bucket",
         Key="folder1/test_file_3.txt", Body="test_string2")
-    result = get_most_recent_file(mockedClient, "folder1")
+    result = get_most_recent_file(mockedClient, "folder1", "test_bucket")
     assert result == "folder1/test_file_3.txt"
