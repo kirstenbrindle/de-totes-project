@@ -3,8 +3,6 @@ import pytest
 import os
 from moto import mock_aws
 from src.utils.get_bucket_name import get_bucket_name
-from datetime import datetime
-from unittest.mock import patch
 
 
 @pytest.fixture(scope="function")
@@ -29,26 +27,24 @@ def mock_bucket_one(mock_s3):
         Bucket='test-bucket',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'})
 
+
 @pytest.fixture
 def mock_bucket_two(mock_s3):
     mock_s3.create_bucket(
         Bucket='test-bucket-ingestion',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'})
 
+
 @pytest.mark.describe('get bucket name')
 @pytest.mark.it('test get bucket name return correct name of ingestion bucket')
-def test_get_bucket_name(mock_bucket_one,mock_bucket_two):
+def test_get_bucket_name(mock_bucket_one, mock_bucket_two):
     expected = 'test-bucket-ingestion'
-    result=get_bucket_name()
-    assert result==expected
+    result = get_bucket_name()
+    assert result == expected
+
 
 @pytest.mark.describe('get bucket name')
-@pytest.mark.it('test get bucket name return warning and message there is not matching bucket')
-def test_get_bucket_name_warning(mock_bucket_one,caplog):
-    expected = 'test-bucket-ingestion'
-    result=get_bucket_name()
-    assert 'No bucket name matching "ingestion"'in caplog.text
-
-
-
-    
+@pytest.mark.it('''test get bucket name return warning and
+                message there is not matching bucket''')
+def test_get_bucket_name_warning(mock_bucket_one, caplog):
+    assert 'No bucket name matching "ingestion"' in caplog.text
