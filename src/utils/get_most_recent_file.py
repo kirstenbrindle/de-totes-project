@@ -1,4 +1,4 @@
-def get_most_recent_file(conn, table_name):
+def get_most_recent_file(conn, bucket_name, table_name):
     '''
     Get_most_recent_file function takes aws connection \n
     and folder name as arguments and returns most recently updated \n
@@ -8,7 +8,7 @@ def get_most_recent_file(conn, table_name):
     '''
     client = conn
     objects_list = client.list_objects_v2(
-        Bucket="test_bucket", Prefix=table_name)
+        Bucket=bucket_name, Prefix=table_name)
     files_list = []
     file_name = ""
     for value in objects_list["Contents"]:

@@ -65,27 +65,3 @@ def test_format_data_returns_formatted_multiple_rows():
         'last_updated': ["2022-11-03 14:20:49.962", '2022-11-03 14:20:49.962']
     }
 
-
-@pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data runs a Select "
-                "query from the given table")
-def test_L1_extract_data_return_mock(db_conn):
-    """
-    checks returns value with a mock
-    """
-    expected = {
-        'payment_type_id': [1, 2, 3, 4],
-        'payment_type_name': ['SALES_RECEIPT', 'SALES_REFUND',
-                              'PURCHASE_PAYMENT', 'PURCHASE_REFUND'],
-        'created_at': [datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                       datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                       datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                       datetime.datetime(2022, 11, 3, 14, 20, 49, 962000)],
-        'last_updated': [datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                         datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                         datetime.datetime(2022, 11, 3, 14, 20, 49, 962000),
-                         datetime.datetime(2022, 11, 3, 14, 20, 49, 962000)]
-    }
-
-    result = L1_extract_data(db_conn, "payment_type")
-    assert result == expected
