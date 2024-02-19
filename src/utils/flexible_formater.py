@@ -6,9 +6,8 @@ def L1_extract_data(conn, table_name):
     metadata = conn.columns
     print(metadata, "<<------- metadata")
     column_names = [c['name'] for c in metadata]
-    if table_name == "payment_type":
-        payment_type_list = format_data(rows,column_names)
-        return payment_type_list
+    formatted_data = format_data(rows,column_names)
+    return formatted_data
 
 
 def format_data(rows,column_names):
