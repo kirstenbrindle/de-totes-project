@@ -1,86 +1,82 @@
-from src.utils.L1_extract_data import format_payment_type, L1_extract_data
+from src.utils.L1_extract_data import L1_extract_data
 import pytest
 from unittest.mock import Mock, patch
-
-
-@pytest.mark.describe("format_payment_type")
-@pytest.mark.it("Test format_payment_type returns formatted "
-                "query data for single row")
-def test_format_payment_type_returns_formatted_single_row():
-    """
-    Given:
-    a single row from payment_type table once L1_extract_data is invoked
-
-    Returns:
-    List of dictionaries with column names(keys)
-    """
-    data = ([1, "SALES_RECEIPT", "2022-11-03 14:20:49.962",
-            "2022-11-03 14:20:49.962"])
-    result = format_payment_type(data)
-    assert result == {
-        'payment_type_id': [1],
-        'payment_type_name': ['SALES_RECEIPT'],
-        'created_at': ["2022-11-03 14:20:49.962"],
-        'last_updated': ["2022-11-03 14:20:49.962"]
-    }
-
-
-@pytest.mark.describe("format_payment_type")
-@pytest.mark.it("Test format_payment_type returns formatted "
-                "query data for multiple rows")
-def test_format_payment_type_returns_formatted_multiple_rows():
-    """
-    Given:
-    rows from payment_type table once L1_extract_data is invoked
-
-    Returns:
-    List of dictionaries with column names(keys)
-    """
-    data = ([1, "SALES_RECEIPT", "2022-11-03 14:20:49.962",
-            "2022-11-03 14:20:49.962"],
-            [2, "SALES_REFUND", "2022-11-03 14:20:49.962",
-            "2022-11-03 14:20:49.962"])
-    result = format_payment_type(data)
-    assert result == {
-        'payment_type_id': [1, 2],
-        'payment_type_name': ['SALES_RECEIPT', 'SALES_REFUND'],
-        'created_at': ["2022-11-03 14:20:49.962", '2022-11-03 14:20:49.962'],
-        'last_updated': ["2022-11-03 14:20:49.962", '2022-11-03 14:20:49.962']
-    }
+from datetime import datetime
 
 
 @pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data runs a Select "
-                "query from the given table")
-def test_L1_extract_data_return_mock():
-    """
-    checks returns value with a mock
-    """
-    my_mock = Mock()
-    my_mock.run.return_value = ([
-        1, "SALES_RECEIPT",
-        "2022-11-03 14:20:49.962",
-        "2022-11-03 14:20:49.962"
-        ])
-    L1_extract_data(my_mock, "payment_type")
-    my_mock.run.assert_called_with("SELECT * FROM payment_type;")
+@pytest.mark.it("Test L1_extract_data select * from table if boolean is True")
+def test_L1_extract_data_runs_correct_query_if_boolean_true():
+    mock_conn = Mock()
+    L1_extract_data(mock_conn, "currency", True)
+    mock_conn.run.assert_called_with("SELECT * FROM currency;")
 
 
 @pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data invokes format_payment_type")
-@patch("src.utils.L1_extract_data.format_payment_type")
-def test_L1_extract_data_invokes_format_payment_type(mock_payment_type):
-    """
-    Check that L1_extract_data invokes format_payment_type\n
-    when table name is payment_type.
+@pytest.mark.it("Test L1_extract_data invokes get most recent file if boolean is false")
+@patch("src.utils.L1_extract_data.get_most_recent_file")
+def test_L1_extract_data_invokes_get_most_recent_file_if_boolean_is_false(mock_recent_file):
+    mock_conn = Mock()
+    assert mock_recent_file.call_count == 0
+    L1_extract_data(mock_conn, "currency", False)
+    assert mock_recent_file.call_count == 1
+    mock_recent_file.assert_called_with("currency")
 
-    """
-    my_mock = Mock()
-    my_mock.run.return_value = ([
-        1, "SALES_RECEIPT",
-        "2022-11-03 14:20:49.962",
-        "2022-11-03 14:20:49.962"
-        ])
-    assert mock_payment_type.call_count == 0
-    L1_extract_data(my_mock, "payment_type")
-    assert mock_payment_type.call_count == 1
+
+@pytest.mark.describe("L1_extract_data")
+@pytest.mark.it("Test L1_extract_data invokes get_timestamp if boolean is false")
+@patch("src.utils.L1_extract_data.get_timestamp")
+@patch("src.utils.L1_extract_data.get_most_recent_file")
+def test_L1_extract_data_invokes_get_timestamp_if_boolean_is_false(mock_get_most_recent_file, mock_timestamp):
+    mock_conn = Mock()
+    assert mock_timestamp.call_count == 0
+    L1_extract_data(mock_conn, "currency", False)
+    assert mock_timestamp.call_count == 1
+    recent_file = mock_get_most_recent_file("currency")
+    mock_timestamp.assert_called_with(recent_file)
+
+
+@pytest.mark.describe("L1_extract_data")
+@pytest.mark.it("Test L1_extract_data select * from table with where clause if boolean is False")
+@patch("src.utils.L1_extract_data.get_timestamp")
+@patch("src.utils.L1_extract_data.get_most_recent_file")
+def test_L1_extract_data_runs_correct_query_if_boolean_is_false(mock_get_most_recent_file, mock_timestamp):
+    mock_conn = Mock()
+    mock_timestamp.return_value = "2022-11-03 14:20:49.962"
+    L1_extract_data(mock_conn, "currency", False)
+    mock_conn.run.assert_called_with(
+        "SELECT * FROM currency WHERE last_updated > '2022-11-03 14:20:49.962';")
+
+# Mock all functions - seems to be confused as we have partially mocked. 
+    # test database too.
+@pytest.mark.describe("L1_extract_data")
+@pytest.mark.it("Test L1_extract_data invokes format data if boolean is false")
+@patch("src.utils.L1_extract_data.format_data")
+def test_L1_extract_data_invokes_format_data_if_boolean_is_false(mock_format_data):
+    mock_conn = Mock()
+    mock_conn.run.return_value = [[1, 'GBP', datetime(2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)], [2, 'USD', datetime(
+        2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)], [3, 'EUR', datetime(2022, 11, 3, 14, 20, 49, 962000), datetime(2022, 11, 3, 14, 20, 49, 962000)]]
+    assert mock_format_data.call_count == 0
+    L1_extract_data(mock_conn, "currency", False)
+    assert mock_format_data.call_count == 1
+    mock_format_data.assert_called_with(mock_conn.run.return_value)
+
+
+# @pytest.mark.describe("L1_extract_data")
+# @pytest.mark.it("Test L1_extract_data invokes format_payment_type")
+# @patch("src.utils.L1_extract_data.format_payment_type")
+# def test_L1_extract_data_invokes_format_payment_type(mock_payment_type):
+#     """
+#     Check that L1_extract_data invokes format_payment_type\n
+#     when table name is payment_type.
+
+#     """
+#     my_mock = Mock()
+#     my_mock.run.return_value = ([
+#         1, "SALES_RECEIPT",
+#         "2022-11-03 14:20:49.962",
+#         "2022-11-03 14:20:49.962"
+#         ])
+#     assert mock_payment_type.call_count == 0
+#     L1_extract_data(my_mock, "payment_type")
+#     assert mock_payment_type.call_count == 1

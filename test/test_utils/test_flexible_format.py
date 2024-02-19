@@ -7,7 +7,7 @@ import datetime
 @pytest.fixture(scope="function")
 def db_conn():
     """Connection to test_database"""
-    user = 'minnie'
+    user = 'tomroberts'
     password = 'password'
     host = 'localhost'
     database = 'test_database'
