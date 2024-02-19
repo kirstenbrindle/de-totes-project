@@ -36,7 +36,7 @@ def L1_extract_data(conn, s3, table_name, boolean, bucket_name):
         timestamp = get_timestamp(latest_file)
         query_string += f' WHERE last_updated > {literal(timestamp)};'
         response = conn.run(query_string)
-
+    # need to add error catching
     metadata = conn.columns
     column_names = [c['name'] for c in metadata]
     formatted_data = format_data(response, column_names)
