@@ -1,6 +1,6 @@
-from lambda1.lambda1 import lambda_handler
+# from lambda1.lambda1 import lambda_handler
 import pytest
-from moto import mock_aws
+# from moto import mock_aws
 import os
 import boto3
 
