@@ -5,18 +5,22 @@
 # Creating L1 IAM Role...
 resource "aws_iam_role" "L1_lambda_role" {
   name = "L1_lambda_role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "lambda.amazonaws.com"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "sts:AssumeRole"
+          ],
+          "Principal" : {
+            "Service" : [
+              "lambda.amazonaws.com"
+            ]
+          }
         }
-      },
-    ]
+      ]
   })
 }
 
@@ -24,11 +28,11 @@ resource "aws_iam_role" "L1_lambda_role" {
 data "aws_iam_policy_document" "s3_L1_document" {
   statement {
     actions = [
-        "s3:PutObject",
-        "s3:ListBucket"
-        ] 
+      "s3:PutObject",
+      "s3:ListBucket"
+    ]
     resources = [
-      "${aws_s3_bucket.ingestion_bucket.arn}/*", 
+      "${aws_s3_bucket.ingestion_bucket.arn}/*",
       "${aws_s3_bucket.code_bucket.arn}/*"
     ]
   }
@@ -49,11 +53,10 @@ resource "aws_iam_role_policy_attachment" "L1_S3_policy_attachment" {
 #Creating Cloudwatch policy document...
 data "aws_iam_policy_document" "L1_cloudwatch_document" {
   statement {
-
     actions = ["logs:CreateLogGroup"]
 
     resources = [
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+      "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"
     ]
     effect = "Allow"
   }
@@ -62,9 +65,10 @@ data "aws_iam_policy_document" "L1_cloudwatch_document" {
 
     actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
 
-    resources = [ # Please change below according to L1 function name 
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/lambda1:*"
+    resources = [
+      "arn:aws:logs::eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.lambda1_log_group.name}:*"
     ]
+    effect = "Allow"
   }
 }
 
