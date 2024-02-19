@@ -80,23 +80,4 @@ def test_L1_extract_data_return_mock(db_conn):
     result=L1_extract_data(db_conn, "payment_type")
     assert result == expected
     
-@pytest.mark.skip
-@pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data invokes format_data")
-@patch("src.utils.flexible_formater.format_data")
-def test_L1_extract_data_invokes_format_data(mock_payment_type):
-    """
-    Check that L1_extract_data invokes format_data\n
-    when table name is payment_type.
 
-    """
-    my_mock = Mock()
-    my_mock.run.return_value = ([
-        1, "SALES_RECEIPT",
-        "2022-11-03 14:20:49.962",
-        "2022-11-03 14:20:49.962"
-        ])
-    my_mock.columns.side_effect = {'name':['payment_type_id','payment_type_name','created_at','last_updated']}
-    assert mock_payment_type.call_count == 0
-    L1_extract_data(my_mock, "payment_type")
-    assert mock_payment_type.call_count == 1
