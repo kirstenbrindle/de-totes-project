@@ -24,6 +24,7 @@ resource "aws_iam_role" "L1_lambda_role" {
   })
 }
 
+
 # Creating S3 Ingestion bucket policy document ...
 data "aws_iam_policy_document" "s3_L1_document" {
   statement {
@@ -58,20 +59,19 @@ data "aws_iam_policy_document" "L1_cloudwatch_document" {
     resources = [
       "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"
     ]
+
     effect = "Allow"
   }
 
   statement {
-
     actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
 
     resources = [
-      "arn:aws:logs::eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.lambda1_log_group.name}:*"
+      "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/lambda1:*"
     ]
-    effect = "Allow"
   }
 }
-
+# {aws_cloudwatch_log_group.lambda1_log_group.name}
 # Creating Cloudwatch policy ...
 resource "aws_iam_policy" "L1_cloudwatch_policy" {
   name_prefix = "L1-cloudwatch-policy-de-totes-project-"
