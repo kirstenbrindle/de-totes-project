@@ -39,14 +39,16 @@ jobs:
       - name: Setup venv
         run: make requirements
 
-      - name: Setup postgres
-        uses: ikalnytskyi/action-setup-postgres@v5
+      - steps:
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '14'
 
       - name: Create postgres testuser
-        run: |
-          createuser testuser
-          createdb --owner testuser mydatabase
-          psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
+        run: sudo service postgresql start
+             sudo -u postgres createuser --superuser $USER 
+             sudo -u postgres createdb $USER
+             psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
         shell: bash
