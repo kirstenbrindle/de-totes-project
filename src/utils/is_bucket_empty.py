@@ -13,10 +13,9 @@ def is_bucket_empty(bucket_name, s3):
 
 
     """
-    try:
-        response = s3.list_objects_v2(Bucket=bucket_name)
-        if response['KeyCount'] == 0:
-            return True
-        return False
-    except Exception as error:
-        print(error.response['Error']['Message'])
+    
+    response = s3.list_objects_v2(Bucket=bucket_name)
+    if response['KeyCount'] == 0:
+        return True
+    return False
+

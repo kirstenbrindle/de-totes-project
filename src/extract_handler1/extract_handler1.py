@@ -1,9 +1,11 @@
-
 from pg8000.native import Connection
 import boto3
 import json
 import logging
 # from botocore.exceptions import ClientError
+from src.utils.get_table_names import get_table_names
+from src.utils.get_bucket_name import get_bucket_name
+from src.utils.is_bucket_empty import is_bucket_empty
 
 
 secretm = boto3.client("secretsmanager")
@@ -15,6 +17,7 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
+    
     '''Connects to Totesys database using
     credentials stored in SecretsManager.
 
@@ -34,7 +37,10 @@ def lambda_handler(event, context):
         logger.error("ERROR AHHHHHHH")
 
         conn = Connection(**secrets_dict)
-        # s3 = boto3.client('s3')
+        s3 = boto3.client('s3')
+        table_names = get_table_names(conn)
+        bucket_name = get_bucket_name()
+        boolean = is_bucket_empty(bucket_name, s3)
         logger.info("Checking database for new info...")
         logger.error("Test error")
 

@@ -51,13 +51,3 @@ def test_return_false_when_bucket_is_not_empty(aws_credentials, s3):
     assert result is False
 
 
-@pytest.mark.describe("is_bucket_empty")
-@pytest.mark.it("Test returns appropiate message if invalid bucket name")
-@patch("builtins.print")
-@mock_aws
-def test_return_message_invalid_bucket_name(mock_print, aws_credentials, s3):
-    s3.create_bucket(
-        Bucket='test_totes_123',
-        CreateBucketConfiguration={"LocationConstraint": "eu-west-2"})
-    is_bucket_empty('test_totes_3', s3)
-    mock_print.assert_called_with('The specified bucket does not exist')
