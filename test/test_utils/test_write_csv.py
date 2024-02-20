@@ -44,7 +44,7 @@ def test_writes_csv_file_with_folder(mock_datetime, mock_bucket, mock_s3):
         'created_at': ["2022-11-03 14:20:49.962"],
         'last_updated': ["2022-11-03 14:20:49.962"]
     }
-    write_csv(table_name, bucket, data)
+    write_csv(table_name, bucket, mock_s3, data)
     response = mock_s3.list_objects_v2(Bucket=bucket)
     listed_objects = [file['Key'] for file in response['Contents']]
     assert listed_objects == [
@@ -64,14 +64,14 @@ def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
             'created_at': ["2022-11-03 14:20:49.962"],
             'last_updated': ["2022-11-03 14:20:49.962"]
             }
-    write_csv(table_name, bucket, data)
+    write_csv(table_name, bucket, mock_s3, data)
     response = mock_s3.get_object(
         Bucket=bucket, Key=f'testing/testing-{datetime(2024,2,15,1,1,15)}.csv')
     result = response['Body']
     readable_result = result.read()
     decoded_result = readable_result.decode('utf-8')
     assert decoded_result == (
-        f',payment_type_id,payment_type_name,created_at,last_updated\n'
+        ',payment_type_id,payment_type_name,created_at,last_updated\n'
         '0,1,SALES_RECEIPT,2022-11-03 14:20:49.962,2022-11-03 14:20:49.962\n')
 
 
@@ -89,14 +89,14 @@ def test_writes_csv_file_to_same_folder(mock_datetime, mock_bucket, mock_s3):
         'created_at': ["2022-11-03 14:20:49.962"],
         'last_updated': ["2022-11-03 14:20:49.962"]
     }
-    write_csv(table_name, bucket, data)
+    write_csv(table_name, bucket, mock_s3, data)
     data1 = {
         'payment_type_id': [2],
         'payment_type_name': ['REFUND_RECEIPT'],
         'created_at': ["2022-11-03 14:20:49.900"],
         'last_updated': ["2022-11-03 14:20:49.900"]
     }
-    write_csv(table_name, bucket, data1)
+    write_csv(table_name, bucket, mock_s3, data1)
     response = mock_s3.list_objects_v2(Bucket=bucket)
     listed_objects = [file['Key'] for file in response['Contents']]
     assert listed_objects == [
@@ -118,7 +118,7 @@ def test_writes_csv_file_to_diff_folder(mock_datetime, mock_bucket, mock_s3):
         'created_at': ["2022-11-03 14:20:49.962"],
         'last_updated': ["2022-11-03 14:20:49.962"]
     }
-    write_csv(table_name, bucket, data)
+    write_csv(table_name, bucket, mock_s3, data)
     table_name1 = 'mock'
     data1 = {
         'payment_type_id': [2],
@@ -126,7 +126,7 @@ def test_writes_csv_file_to_diff_folder(mock_datetime, mock_bucket, mock_s3):
         'created_at': ["2022-11-03 14:20:49.900"],
         'last_updated': ["2022-11-03 14:20:49.900"]
     }
-    write_csv(table_name1, bucket, data1)
+    write_csv(table_name1, bucket, mock_s3, data1)
     response = mock_s3.list_objects_v2(Bucket=bucket)
     listed_objects = [file['Key'] for file in response['Contents']]
     # needs to be in alphabetical order!!

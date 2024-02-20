@@ -1,17 +1,10 @@
 import pandas as pd
 from datetime import datetime
-from pathlib import Path
-from src.utils.L1_extract_data import L1_extract_data
 import boto3
 import io
-import botocore
-
-# data = L1_extract_data(conn, table_name)
-# ^^ data is the end result of the extract function
-# poss add write csv to func????
 
 
-def write_csv(table_name, bucket, data):
+def write_csv(table_name, bucket, s3, data):
     """
     -> takes the output of SQL query
     -> write to .csv file with file name of "{tableName}-datetime.now()"
@@ -26,7 +19,6 @@ def write_csv(table_name, bucket, data):
     df = pd.DataFrame.from_dict(data)
 
     # connect to s3 bucket
-    s3 = boto3.client('s3')
     bucket_name = bucket
     key = (f'{table_name}/{file_name}.csv')
 
