@@ -13,6 +13,7 @@ resource "aws_lambda_function" "lambda1" {
       S3_ingestion_bucket = "${aws_s3_bucket.ingestion_bucket.id}"
     }
   }
+  layers = ["arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:8"]
 }
 
 
