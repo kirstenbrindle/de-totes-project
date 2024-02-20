@@ -43,10 +43,12 @@ def test_return_false_when_bucket_is_not_empty(aws_credentials, s3):
     s3.create_bucket(Bucket='test_totes_123',
                      CreateBucketConfiguration={
                          "LocationConstraint": "eu-west-2"})
-    s3.upload_file(f'/{path}/../../test_file.txt',
-                   'test_totes_123', 'test_file.txt')
+    s3.put_object(
+        Body='',
+        Bucket='test_totes_123',
+        Key='test_file.txt',
+    )
     result = is_bucket_empty('test_totes_123', s3)
-
     assert result is False
 
 
