@@ -55,8 +55,8 @@ jobs:
 
       - name: Create postgres testuser
         run: sudo service postgresql start
-             sudo -u postgres createuser --superuser $USER 
-             sudo -u postgres createdb $USER
+             sudo -u postgres createuser --superuser testuser
+             sudo -u postgres createdb testuser
              psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
@@ -66,6 +66,13 @@ jobs:
 
       - name: Create test-database
         run: psql -f test_db/test_database.sql
+        env: 
+          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+          PGHOST: postgres
+          PGPORT: 5432:5432
+          PGUSER: testuser
+          PGPASSWORD: password
+        shell: bash
 
       - name: Seed test-database
         run: psql -f test_db/test_db_inserts.sql
