@@ -65,7 +65,7 @@ jobs:
         shell: bash
 
       - name: Create test-database
-        run: psql -f test_db/test_database.sql
+        run: psql -f "test_db/test_database.sql"
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
           PGHOST: postgres
