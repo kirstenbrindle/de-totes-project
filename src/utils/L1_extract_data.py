@@ -44,3 +44,7 @@ def L1_extract_data(conn, s3, table_name, boolean, bucket_name):
     column_names = [c['name'] for c in metadata]
     formatted_data = format_data(response, column_names)
     write_csv(table_name, bucket_name, s3, formatted_data)
+
+# potential errors
+    #  invalid db connection, invalid s3 connection, no such bucket, invalid table name
+

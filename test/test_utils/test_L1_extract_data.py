@@ -17,7 +17,7 @@ logger.propagate = True
 @pytest.fixture(scope="function")
 def db_conn():
     """Connection to test_database"""
-    user = 'kirsten-brindle'
+    user = 'tomroberts'
     password = 'password'
     host = 'localhost'
     database = 'test_database'

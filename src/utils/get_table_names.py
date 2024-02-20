@@ -18,4 +18,9 @@ def get_table_names(conn):
                      "AND table_type='BASE TABLE';")
     table_names = [table[0] for table in query]
     table_names.sort()
+
+    # potential errors -
+    # database error when query returns no information.
+    # database error would only happen if no tables existed.
     return table_names
+

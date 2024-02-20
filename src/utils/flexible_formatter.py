@@ -1,17 +1,5 @@
 from pg8000.native import identifier
 
-# hello
-
-
-def L1_extract_data(conn, table_name):
-    rows = conn.run(f'SELECT * FROM {identifier(table_name)};')
-    metadata = conn.columns
-    print(metadata, "<<------- metadata")
-    column_names = [c['name'] for c in metadata]
-    formatted_data = format_data(rows, column_names)
-    return formatted_data
-
-
 def format_data(rows, column_names):
     """
     Args:
@@ -41,3 +29,5 @@ def format_data(rows, column_names):
 
     payment_type_dict = dict(zip(column_names, nested_data_list))
     return payment_type_dict
+# potential errors
+# no rows or columns exist, could not connect to database. 
