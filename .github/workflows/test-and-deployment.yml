@@ -61,7 +61,7 @@ jobs:
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
           PGHOST: postgres
-          PGPORT: 5432
+          PGPORT: 5432: 5432
         shell: bash
 
       - name: Create test-database
