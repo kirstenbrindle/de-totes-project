@@ -40,21 +40,21 @@ jobs:
         run: make requirements
 
       - name: Setup postgres testuser
-      - uses: ikalnytskyi/action-setup-postgres@v5
-      - run: |
+        uses: ikalnytskyi/action-setup-postgres@v5
+        run: |
           createuser testuser
           psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
-      - env: 
-        PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-      - shell: bash
+        env: 
+          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+        shell: bash
 
       - name: Create test-database
-      - uses: ikalnytskyi/action-setup-postgres@v5
-      - run: psql -f test_db/test_database.sql
+        uses: ikalnytskyi/action-setup-postgres@v5
+        run: psql -f test_db/test_database.sql
 
       - name: Seed test-database
-      - uses: ikalnytskyi/action-setup-postgres@v5
-      - run: psql -f test_db/test_db_inserts.sql
+        uses: ikalnytskyi/action-setup-postgres@v5
+        run: psql -f test_db/test_db_inserts.sql
 
   run-tests:
     runs-on: ubuntu-latest
