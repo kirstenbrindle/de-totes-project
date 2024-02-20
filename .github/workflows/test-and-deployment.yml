@@ -39,8 +39,10 @@ jobs:
       - name: Setup venv
         run: make requirements
 
-      - name: Setup postgres testuser
+      - name: Setup postgres
         uses: ikalnytskyi/action-setup-postgres@v5
+
+      - name: Create postgres testuser
         run: |
           createuser testuser
           psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
@@ -49,11 +51,9 @@ jobs:
         shell: bash
 
       - name: Create test-database
-        uses: ikalnytskyi/action-setup-postgres@v5
         run: psql -f test_db/test_database.sql
 
       - name: Seed test-database
-        uses: ikalnytskyi/action-setup-postgres@v5
         run: psql -f test_db/test_db_inserts.sql
 
   run-tests:
