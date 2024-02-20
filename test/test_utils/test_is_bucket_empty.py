@@ -39,7 +39,6 @@ def test_return_true_when_bucket_is_empty(aws_credentials, s3):
 @pytest.mark.it("Test returns false if bucket is not empty")
 @mock_aws
 def test_return_false_when_bucket_is_not_empty(aws_credentials, s3):
-    path = os.path.dirname(__file__)
     s3.create_bucket(Bucket='test_totes_123',
                      CreateBucketConfiguration={
                          "LocationConstraint": "eu-west-2"})
