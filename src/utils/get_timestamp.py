@@ -19,3 +19,7 @@ def get_timestamp(latest_file: str) -> str:
     timestamp_parts = timestamp_with_csv.split(".", 2)
     timestamp = f'{timestamp_parts[0]}.{timestamp_parts[1]}'
     return timestamp
+# potential errors
+# invalid input string (doesn't contain - for example)
+
+
