@@ -48,7 +48,6 @@ def test_return_false_when_bucket_is_not_empty(aws_credentials, s3):
         Key='test_file.txt',
     )
     result = is_bucket_empty('test_totes_123', s3)
-
     assert result is False
 
 

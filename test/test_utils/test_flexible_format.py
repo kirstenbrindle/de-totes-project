@@ -1,7 +1,6 @@
-from utils.flexible_formatter import format_data, L1_extract_data
+from src.utils.flexible_formatter import format_data
 import pytest
 from pg8000.native import Connection
-import datetime
 
 
 @pytest.fixture(scope="function")
@@ -64,4 +63,3 @@ def test_format_data_returns_formatted_multiple_rows():
         'created_at': ["2022-11-03 14:20:49.962", '2022-11-03 14:20:49.962'],
         'last_updated': ["2022-11-03 14:20:49.962", '2022-11-03 14:20:49.962']
     }
-
