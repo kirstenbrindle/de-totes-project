@@ -6,7 +6,7 @@ import logging
 from src.utils.get_table_names import get_table_names
 from src.utils.get_bucket_name import get_bucket_name
 from src.utils.is_bucket_empty import is_bucket_empty
-
+from src.utils.L1_extract_data import L1_extract_data
 
 secretm = boto3.client("secretsmanager")
 secret_file_name = secretm.get_secret_value(SecretId="totes_secret_aws")
@@ -17,7 +17,6 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    
     '''Connects to Totesys database using
     credentials stored in SecretsManager.
 
@@ -33,16 +32,14 @@ def lambda_handler(event, context):
         result in an informative log message.
     '''
     try:
-        logger.info("Checking database for new info...")
-        logger.error("ERROR AHHHHHHH")
-
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3')
         table_names = get_table_names(conn)
         bucket_name = get_bucket_name()
         boolean = is_bucket_empty(bucket_name, s3)
-        logger.info("Checking database for new info...")
-        logger.error("Test error")
+        for table_name in table_names:
+            L1_extract_data(conn, s3, table_name, boolean, bucket_name)
+
 
     except ValueError:
         logger.error("There is no ingestion bucket ...")
