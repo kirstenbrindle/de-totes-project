@@ -1,7 +1,5 @@
 name: Test and Deploy
-on:
-  - push
-
+on: [push]
 jobs:
   run-checks:
     runs-on: ubuntu-latest
