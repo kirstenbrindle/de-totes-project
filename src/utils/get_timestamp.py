@@ -15,5 +15,7 @@ def get_timestamp(latest_file: str) -> str:
 
     """
     split_file = latest_file.split("-", 1)
-    timestamp = split_file[1]
+    timestamp_with_csv = split_file[1]
+    timestamp_parts = timestamp_with_csv.split(".", 2)
+    timestamp = f'{timestamp_parts[0]}.{timestamp_parts[1]}'
     return timestamp
