@@ -3,7 +3,6 @@ import pytest
 from moto import mock_aws
 import os
 import boto3
-from unittest.mock import patch
 
 
 @pytest.fixture(scope='function')
@@ -49,5 +48,3 @@ def test_return_false_when_bucket_is_not_empty(aws_credentials, s3):
     )
     result = is_bucket_empty('test_totes_123', s3)
     assert result is False
-
-

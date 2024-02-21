@@ -1,17 +1,5 @@
-from src.utils.flexible_formatter import format_data
+from src.utils.format_data import format_data
 import pytest
-from pg8000.native import Connection
-
-
-@pytest.fixture(scope="function")
-def db_conn():
-    """Connection to test_database"""
-    user = 'tomroberts'
-    password = 'password'
-    host = 'localhost'
-    database = 'test_database'
-    return Connection(user=user, password=password,
-                      host=host, database=database)
 
 
 @pytest.mark.describe("format_data")

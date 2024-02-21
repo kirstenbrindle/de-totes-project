@@ -23,63 +23,10 @@ jobs:
       
       - name: Check Coverage
         run: make check-coverage
-  setup-test-database:
-    runs-on: ubuntu-latest
-    #needs: run-checks
-    #services:
-      #postgres:
-       # image: postgres
-      #  env:
-       #   POSTGRES_PASSWORD: password
-       # options: >-
-       #   --health-cmd pg_isready
-        #  --health-interval 10s
-        #  --health-timeout 5s
-        #  --health-retries 5
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Setup venv
-        run: make requirements
-
-      - name: Setup postgres
-        uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '14'
-
-      - name: Create postgres testuser
-        run: sudo service postgresql start
-             sudo -u postgres createuser --superuser testuser
-             sudo -u postgres createdb testuser
-             psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
-        env: 
-          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-          PGHOST: postgres
-          PGPORT: 5432:5432
-        shell: bash
-
-      - name: Create test-database
-        run: psql -f "test_db/test_database.sql"
-        env: 
-          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-          PGHOST: postgres
-          PGPORT: 5432:5432
-          PGUSER: testuser
-          PGPASSWORD: password
-        shell: bash
-
-      - name: Seed test-database
-        run: psql -f test_db/test_db_inserts.sql
 
   run-tests:
     runs-on: ubuntu-latest
-    needs: setup-test-database
+    needs: run-checks
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -124,3 +71,4 @@ jobs:
         working-directory: Terraform
         run: terraform apply -auto-approve 
         
+
