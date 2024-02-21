@@ -26,7 +26,3 @@ def write_csv(table_name, bucket, s3, data):
     df.to_csv(csv_buffer)
     # upload straight to S3 bucket
     s3.put_object(Body=csv_buffer.getvalue(), Bucket=bucket_name, Key=key)
-
-    # potential errors
-    # invalid table name, no such bucket, no such key, 
-    # reference error for s3, invalid input for data (should be dict)

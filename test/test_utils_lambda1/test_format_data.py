@@ -1,4 +1,4 @@
-from src.utils.format_data import format_data
+from src.utils_lambda1.format_data import format_data
 import pytest
 
 

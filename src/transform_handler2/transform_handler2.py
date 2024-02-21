@@ -1,6 +1,6 @@
 def lambda_handler(event, context):
     '''Reads files from the ingestion bucket and
-     reformat the data.  
+     reformat the data.
 
     Writes the data as parquet files in the processed bucket.
 

@@ -3,10 +3,10 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from src.utils.get_table_names import get_table_names
-from src.utils.get_bucket_name import get_bucket_name
-from src.utils.is_bucket_empty import is_bucket_empty
-from src.utils.L1_extract_data import L1_extract_data
+from src.utils_lambda1.get_table_names import get_table_names
+from src.utils_lambda1.get_bucket_name import get_bucket_name
+from src.utils_lambda1.is_bucket_empty import is_bucket_empty
+from src.utils_lambda1.L1_extract_data import L1_extract_data
 
 secretm = boto3.client("secretsmanager")
 secret_file_name = secretm.get_secret_value(SecretId="totes_secret_aws")
@@ -16,6 +16,8 @@ logger = logging.getLogger('lambda1Logger')
 logger.setLevel(logging.INFO)
 
 # comment
+
+
 def lambda_handler(event, context):
     '''Connects to Totesys database using
     credentials stored in SecretsManager.

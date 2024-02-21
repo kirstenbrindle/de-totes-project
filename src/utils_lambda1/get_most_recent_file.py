@@ -22,6 +22,3 @@ def get_most_recent_file(s3, bucket_name, table_name):
             file_name = value["Key"]
             files_list.append(last_modified_file)
     return file_name
-# potential errors
-# most recent file function is reliant on bucket_name and table_name - these are handled in the get bucket name and get table name func.
-# Invalid bucket name or table name possible, but this is already handled in get bucket name and table name funcs.

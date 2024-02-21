@@ -2,7 +2,7 @@ import boto3
 import pytest
 import os
 from moto import mock_aws
-from src.utils.get_bucket_name import get_bucket_name
+from src.utils_lambda1.get_bucket_name import get_bucket_name
 
 
 @pytest.fixture(scope="function")
@@ -48,7 +48,3 @@ def test_get_bucket_name(mock_bucket_one, mock_bucket_two):
 def test_get_bucket_name_error(mock_bucket_one):
     with pytest.raises(ValueError):
         get_bucket_name()
-
-
-
-    
