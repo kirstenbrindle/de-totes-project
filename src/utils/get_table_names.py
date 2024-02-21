@@ -28,9 +28,8 @@ def get_table_names(conn):
         # database error would only happen if no tables existed.
         return table_names
 
-    except DatabaseError as DB:
+    except pg8000.exceptions.DatabaseError as DB:
         print(DB, "<<<<<<<<----- db error")
         raise ValueError(DB)
-        # if error['C'] == '28P01':
 
 

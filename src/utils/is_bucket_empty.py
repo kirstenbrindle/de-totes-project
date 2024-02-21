@@ -19,5 +19,6 @@ def is_bucket_empty(bucket_name, s3):
         return True
     return False
 # potential errors
-# already aware that bucket name is a bucket that exists so can be accessed. No potential errors associated. Previous function of get bucket name should catch errors.
+# already aware that bucket name is a bucket that exists so can be accessed
+# No potential errors associated. Previous function of get bucket name should catch errors.
 

@@ -1,10 +1,10 @@
 from src.extract_handler1.extract_handler1 import lambda_handler
 import pytest
-from unittest.mock import patch, MagicMock, Mock
+from unittest.mock import patch
 from moto import mock_aws
 import os
 import boto3
-from src.extract_handler1.extract_handler1 import get_table_names
+
 
 
 @pytest.fixture(scope='function')
@@ -81,3 +81,5 @@ def test_lambda_handler_invokes_L1_extract_data(patch_fixture, s3):
     assert mock_L1_extract_data.call_count == 0
     lambda_handler('event', 'context')
     assert mock_L1_extract_data.call_count == 3
+
+
