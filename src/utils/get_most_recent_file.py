@@ -1,4 +1,4 @@
-def get_most_recent_file(conn, bucket_name, table_name):
+def get_most_recent_file(s3, bucket_name, table_name):
     '''
     Get_most_recent_file function takes aws connection \n
     and folder name as arguments and returns most recently updated \n
@@ -6,8 +6,8 @@ def get_most_recent_file(conn, bucket_name, table_name):
 
     Arguments: conn (Aws connection) table_name(folder within s3 bucket).
     '''
-    client = conn
-    objects_list = client.list_objects_v2(
+
+    objects_list = s3.list_objects_v2(
         Bucket=bucket_name, Prefix=table_name)
     files_list = []
     file_name = ""
@@ -22,6 +22,6 @@ def get_most_recent_file(conn, bucket_name, table_name):
             file_name = value["Key"]
             files_list.append(last_modified_file)
     return file_name
-# potential errors 
-# most recent file function is reliant on bucket_name and table_name - these are handled in the get bucket name and get table name func. 
+# potential errors
+# most recent file function is reliant on bucket_name and table_name - these are handled in the get bucket name and get table name func.
 # Invalid bucket name or table name possible, but this is already handled in get bucket name and table name funcs.

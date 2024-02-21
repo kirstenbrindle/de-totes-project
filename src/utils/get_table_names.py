@@ -1,6 +1,7 @@
 from pg8000.native import DatabaseError
 import pg8000
 
+
 def get_table_names(conn):
     """
     This function retrieves the table names from the database.
@@ -17,9 +18,9 @@ def get_table_names(conn):
     """
     try:
         query = conn.run("SELECT table_name "
-                        "FROM information_schema.tables "
-                        "WHERE table_schema='public' "
-                        "AND table_type='BASE TABLE';")
+                         "FROM information_schema.tables "
+                         "WHERE table_schema='public' "
+                         "AND table_type='BASE TABLE';")
         table_names = [table[0] for table in query]
         table_names.sort()
 
@@ -32,5 +33,3 @@ def get_table_names(conn):
         print(DB, "<<<<<<<<----- db error")
         raise ValueError(DB)
         # if error['C'] == '28P01':
-
-
