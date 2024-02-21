@@ -4,6 +4,7 @@ import pytest
 from unittest.mock import MagicMock
 
 
+
 @pytest.mark.describe("get_table_names")
 @pytest.mark.it("Test returns correct table names")
 def test_correct_table_names_are_returned():
@@ -43,6 +44,8 @@ def test_get_table_names_error():
     my_mock.run.side_effect = DatabaseError("Issue with Connection")
     my_mock.run()
     with pytest.raises(ValueError):
+        my_mock = MagicMock()
+        my_mock.run.side_effect = pg8000.exceptions.DatabaseError
         get_table_names(my_mock)
 
     # try:
