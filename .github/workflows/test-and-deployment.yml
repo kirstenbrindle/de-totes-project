@@ -54,10 +54,11 @@ jobs:
           postgresql version: '14'
 
       - name: Create postgres testuser
-        run: sudo service postgresql start
-             sudo -u postgres createuser --superuser testuser
-             sudo -u postgres createdb testuser
-             psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
+        run: |
+          sudo service postgresql start
+          sudo -u postgres createuser --superuser testuser
+          sudo -u postgres createdb testuser
+          psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
           PGHOST: postgres
@@ -65,10 +66,11 @@ jobs:
         shell: bash
 
       - name: Create password .pgpass file
-        run: cd
-             echo "*:*:*:*:password" > .pgpass
-             chmod 0600 .pgpass
-             
+        run: |
+          cd
+          echo "*:*:*:*:password" > .pgpass
+          chmod 0600 .pgpass
+
       - name: Create test-database
         run: psql -U testuser -f "test_db/test_database.sql"
         env: 
