@@ -52,11 +52,13 @@ jobs:
     - name: Setup venv
       run: make requirements
 
-    - run: psql -f ./test_db/test_database.sql
-      working-directory: ./postgres
+    - name: Create test database
+      run: psql -f ./test_db/test_database.sql
+      # working-directory: ./postgres
 
-    - run: psql -f ./test_db/test_db_inserts.sql
-      working-directory: ./postgres
+    - name: Seed test database
+      run: psql -f ./test_db/test_db_inserts.sql
+      # working-directory: ./postgres
       env:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
@@ -89,11 +91,13 @@ jobs:
     - name: Setup venv
       run: make requirements
 
-    - run: psql -f ./test_db/test_database.sql
-      working-directory: ./postgres
+    - name: Create test database
+      run: psql -f ./test_db/test_database.sql
+      # working-directory: ./postgres
 
-    - run: psql -f ./test_db/test_db_inserts.sql
-      working-directory: ./postgres
+    - name: Seed test database
+      run: psql -f ./test_db/test_db_inserts.sql
+      # working-directory: ./postgres
       env:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
