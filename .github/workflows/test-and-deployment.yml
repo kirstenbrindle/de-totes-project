@@ -65,7 +65,8 @@ jobs:
         # shell: bash
 
       - name: Create .pgpass file
-        run: echo "*:*:*:*:password" > .pgpass
+        run: cd
+             echo '*:*:*:*:password' > .pgpass
 
       - name: Permissions for .pgpass
         run: chmod 0600 ~/.pgpass
