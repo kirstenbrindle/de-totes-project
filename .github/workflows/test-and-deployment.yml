@@ -24,130 +24,44 @@ jobs:
       - name: Check Coverage
         run: make check-coverage
 
-  container-job:
+  setup-test-database:
     runs-on: ubuntu-latest
     # needs: run-checks
-
-    services:
-      postgres:
-        image: postgres:10.8
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-        - 5432:5432
-        
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+    
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v4 
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Setup venv
-      run: make requirements
+      - name: Setup venv
+        run: make requirements
 
-    - name: Create test database
-      run: psql -f ./test_db/test_database.sql
-      # working-directory: ./postgres
+      - name: Setup postgres
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '14'
+          sql_scripts_path: './test_db'
 
-    - name: Seed test database
-      run: psql -f ./test_db/test_db_inserts.sql
-      # working-directory: ./postgres
-      env:
-        POSTGRES_HOST: postgres
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+      # - name: Create postgres testuser
+      #   run: |
+      #     createuser testuser
+      #     createdb --owner testuser mydatabase
+      #     psql -c "ALTER USER testuser WITH PASSWORD 'password'"
+      #   env: 
+      #     PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+      #     PGHOST: postgres
+      #     PGPORT: 5432:5432
+      #   shell: bash
 
-  vm-job:
-    runs-on: ubuntu-latest
-    needs: container-job
-
-    services:
-      postgres:
-        image: postgres:10.8
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-        - 5432/tcp
-       
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-    steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v4 
-
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Setup venv
-      run: make requirements
-
-    - name: Create test database
-      run: psql -f ./test_db/test_database.sql
-      # working-directory: ./postgres
-
-    - name: Seed test database
-      run: psql -f ./test_db/test_db_inserts.sql
-      # working-directory: ./postgres
-      env:
-        POSTGRES_HOST: localhost
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-
-  # setup-test-database:
-  #   runs-on: ubuntu-latest
-    #needs: run-checks
-    #services:
-      #postgres:
-       # image: postgres
-      #  env:
-       #   POSTGRES_PASSWORD: password
-       # options: >-
-       #   --health-cmd pg_isready
-        #  --health-interval 10s
-        #  --health-timeout 5s
-        #  --health-retries 5
-    # steps:
-    #   - name: Checkout Repo
-    #     uses: actions/checkout@v4
-
-    #   - name: Setup Python
-    #     uses: actions/setup-python@v5
-    #     with:
-    #       python-version: '3.11'
-
-    #   - name: Setup venv
-    #     run: make requirements
-
-    #   - name: Setup postgres
-    #     uses: harmon758/postgresql-action@v1
-    #     with:
-    #       postgresql version: '14'
-
-    #   - name: Create postgres testuser
-    #     run: |
-    #       createuser testuser
-    #       createdb --owner testuser mydatabase
-    #       psql -c "ALTER USER testuser WITH PASSWORD 'password'"
-        # env: 
-        #   PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-        #   PGHOST: postgres
-        #   PGPORT: 5432:5432
-        # shell: bash
-
-        # run: |
-        #   sudo service postgresql start
-        #   sudo -u  postgres createuser --superuser testuser
-        #   sudo -u  postgres createdb testuser
-        #   psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
+      #   run: |
+      #     sudo service postgresql start
+      #     sudo -u  postgres createuser --superuser testuser
+      #     sudo -u  postgres createdb testuser
+      #     psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
 
       # - name: Create .pgpass file
       #   run: |
@@ -159,13 +73,13 @@ jobs:
 
       # - name: Create test-database
       #   run: psql -U testuser -f ./test_db/test_database.sql
-        # env: 
-        #   PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-        #   PGHOST: postgres
-        #   PGPORT: 5432:5432
-        #   PGUSER: testuser
-        #   PGPASSWORD: password
-        # shell: bash
+      #   env: 
+      #     PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+      #     PGHOST: postgres
+      #     PGPORT: 5432:5432
+      #     PGUSER: testuser
+      #     PGPASSWORD: password
+      #   shell: bash
 
       # - name: Seed test-database
       #   run: psql -U testuser -f ./test_db/test_db_inserts.sql
