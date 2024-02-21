@@ -1,10 +1,9 @@
 from src.extract_handler1.extract_handler1 import lambda_handler
 import pytest
-from unittest.mock import patch, MagicMock, Mock
+from unittest.mock import patch
 from moto import mock_aws
 import os
 import boto3
-from src.extract_handler1.extract_handler1 import get_table_names
 
 
 @pytest.fixture(scope='function')
@@ -16,12 +15,13 @@ def aws_credentials():
     os.environ["AWS_SESSION_TOKEN"] = "test"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
 
+
 @pytest.fixture
 def patch_fixture():
     with patch("src.extract_handler1.extract_handler1.get_table_names") as mock_get_table_names, \
          patch("src.extract_handler1.extract_handler1.is_bucket_empty") as mock_is_bucket_empty, \
          patch("src.extract_handler1.extract_handler1.get_bucket_name") as mock_get_bucket_name, \
-         patch("src.extract_handler1.extract_handler1.L1_extract_data") as mock_L1_extract_data: 
+         patch("src.extract_handler1.extract_handler1.L1_extract_data") as mock_L1_extract_data:
         yield mock_get_table_names, mock_is_bucket_empty, mock_get_bucket_name, mock_L1_extract_data
 
 

@@ -182,7 +182,8 @@ def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
                 "false and no new data")
 @patch("src.utils.L1_extract_data.get_timestamp")
 @mock_aws
-def test_L1_extract_data_test_database_false_no_new_data(mock_s3, mock_bucket, caplog):
+def test_L1_extract_data_test_database_false_no_new_data(
+        mock_s3, mock_bucket, caplog):
     """
     checks writes file from test database to mock s3 bucket if boolean false.
     """
