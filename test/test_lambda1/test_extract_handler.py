@@ -31,7 +31,7 @@ def patch_fixture():
 
 
 @pytest.fixture(scope='function')
-def s3():
+def s3(aws_credentials):
     """Mocked s3 connection for tests"""
     s3 = boto3.client('s3')
     return s3
