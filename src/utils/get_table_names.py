@@ -29,7 +29,6 @@ def get_table_names(conn):
         return table_names
 
     except pg8000.exceptions.DatabaseError as DB:
-        print(DB, "<<<<<<<<----- db error")
         raise ValueError(DB)
 
 
