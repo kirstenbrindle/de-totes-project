@@ -1,6 +1,6 @@
 from pg8000.native import identifier, literal
 from src.utils.get_most_recent_file import get_most_recent_file
-from src.utils.flexible_formatter import format_data
+from src.utils.format_data import format_data
 from src.utils.get_timestamp import get_timestamp
 from src.utils.write_csv import write_csv
 import logging
@@ -47,4 +47,3 @@ def L1_extract_data(conn, s3, table_name, boolean, bucket_name):
 
 # potential errors
     #  invalid db connection, invalid s3 connection, no such bucket, invalid table name
-

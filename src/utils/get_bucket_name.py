@@ -19,7 +19,7 @@ def get_bucket_name():
         raise ValueError
     else:
         return matching_string
-    
+
     # potential errors -
-    # missing ingestion bucket 
+    # missing ingestion bucket
     # invalid bucket name, ingestion spelt incorrectly.

@@ -1,4 +1,3 @@
-from pg8000.native import identifier
 
 def format_data(rows, column_names):
     """
@@ -15,7 +14,6 @@ def format_data(rows, column_names):
         rows_list = [list(rows)]
     else:
         rows_list = list(rows)
-        # ^^we need this here^^
 
     nested_data_list = []
 
@@ -30,4 +28,4 @@ def format_data(rows, column_names):
     payment_type_dict = dict(zip(column_names, nested_data_list))
     return payment_type_dict
 # potential errors
-# no rows or columns exist, could not connect to database. 
+# no rows or columns exist, could not connect to database.

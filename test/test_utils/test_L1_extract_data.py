@@ -2,7 +2,6 @@ from src.utils.L1_extract_data import L1_extract_data
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime
-from pg8000.native import Connection
 from moto import mock_aws
 import os
 import boto3
@@ -12,17 +11,6 @@ import logging
 logger = logging.getLogger('test')
 logger.setLevel(logging.INFO)
 logger.propagate = True
-
-
-@pytest.fixture(scope="function")
-def db_conn():
-    """Connection to test_database"""
-    user = 'tomroberts'
-    password = 'password'
-    host = 'localhost'
-    database = 'test_database'
-    return Connection(user=user, password=password,
-                      host=host, database=database)
 
 
 @pytest.fixture(scope="function")
@@ -153,38 +141,25 @@ def test_L1_extract_data_writes_csv_file_to_s3_bucket(
     checks it writes file to s3 bucket with mocks.
     """
     mock_conn = MagicMock()
-    L1_extract_data(mock_conn, mock_s3, "currency", False, "test-bucket")
-    objects_list = mock_s3.list_objects_v2(
-        Bucket="test-bucket")
-    assert len(objects_list["Contents"]) == 1
-
-
-@pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data runs a Select "
-                "query from the given table")
-@mock_aws
-def test_L1_extract_data_test_database_true(db_conn, mock_s3, mock_bucket):
-    """
-    checks writes file from test database to mock s3 bucket.
-    """
     objects_list_before = mock_s3.list_objects_v2(
         Bucket="test-bucket")
     assert objects_list_before["KeyCount"] == 0
-    L1_extract_data(db_conn, mock_s3, "payment_type", True, "test-bucket")
+    L1_extract_data(mock_conn, mock_s3, "currency", True, "test-bucket")
     objects_list_after = mock_s3.list_objects_v2(
         Bucket="test-bucket")
     assert objects_list_after["KeyCount"] == 1
-    assert 'payment_type' in objects_list_after['Contents'][0]['Key']
+    assert 'currency' in objects_list_after['Contents'][0]['Key']
 
 
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data runs a Select "
                 "query from the given table if boolean is false")
 @mock_aws
-def test_L1_extract_data_test_database_false(db_conn, mock_s3, mock_bucket):
+def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
     """
     checks writes file from test database to mock s3 bucket if boolean false.
     """
+    mock_conn = MagicMock()
     mock_s3.put_object(
         Body='',
         Bucket='test-bucket',
@@ -193,7 +168,7 @@ def test_L1_extract_data_test_database_false(db_conn, mock_s3, mock_bucket):
     objects_list_before = mock_s3.list_objects_v2(
         Bucket="test-bucket")
     assert objects_list_before["KeyCount"] == 1
-    L1_extract_data(db_conn, mock_s3, "payment_type", False, "test-bucket")
+    L1_extract_data(mock_conn, mock_s3, "payment_type", False, "test-bucket")
     objects_list_after = mock_s3.list_objects_v2(
         Bucket="test-bucket")
     assert objects_list_after["KeyCount"] == 2
@@ -205,17 +180,15 @@ def test_L1_extract_data_test_database_false(db_conn, mock_s3, mock_bucket):
 @pytest.mark.it("Test L1_extract_data runs a Select "
                 "query from the given table if boolean is "
                 "false and no new data")
+@patch("src.utils.L1_extract_data.get_timestamp")
 @mock_aws
-def test_L1_extract_data_test_database_false_no_new_data(
-        db_conn, mock_s3, mock_bucket, caplog):
+def test_L1_extract_data_test_database_false_no_new_data(mock_s3, mock_bucket, caplog):
     """
     checks writes file from test database to mock s3 bucket if boolean false.
     """
     with caplog.at_level(logging.INFO):
-        mock_s3.put_object(
-            Body='',
-            Bucket='test-bucket',
-            Key='payment_type/payment_type-2022-11-04 14:20:49.962.csv',
-        )
-        L1_extract_data(db_conn, mock_s3, "payment_type", False, "test-bucket")
+        mock_conn = MagicMock()
+        mock_conn.run.return_value = []
+        L1_extract_data(mock_conn, mock_s3, "payment_type",
+                        False, "test-bucket")
         assert 'There is no new data in this table' in caplog.text
