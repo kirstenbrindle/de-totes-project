@@ -15,7 +15,7 @@ secrets_dict = json.loads(secret_file_name["SecretString"])
 logger = logging.getLogger('lambda1Logger')
 logger.setLevel(logging.INFO)
 
-
+# comment
 def lambda_handler(event, context):
     '''Connects to Totesys database using
     credentials stored in SecretsManager.
