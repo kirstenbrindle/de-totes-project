@@ -48,12 +48,19 @@ jobs:
       - name: Start psql
         run: sudo service postgresql start
 
+      - name: Access postgres folder
+        run: cd ~postgres/
+
+      - name: Enter psql
+        run: sudo -u postgres psql
+        
       - name: Create test user
         run: sudo -u  postgres createuser --superuser testuser
 
       - name: Alter user with password
         run: psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
 
+# 
             #   run: |
       #     
       #     
