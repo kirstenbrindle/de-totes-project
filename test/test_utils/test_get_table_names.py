@@ -31,7 +31,7 @@ def test_get_table_names_error():
     A database error
 
     Returns:
-    Raises 
+    Raises
     """
 
     # query = conn.run("SELECT table_name "
