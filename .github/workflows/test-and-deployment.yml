@@ -64,14 +64,14 @@ jobs:
         #   PGPORT: 5432:5432
         # shell: bash
 
-      # - name: Create password .pgpass file
-      #   run: |
-      #     cd
-      #     echo "*:*:*:*:password" > .pgpass
-      #     chmod 0600 .pgpass
+      - name: Create .pgpass file
+        run: echo "*:*:*:*:password" > .pgpass
+
+      - name: Permissions for .pgpass
+        run: chmod 0600 ~/.pgpass
 
       - name: Create test-database
-        run: psql -U testuser -w --no-password -f ./test_db/test_database.sql
+        run: psql -U testuser -f ./test_db/test_database.sql
         # env: 
         #   PGSERVICE: ${{ steps.postgres.outputs.service-name }}
         #   PGHOST: postgres
@@ -81,7 +81,7 @@ jobs:
         # shell: bash
 
       - name: Seed test-database
-        run: psql -U testuser -w --no-password -f ./test_db/test_db_inserts.sql
+        run: psql -U testuser -f ./test_db/test_db_inserts.sql
 
   run-tests:
     runs-on: ubuntu-latest
