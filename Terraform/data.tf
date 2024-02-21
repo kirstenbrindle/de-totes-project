@@ -4,7 +4,7 @@ data "aws_region" "current" {}
 
 data "archive_file" "lambda1" {
   type        = "zip"
-  source_dir = "${path.module}/../src/extract_handler1"
+  source_file = "${path.module}/../src/extract_handler1/extract_handler1.py"
   output_path = "${path.module}/../lambda1.zip"
 }
 
