@@ -4,6 +4,8 @@ from unittest.mock import patch
 from moto import mock_aws
 from botocore.exceptions import ClientError
 from pg8000.native import DatabaseError, InterfaceError
+import os
+
 
 @pytest.fixture(scope='function')
 def aws_credentials():
