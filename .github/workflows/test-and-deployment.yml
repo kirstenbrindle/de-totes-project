@@ -56,9 +56,9 @@ jobs:
       - name: Create postgres testuser
         run: |
           sudo service postgresql start
-          sudo -u postgres createuser --superuser testuser
-          sudo -u postgres createdb testuser
-          psql -c "ALTER USER testuser WITH PASSWORD 'password'" 
+          sudo -u  - postgres createuser --superuser testuser
+          sudo -u - postgres createdb testuser
+          psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
         env: 
           PGSERVICE: ${{ steps.postgres.outputs.service-name }}
           PGHOST: postgres
