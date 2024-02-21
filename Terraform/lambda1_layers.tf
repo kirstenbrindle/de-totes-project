@@ -24,11 +24,6 @@ resource "null_resource" "lambda_layer" {
   }
 }
 
-# # define existing bucket for storing lambda layers
-# resource "aws_s3_bucket" "lambda_layer" {
-#   bucket_prefix = "lambda-layer-${var.environment}"
-# }
-
 # upload zip file to s3
 resource "aws_s3_object" "lambda_layer_zip" {
   bucket     = aws_s3_bucket.code_bucket.id
