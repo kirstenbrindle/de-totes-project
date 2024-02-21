@@ -54,35 +54,34 @@ jobs:
           postgresql version: '14'
 
       - name: Create postgres testuser
-        run: |
-          sudo service postgresql start
-          sudo -u  - postgres createuser --superuser testuser
-          sudo -u - postgres createdb testuser
-          psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
-        env: 
-          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-          PGHOST: postgres
-          PGPORT: 5432:5432
-        shell: bash
+        run: sudo service postgresql start
+             sudo -u  postgres createuser --superuser testuser
+             sudo -u  postgres createdb testuser
+             psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
+        # env: 
+        #   PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+        #   PGHOST: postgres
+        #   PGPORT: 5432:5432
+        # shell: bash
 
-      - name: Create password .pgpass file
-        run: |
-          cd
-          echo "*:*:*:*:password" > .pgpass
-          chmod 0600 .pgpass
+      # - name: Create password .pgpass file
+      #   run: |
+      #     cd
+      #     echo "*:*:*:*:password" > .pgpass
+      #     chmod 0600 .pgpass
 
       - name: Create test-database
-        run: psql -U testuser -f "test_db/test_database.sql"
-        env: 
-          PGSERVICE: ${{ steps.postgres.outputs.service-name }}
-          PGHOST: postgres
-          PGPORT: 5432:5432
-          PGUSER: testuser
-          PGPASSWORD: password
-        shell: bash
+        run: psql -U testuser -w --no-password -f ./test_db/test_database.sql
+        # env: 
+        #   PGSERVICE: ${{ steps.postgres.outputs.service-name }}
+        #   PGHOST: postgres
+        #   PGPORT: 5432:5432
+        #   PGUSER: testuser
+        #   PGPASSWORD: password
+        # shell: bash
 
       - name: Seed test-database
-        run: psql -U testuser -f test_db/test_db_inserts.sql
+        run: psql -U testuser -w --no-password -f ./test_db/test_db_inserts.sql
 
   run-tests:
     runs-on: ubuntu-latest
