@@ -8,15 +8,6 @@ from src.utils_lambda1.get_bucket_name import get_bucket_name
 from src.utils_lambda1.is_bucket_empty import is_bucket_empty
 from src.utils_lambda1.L1_extract_data import L1_extract_data
 
-secretm = boto3.client("secretsmanager", region_name='eu-west-2')
-secret_file_name = secretm.get_secret_value(SecretId="totes_secret_aws")
-secrets_dict = json.loads(secret_file_name["SecretString"])
-
-logger = logging.getLogger('lambda1Logger')
-logger.setLevel(logging.INFO)
-
-# comment
-
 
 def lambda_handler(event, context):
     '''Connects to Totesys database using
@@ -34,6 +25,14 @@ def lambda_handler(event, context):
         result in an informative log message.
     '''
     try:
+        secretm = boto3.client("secretsmanager", region_name='eu-west-2')
+        secret_file_name = secretm.get_secret_value(
+            SecretId="totes_secret_aws")
+        secrets_dict = json.loads(secret_file_name["SecretString"])
+
+        logger = logging.getLogger('lambda1Logger')
+        logger.setLevel(logging.INFO)
+
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
         table_names = get_table_names(conn)
