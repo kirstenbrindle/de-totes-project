@@ -19,7 +19,7 @@ def aws_credentials():
 @pytest.fixture
 def patch_fixture():
     with patch("src.extract_handler1.extract_handler1.get_table_names")\
-          as mock_get_table_names, \
+        as mock_get_table_names, \
          patch("src.extract_handler1.extract_handler1.is_bucket_empty")\
             as mock_is_bucket_empty, \
          patch("src.extract_handler1.extract_handler1.get_bucket_name")\
@@ -44,7 +44,7 @@ def s3(aws_credentials):
 @mock_aws
 def test_lambda_handler_invokes_get_table_names(mock_get_table_names):
     assert mock_get_table_names.call_count == 0
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert mock_get_table_names.call_count == 1
 
 
@@ -58,7 +58,7 @@ def test_lambda_handler_invokes_get_bucket_name(patch_fixture, s3):
     mock_get_bucket_name.return_value = 'ingestion_bucket'
     mock_is_bucket_empty.return_value = True
     assert mock_get_bucket_name.call_count == 0
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert mock_get_bucket_name.call_count == 1
 
 
@@ -72,7 +72,7 @@ def test_lambda_handler_invokes_is_bucket_empty(patch_fixture, s3):
     mock_get_bucket_name.return_value = 'ingestion_bucket'
     mock_is_bucket_empty.return_value = True
     assert mock_is_bucket_empty.call_count == 0
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert mock_is_bucket_empty.call_count == 1
 
 
@@ -87,5 +87,5 @@ def test_lambda_handler_invokes_L1_extract_data(patch_fixture, s3):
     mock_get_table_names.return_value = ["table1", "table2", "table3"]
     mock_is_bucket_empty.return_value = True
     assert mock_L1_extract_data.call_count == 0
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert mock_L1_extract_data.call_count == 3

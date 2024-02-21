@@ -30,7 +30,7 @@ def test_get_table_names_error(mock_get_bucket_name, caplog):
     log the correct message as an error
     """
     mock_get_bucket_name.side_effect = ValueError
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "There is no ingestion bucket ..." in caplog.text
     assert "ERROR" in caplog.text
 
@@ -55,7 +55,7 @@ def test_get_table_names_no_such_bucket(mock_get_bucket_name,
     mock_get_bucket_name.return_value = "AHHHHH-bucket"
     mock_is_bucket_empty.side_effect = ClientError(
         parsed_response, operation_name)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "No such bucket - AHHHHH-bucket" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -80,7 +80,7 @@ def test_get_table_names_client_err(mock_get_bucket_name,
     mock_get_bucket_name.return_value = "AHHHHH-bucket"
     mock_is_bucket_empty.side_effect = ClientError(
         parsed_response, operation_name)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "A ClientError has occurred" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -100,7 +100,7 @@ def test_get_table_names_database_error(mock_get_table_names, caplog):
 
     response = {'C': '28P01'}
     mock_get_table_names.side_effect = DatabaseError(response)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "DatabaseError: authentication issue" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -120,7 +120,7 @@ def test_get_table_names_db_name_err(mock_get_table_names, caplog):
 
     response = {'C': '3D000'}
     mock_get_table_names.side_effect = DatabaseError(response)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "DatabaseError: database does not exist" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -140,7 +140,7 @@ def test_get_table_names_db_err_host(mock_get_table_names, caplog):
     response = "Can't create a connection to host localhost9000\
     and port 5432 (timeout is None and source_address is None)."
     mock_get_table_names.side_effect = InterfaceError(response)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "InterfaceError: incorrect hostname" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -160,7 +160,7 @@ def test_get_table_names_db_err_conn(mock_get_table_names, caplog):
     """
     response = "connection is closed"
     mock_get_table_names.side_effect = InterfaceError(response)
-    lambda_handler('event', 'context')
+    lambda_handler({}, {})
     assert "InterfaceError: connection is closed" in caplog.text
     assert "ERROR" in caplog.text
 
@@ -181,6 +181,6 @@ def test_get_table_names_exceptions(mock_get_table_names, caplog):
     with pytest.raises(RuntimeError):
         mock_get_table_names.side_effect = Exception(
             "Something bad has happened ...")
-        lambda_handler('event', 'context')
+        lambda_handler({}, {})
         assert "Something bad has happened ..." in caplog.text
         assert "ERROR" in caplog.text
