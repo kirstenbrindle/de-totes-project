@@ -44,6 +44,10 @@ jobs:
         uses: harmon758/postgresql-action@v1
         with:
           postgresql version: '14'
+      
+      - name: Apply sql scripts  to postgres
+        uses: bitovi/github-actions-apply-sql-scripts-to-postgres@v0.0.1
+        with:
           sql_scripts_path: './test_db'
 
       # - name: Create postgres testuser
