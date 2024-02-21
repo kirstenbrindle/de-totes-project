@@ -45,10 +45,21 @@ jobs:
         with:
           postgresql version: '14'
       
-      - name: Apply sql scripts  to postgres
-        uses: bitovi/github-actions-apply-sql-scripts-to-postgres@v0.0.1
-        with:
-          sql_scripts_path: './test_db'
+      - name: Start psql
+        run: sudo service postgresql start
+
+      - name: Create test user
+        run: sudo -u  postgres createuser --superuser testuser
+
+      - name: Alter user with password
+        run: psql -c "ALTER USER testuser WITH PASSWORD 'password';" 
+
+            #   run: |
+      #     
+      #     
+      #     sudo -u  postgres createdb testuser
+      #     
+
 
       # - name: Create postgres testuser
       #   run: |
