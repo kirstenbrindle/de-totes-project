@@ -46,6 +46,13 @@ jobs:
       - name: Setup venv
         run: make requirements
 
+      - name: Setup AWS CLI Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-region: eu-west-2
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+
       - name: run-Test
         run: make unit-tests   
  
