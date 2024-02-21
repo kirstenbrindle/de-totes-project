@@ -86,7 +86,7 @@ jobs:
 
   run-tests:
     runs-on: ubuntu-latest
-    needs: vm-job
+    needs: setup-test-database
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
