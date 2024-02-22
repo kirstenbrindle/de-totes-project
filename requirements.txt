@@ -26,5 +26,6 @@ safety>=2.3.5
 autopep8>=2.0.4
 virtualenv==20.25.0
 pg8000==1.30.4
+pyarrow>=15.0.0
 
 
