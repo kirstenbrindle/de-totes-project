@@ -17,4 +17,3 @@ def get_bucket_name_2(s3):
         raise ValueError
     else:
         return matching_string
-
