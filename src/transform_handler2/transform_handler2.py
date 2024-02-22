@@ -13,7 +13,7 @@ def lambda_handler(event, context):
     '''
     # setup s3 client = s3
     # ingestion_bucket, file_name = get_key_name(event["Records"])
-    # process_bucket_name = get_bucket_name(s3)
+    # process_bucket_name = get_bucket_name_2(s3)
     # boolean = is_bucket_empty(s3, process_bucket_name)
     # if boolean is true - get_most_recent_file() -
     # Variables for each - sales_order, design, address, currency,
