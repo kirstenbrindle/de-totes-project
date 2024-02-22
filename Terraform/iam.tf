@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "L1_cloudwatch_document" {
     actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
 
     resources = [
-      "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/lambda1:*"
+      "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.lambda1}:*"
     ]
   }
 }
@@ -103,3 +103,29 @@ resource "aws_iam_role" "L1_eventbridge_role" {
   })
 }
 
+# creating secretsmanager policy doc...
+data "aws_iam_policy_document" "db_access_doc" {
+  statement {
+    effect = "Allow"
+
+  principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:sts::533267264466:assumed-role/L1_lambda_role/extract_handler1"]
+    }
+
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = ["arn:aws:secretsmanager:eu-west-2:533267264466:secret:totes_secret_aws-XMzaMI"]
+  }
+}
+
+#creating secretmanager policy...
+resource "aws_secretsmanager_secret_policy" "db_access_policy" {
+  secret_arn = "arn:aws:secretsmanager:eu-west-2:533267264466:secret:totes_secret_aws-XMzaMI"
+  policy     = data.aws_iam_policy_document.db_access_doc.json
+}
+
+# # Attaching SecretManager Policy to L1 IAM Role ...
+# resource "aws_iam_role_policy_attachment" "db_access_policy_attachment" {
+#   role       = aws_iam_role.L1_lambda_role.name
+#   policy_arn = aws_secretsmanager_secret_policy.db_access_policy.arn
+# }

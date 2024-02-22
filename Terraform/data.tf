@@ -8,11 +8,13 @@ data "archive_file" "lambda1" {
   output_path = "${path.module}/../lambda1.zip"
 }
 
-data "archive_file" "lambda1_layer" {
-  type        = "zip"
-  source_file  = "${path.module}/../src/layers/L1-layer/requirements.txt"
-  output_path = "${path.module}/../lambda_layer.zip"
-}
+
+# ORIGINAL LAYER:
+# data "archive_file" "lambda1_layer" {
+#   type        = "zip"
+#   source_file  = "${path.module}/../src/layers/L1-layer/requirements.txt"
+#   output_path = "${path.module}/../lambda_layer.zip"
+# }
 
 # data "archive_file" "lambda2" {
 #   type        = "zip"

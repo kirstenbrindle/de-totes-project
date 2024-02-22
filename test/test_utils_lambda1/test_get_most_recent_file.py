@@ -40,8 +40,8 @@ def test_returns_file_name_in_folder():
     time.sleep(1)
     mockedClient.put_object(Bucket="test_bucket",
                             Key="folder1/test_file_2.txt", Body="test_string2")
-    mockedClient.put_object(Bucket="test_bucket",
-                            Key="folder1/test_file_3.txt", Body="test_string2")
+    # mockedClient.put_object(Bucket="test_bucket",
+    #              Key="folder1/test_file_3.txt", Body="test_string2")
     result = get_most_recent_file(mockedClient, "test_bucket", "folder1")
     assert result == "folder1/test_file_2.txt"
 

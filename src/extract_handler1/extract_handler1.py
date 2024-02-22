@@ -49,6 +49,7 @@ def lambda_handler(event, context):
         if c.response['Error']['Code'] == 'NoSuchBucket':
             logger.error(f'No such bucket - {bucket_name}')
         else:
+            logger.info(c)
             logger.error("A ClientError has occurred")
 
     except DatabaseError as db:
