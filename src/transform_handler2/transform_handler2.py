@@ -12,7 +12,7 @@ def lambda_handler(event, context):
         result in an informative log message.
     '''
     # setup s3 client = s3
-    # file_name = get_key_name(event["Records"])
+    # ingestion_bucket, file_name = get_key_name(event["Records"])
     # process_bucket_name = get_bucket_name(s3)
     # boolean = is_bucket_empty(s3, process_bucket_name)
     # if boolean is true - get_most_recent_file() -
