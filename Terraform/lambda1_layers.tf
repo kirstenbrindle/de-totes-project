@@ -4,7 +4,7 @@ locals {
   layer_zip_name    = "lambda1_layer.zip"
   layer_name        = "lambda1_dep_layer"
   requirements_name = "requirements.txt"
-  requirements_path = "${path.module}/../src/extract_handler1/L1-layer/requirements.txt"
+  requirements_path = "${path.module}/../src/layers/L1-layer/requirements.txt"
 }
 
 # create zip file from requirements.txt. Triggers only when the file is updated
