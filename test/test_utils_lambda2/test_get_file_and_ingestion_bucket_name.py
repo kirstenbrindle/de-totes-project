@@ -1,4 +1,5 @@
-from src.transform_handler2.get_file_and_ingestion_bucket_name import get_file_and_ingestion_bucket_name
+from src.transform_handler2.get_file_and_ingestion_bucket_name import (
+    get_file_and_ingestion_bucket_name)
 import pytest
 
 

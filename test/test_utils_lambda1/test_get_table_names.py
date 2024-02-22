@@ -1,8 +1,6 @@
 from src.extract_handler1.get_table_names import get_table_names
 import pytest
-import os
 from unittest.mock import MagicMock
-from moto import mock_aws
 
 
 @pytest.mark.describe("get_table_names")
