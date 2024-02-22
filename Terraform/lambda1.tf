@@ -7,7 +7,7 @@ resource "aws_lambda_function" "lambda1" {
   runtime       = "python3.10"
   s3_bucket     = aws_s3_bucket.code_bucket.id
   s3_key        = "lambda1/lambda1.zip"
-  source_code_hash = "${data.archive_file.lambda1.output_base64sha256}"
+  source_code_hash = data.archive_file.lambda1.output_base64sha256
   environment {
     variables = {
       S3_ingestion_bucket = "${aws_s3_bucket.ingestion_bucket.id}"
