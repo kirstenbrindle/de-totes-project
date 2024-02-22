@@ -1,4 +1,4 @@
-from src.utils_lambda1.get_most_recent_file import get_most_recent_file
+from src.extract_handler1.get_most_recent_file import get_most_recent_file
 import pytest
 from moto import mock_aws
 import boto3

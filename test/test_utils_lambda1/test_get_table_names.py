@@ -1,4 +1,4 @@
-from src.utils_lambda1.get_table_names import get_table_names
+from src.extract_handler1.get_table_names import get_table_names
 import pytest
 from unittest.mock import MagicMock
 

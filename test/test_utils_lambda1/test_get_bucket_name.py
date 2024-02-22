@@ -2,7 +2,7 @@ import boto3
 import pytest
 import os
 from moto import mock_aws
-from src.utils_lambda1.get_bucket_name import get_bucket_name
+from src.extract_handler1.get_bucket_name import get_bucket_name
 
 
 @pytest.fixture(scope="function")

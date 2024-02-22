@@ -1,4 +1,4 @@
-from src.utils_lambda1.is_bucket_empty import is_bucket_empty
+from src.extract_handler1.is_bucket_empty import is_bucket_empty
 import pytest
 from moto import mock_aws
 import os

@@ -4,13 +4,13 @@ data "aws_region" "current" {}
 
 data "archive_file" "lambda1" {
   type        = "zip"
-  source_file = "${path.module}/../src/extract_handler1/extract_handler1.py"
+  source_dir = "${path.module}/../src/extract_handler1"
   output_path = "${path.module}/../lambda1.zip"
 }
 
 data "archive_file" "lambda1_layer" {
   type        = "zip"
-  source_file  = "${path.module}/../src/extract_handler1/L1-layer/requirements.txt"
+  source_file  = "${path.module}/../src/layers/L1-layer/requirements.txt"
   output_path = "${path.module}/../lambda_layer.zip"
 }
 

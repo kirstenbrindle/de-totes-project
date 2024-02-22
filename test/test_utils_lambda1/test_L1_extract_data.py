@@ -1,4 +1,4 @@
-from src.utils_lambda1.L1_extract_data import L1_extract_data
+from src.extract_handler1.L1_extract_data import L1_extract_data
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime
@@ -51,7 +51,7 @@ def test_L1_extract_data_runs_correct_query_if_boolean_true():
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("""Test L1_extract_data invokes get most
                recent file if boolean is false""")
-@patch("src.utils_lambda1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_invokes_get_most_recent_if_false(mock_recent_file):
     """
     checks get_most_recent_file function is invoked if boolean is false.
@@ -67,8 +67,8 @@ def test_L1_extract_data_invokes_get_most_recent_if_false(mock_recent_file):
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("""Test L1_extract_data invokes
                 get_timestamp if boolean is false""")
-@patch("src.utils_lambda1.L1_extract_data.get_timestamp")
-@patch("src.utils_lambda1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.get_timestamp")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_invokes_get_timestamp_if_false(mock_gmrf, mock_gts):
     """
     checks get_timestamp function is invoked if boolean is false.
@@ -85,8 +85,8 @@ def test_L1_extract_data_invokes_get_timestamp_if_false(mock_gmrf, mock_gts):
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("""Test L1_extract_data select * from table
                 with where clause if boolean is False""")
-@patch("src.utils_lambda1.L1_extract_data.get_timestamp")
-@patch("src.utils_lambda1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.get_timestamp")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_runs_correct_query_if_false(mock_gmrf, mock_gts):
     """
     checks select query is correct if boolean is false.
@@ -102,9 +102,9 @@ def test_L1_extract_data_runs_correct_query_if_false(mock_gmrf, mock_gts):
 
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data invokes format data if boolean is false")
-@patch("src.utils_lambda1.L1_extract_data.get_timestamp")
-@patch("src.utils_lambda1.L1_extract_data.get_most_recent_file")
-@patch("src.utils_lambda1.L1_extract_data.format_data")
+@patch("src.extract_handler1.L1_extract_data.get_timestamp")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.format_data")
 def test_L1_invokes_format_data_if_false(mock_fd, mock_gmrf, mock_gts):
     """
     checks format_data function is invoked if boolean is false.
@@ -132,9 +132,9 @@ def test_L1_invokes_format_data_if_false(mock_fd, mock_gmrf, mock_gts):
 @pytest.mark.describe("L1_extract_data")
 @pytest.mark.it("Test L1_extract_data writes csv file to S3 bucket")
 @mock_aws
-@patch("src.utils_lambda1.L1_extract_data.get_timestamp")
-@patch("src.utils_lambda1.L1_extract_data.get_most_recent_file")
-@patch("src.utils_lambda1.L1_extract_data.format_data")
+@patch("src.extract_handler1.L1_extract_data.get_timestamp")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.format_data")
 def test_L1_extract_data_writes_csv_file_to_s3_bucket(
         mock_fd, mock_gmrf, mock_gts, mock_s3, mock_bucket):
     """
@@ -180,7 +180,7 @@ def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
 @pytest.mark.it("Test L1_extract_data runs a Select "
                 "query from the given table if boolean is "
                 "false and no new data")
-@patch("src.utils_lambda1.L1_extract_data.get_timestamp")
+@patch("src.extract_handler1.L1_extract_data.get_timestamp")
 @mock_aws
 def test_L1_extract_data_test_database_false_no_new_data(
         mock_s3, mock_bucket, caplog):

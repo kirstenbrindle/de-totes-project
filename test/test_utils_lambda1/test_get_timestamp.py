@@ -1,4 +1,4 @@
-from src.utils_lambda1.get_timestamp import get_timestamp
+from src.extract_handler1.get_timestamp import get_timestamp
 import pytest
 
 

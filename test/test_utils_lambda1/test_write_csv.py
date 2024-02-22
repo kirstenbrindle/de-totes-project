@@ -2,7 +2,7 @@ import boto3
 import pytest
 import os
 from moto import mock_aws
-from src.utils_lambda1.write_csv import write_csv
+from src.extract_handler1.write_csv import write_csv
 from datetime import datetime
 from unittest.mock import patch
 
@@ -33,7 +33,7 @@ def mock_bucket(mock_s3):
 @pytest.mark.describe('writes csv file')
 @pytest.mark.it("writes a csv file to bucket "
                 "with folder when passed a table_name")
-@patch('src.utils_lambda1.write_csv.datetime')
+@patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_with_folder(mock_datetime, mock_bucket, mock_s3):
     mock_datetime.now.side_effect = [datetime(2024, 2, 15, 1, 1, 15)]
     table_name = 'testing'
@@ -54,7 +54,7 @@ def test_writes_csv_file_with_folder(mock_datetime, mock_bucket, mock_s3):
 @pytest.mark.describe('writes csv file')
 @pytest.mark.it("writes the correct content to "
                 "a csv file to the correct bucket")
-@patch('src.utils_lambda1.write_csv.datetime')
+@patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
     mock_datetime.now.side_effect = [datetime(2024, 2, 15, 1, 1, 15)]
     table_name = 'testing'
@@ -77,7 +77,7 @@ def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
 
 @pytest.mark.describe('writes csv file')
 @pytest.mark.it('writes multiple csv files to the same folder')
-@patch('src.utils_lambda1.write_csv.datetime')
+@patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_to_same_folder(mock_datetime, mock_bucket, mock_s3):
     mock_datetime.now.side_effect = [
         datetime(2024, 2, 15, 1, 1, 15), datetime(2024, 2, 16, 1, 1, 10)]
@@ -106,7 +106,7 @@ def test_writes_csv_file_to_same_folder(mock_datetime, mock_bucket, mock_s3):
 
 @pytest.mark.describe('writes csv file')
 @pytest.mark.it('writes multiple csv files to different folders')
-@patch('src.utils_lambda1.write_csv.datetime')
+@patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_to_diff_folder(mock_datetime, mock_bucket, mock_s3):
     mock_datetime.now.side_effect = [
         datetime(2024, 2, 15, 1, 1, 15), datetime(2024, 2, 16, 1, 1, 10)]

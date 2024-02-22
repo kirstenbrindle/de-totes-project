@@ -3,7 +3,7 @@
 resource "aws_lambda_function" "lambda1" {
   function_name = var.lambda1
   role          = aws_iam_role.L1_lambda_role.arn
-  handler       = "lambda1.lambda_handler"
+  handler       = "extract_handler1.lambda_handler"
   runtime       = "python3.10"
   s3_bucket     = aws_s3_bucket.code_bucket.id
   s3_key        = "lambda1/lambda1.zip"

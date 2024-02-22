@@ -3,10 +3,10 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from src.utils_lambda1.get_table_names import get_table_names
-from src.utils_lambda1.get_bucket_name import get_bucket_name
-from src.utils_lambda1.is_bucket_empty import is_bucket_empty
-from src.utils_lambda1.L1_extract_data import L1_extract_data
+from src.extract_handler1.get_table_names import get_table_names
+from src.extract_handler1.get_bucket_name import get_bucket_name
+from src.extract_handler1.is_bucket_empty import is_bucket_empty
+from src.extract_handler1.L1_extract_data import L1_extract_data
 
 secretm = boto3.client("secretsmanager", region_name='eu-west-2')
 secret_file_name = secretm.get_secret_value(
