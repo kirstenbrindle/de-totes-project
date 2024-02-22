@@ -1,4 +1,4 @@
 variable "lambda1" {
 	type = string
-	default = "lambda1"
+	default = "extract_handler1"
 }
