@@ -19,4 +19,8 @@ def get_table_names(conn):
                      "AND table_type='BASE TABLE';")
     table_names = [table[0] for table in query]
     table_names.sort()
+    for table in table_names:
+        if table == '_prisma_migrations':
+            table_names.remove(table)
     return table_names
+

@@ -13,4 +13,3 @@ def make_dim_date(start='2022-11-01', end='2032-12-31'):
     dim_date_df["quarter"] = dim_date_df.date_id.dt.quarter
     return dim_date_df
 
-
