@@ -23,12 +23,11 @@ def lambda_handler(event, context):
         RuntimeError: An unexpected error occurred in execution. Other errors
         result in an informative log message.
     '''
-
-    s3 = boto3.client('s3', region_name='eu-west-2')
     ingestion_bucket, file_name = get_file_and_ingestion_bucket_name(
         event["Records"])
-    process_bucket_name = get_bucket_name_2(s3)
-    print(process_bucket_name, '<<<< process bkt')
+    s3 = boto3.client('s3', region_name='eu-west-2')
+
+    get_bucket_name_2(s3)
 
     # boolean = is_bucket_empty(s3, process_bucket_name)
     # if boolean is true - get_most_recent_file() -
