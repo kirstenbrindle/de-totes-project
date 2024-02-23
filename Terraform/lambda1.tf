@@ -26,13 +26,13 @@ resource "aws_lambda_function" "lambda1" {
 
 
 # do we need this? as in previous tasks, the bucket has triggered the lambda but here, it is on a schedule
-resource "aws_lambda_permission" "allow_eventbridge" {
-  action         = "lambda:InvokeFunction"
-  function_name  = aws_lambda_function.lambda1.function_name
-  principal      = "events.amazonaws.com"
-  source_arn     = aws_scheduler_schedule.L1_scheduler.arn
-  source_account = data.aws_caller_identity.current.account_id
-}
+# resource "aws_lambda_permission" "allow_eventbridge" {
+#   action         = "lambda:InvokeFunction"
+#   function_name  = aws_lambda_function.lambda1.function_name
+#   principal      = "events.amazonaws.com"
+#   source_arn     = aws_scheduler_schedule.L1_scheduler.arn
+#   source_account = data.aws_caller_identity.current.account_id
+# }
 
 resource "aws_lambda_layer_version" "lambda_layer_dependencies" {
   layer_name          = "lambda_layer1"
