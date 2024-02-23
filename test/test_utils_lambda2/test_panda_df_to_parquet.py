@@ -46,4 +46,3 @@ def test_uploads_a_parquet_file_to_s3():
     response = mockedClient.list_objects_v2(Bucket='test_bucket',
                                             Prefix='table1')
     assert '.parquet' in response['Contents'][0]['Key']
-
