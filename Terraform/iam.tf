@@ -116,22 +116,22 @@ resource "aws_iam_role_policy_attachment" "L1_cloudwatch_policy_attachment" {
 
 
 # making eventbridge role
-resource "aws_iam_role" "L1_eventbridge_role" {
-  name = "L1_eventbridge_role"
-  assume_role_policy = jsonencode({
+# resource "aws_iam_role" "L1_eventbridge_role" {
+#   name = "L1_eventbridge_role"
+#   assume_role_policy = jsonencode({
 
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "scheduler.amazonaws.com"
-        },
-        "Action" : "sts:AssumeRole"
-      },
-    ]
-  })
-}
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Principal" : {
+#           "Service" : "scheduler.amazonaws.com"
+#         },
+#         "Action" : "sts:AssumeRole"
+#       },
+#     ]
+#   })
+# }
 
 # creating secretsmanager policy doc...
 data "aws_iam_policy_document" "db_access_doc" {
