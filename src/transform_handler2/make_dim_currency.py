@@ -5,3 +5,4 @@ def make_dim_currency(df):
         'Euro']
     dim_currency_df = df[['currency_id', 'currency_code', 'currency_name']]
     return dim_currency_df
+
