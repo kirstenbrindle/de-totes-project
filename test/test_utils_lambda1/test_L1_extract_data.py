@@ -183,13 +183,12 @@ def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
 @patch("src.extract_handler1.L1_extract_data.get_timestamp")
 @mock_aws
 def test_L1_extract_data_test_database_false_no_new_data(
-        mock_s3, mock_bucket, caplog):
+        mock_s3, mock_bucket):
     """
     checks writes file from test database to mock s3 bucket if boolean false.
     """
-    with caplog.at_level(logging.INFO):
+    with pytest.raises(SystemExit):
         mock_conn = MagicMock()
         mock_conn.run.return_value = []
         L1_extract_data(mock_conn, mock_s3, "payment_type",
                         False, "test-bucket")
-        assert 'There is no new data in this table' in caplog.text
