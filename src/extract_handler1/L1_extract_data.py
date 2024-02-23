@@ -30,17 +30,23 @@ def L1_extract_data(conn, s3, table_name, boolean, bucket_name):
 
 
     """
-    query_string = f'SELECT * FROM {identifier(table_name)}'
-    if boolean is True:
-        response = conn.run(f'{query_string};')
-    else:
-        latest_file = get_most_recent_file(s3, bucket_name, table_name)
-        timestamp = get_timestamp(latest_file)
-        query_string += f' WHERE last_updated > {literal(timestamp)};'
-        response = conn.run(query_string)
-        if response == []:
-            logger.info('There is no new data in this table')
-    metadata = conn.columns
-    column_names = [c['name'] for c in metadata]
-    formatted_data = format_data(response, column_names)
-    write_csv(table_name, bucket_name, s3, formatted_data)
+    try:
+        query_string = f'SELECT * FROM {identifier(table_name)}'
+        if boolean is True:
+            response = conn.run(f'{query_string};')
+        else:
+            latest_file = get_most_recent_file(s3, bucket_name, table_name)
+            timestamp = get_timestamp(latest_file)
+            query_string += f' WHERE last_updated > {literal(timestamp)};'
+            response = conn.run(query_string)
+
+        if response != []:
+            metadata = conn.columns
+            column_names = [c['name'] for c in metadata]
+            formatted_data = format_data(response, column_names)
+            write_csv(table_name, bucket_name, s3, formatted_data)
+            logger.info(
+                f'{table_name} data has been written to a new csv file')
+    except Exception as e:
+        logger.info("something has gone wrong in the L1_extract_data.py")
+        logger.warning(e)

@@ -27,15 +27,45 @@ resource "aws_iam_role" "L1_lambda_role" {
 
 # Creating S3 Ingestion bucket policy document ...
 data "aws_iam_policy_document" "s3_L1_document" {
+  # statement {
+  #   actions = [
+  #     "s3:PutObject"
+  #   ]
+  #   resources = [
+  #     "${aws_s3_bucket.ingestion_bucket.arn}/*",
+  #     "${aws_s3_bucket.code_bucket.arn}/*"
+  #   ]
+  #   effect = "Allow"
+  # }
   statement {
     actions = [
-      "s3:PutObject",
       "s3:ListBucket"
+    ]
+    resources = [
+      "${aws_s3_bucket.ingestion_bucket.arn}",
+      "${aws_s3_bucket.code_bucket.arn}"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    actions = [
+      "s3:*Object"
     ]
     resources = [
       "${aws_s3_bucket.ingestion_bucket.arn}/*",
       "${aws_s3_bucket.code_bucket.arn}/*"
     ]
+    effect = "Allow"
+  }
+    statement {
+    actions = [
+      "s3:ListAllMyBuckets"
+    ]
+    resources = [
+      "arn:aws:s3:::*"
+
+    ]
+    effect = "Allow"
   }
 }
 
@@ -86,22 +116,22 @@ resource "aws_iam_role_policy_attachment" "L1_cloudwatch_policy_attachment" {
 
 
 # making eventbridge role
-resource "aws_iam_role" "L1_eventbridge_role" {
-  name = "L1_eventbridge_role"
-  assume_role_policy = jsonencode({
+# resource "aws_iam_role" "L1_eventbridge_role" {
+#   name = "L1_eventbridge_role"
+#   assume_role_policy = jsonencode({
 
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "scheduler.amazonaws.com"
-        },
-        "Action" : "sts:AssumeRole"
-      },
-    ]
-  })
-}
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Principal" : {
+#           "Service" : "scheduler.amazonaws.com"
+#         },
+#         "Action" : "sts:AssumeRole"
+#       },
+#     ]
+#   })
+# }
 
 # creating secretsmanager policy doc...
 data "aws_iam_policy_document" "db_access_doc" {
