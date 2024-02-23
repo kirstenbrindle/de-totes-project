@@ -55,12 +55,14 @@ def patch_fixture():
     "get_file_and_ingestion_bucket_name")
 @mock_aws
 def test_lambda_handler2_invokes_gfaibn(patch_fixture, s3):
-    (mock_gfaibn, mock_gbn2, mock_ibe2, mock_gmrf2, mock_rctd, mock_cpc) = patch_fixture
+    (mock_gfaibn, mock_gbn2, mock_ibe2, mock_gmrf2,
+     mock_rctd, mock_cpc) = patch_fixture
     mock_gfaibn.return_value = 'ingestion-bucket', 'test.csv'
     mock_gbn2.return_value = 'processed-bucket'
     assert mock_gfaibn.call_count == 0
     lambda_handler({}, {})
     assert mock_gfaibn.call_count == 1
+
 
 @pytest.mark.skip
 @pytest.mark.describe("lambda_handler2")
