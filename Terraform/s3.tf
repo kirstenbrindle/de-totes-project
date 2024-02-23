@@ -19,3 +19,4 @@ resource "aws_s3_object" "L1_object" {
   source = "${path.module}/../lambda1.zip"
   source_hash = filemd5("${path.module}/../lambda1.zip")
 }
+# need to source hash^^
