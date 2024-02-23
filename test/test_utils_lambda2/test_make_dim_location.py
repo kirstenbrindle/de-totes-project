@@ -21,6 +21,7 @@ def test_returns_a_dataframe():
     result = make_dim_location(df)
     assert result.equals(df)
 
+
 @pytest.mark.describe("make_dim_location")
 @pytest.mark.it("Test filters the correct columns")
 def test_returns_the_correct_columns_only():
