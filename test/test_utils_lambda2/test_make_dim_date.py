@@ -1,7 +1,7 @@
 from src.transform_handler2.make_dim_date import make_dim_date
 import pytest
 import pandas as pd
-from datetime import datetime as dt
+
 
 @pytest.mark.describe("make_dim_date")
 @pytest.mark.it("Test returns a dataframe")
