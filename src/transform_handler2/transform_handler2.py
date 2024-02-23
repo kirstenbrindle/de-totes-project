@@ -29,7 +29,7 @@ def lambda_handler(event, context):
         event["Records"])
     process_bucket_name = get_bucket_name_2(s3)
     print(process_bucket_name, '<<<< process bkt')
-    
+
     # boolean = is_bucket_empty(s3, process_bucket_name)
     # if boolean is true - get_most_recent_file() -
     # Variables for each - sales_order, design, address, currency,

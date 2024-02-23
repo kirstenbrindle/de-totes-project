@@ -1,5 +1,5 @@
 def make_fact_sales_order(df):
-    return df 
+    return df
 
 
 # 3 additional rows

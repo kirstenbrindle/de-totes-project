@@ -3,6 +3,7 @@ import pytest
 import pandas as pd
 from datetime import datetime
 
+
 @pytest.mark.describe("make_fact_sales_order")
 @pytest.mark.it("Test returns a dataframe")
 def test_returns_a_dataframe():
@@ -23,6 +24,7 @@ def test_returns_a_dataframe():
     df = pd.DataFrame(data=data_sales_order)
     result = make_fact_sales_order(df)
     assert isinstance(result, pd.core.frame.DataFrame)
+
 
 @pytest.mark.describe("make_fact_sales_order")
 @pytest.mark.it("Test returns a dataframe")
@@ -45,12 +47,12 @@ def test_returns_a_dataframe():
     expected = {
         'sales_record_id': ['8', '9', '10'],
         'sales_order_id': ['1', '2', '3'],
-        'created_date': [datetime.date(2023,12,22), datetime.date(2022,11,22), datetime.date(2022,11,22)],
-        'created_time': [datetime.time(11,0,0), datetime.time(11,0,0), datetime.time(11,0,0)],
-        'last_updated_date': [datetime.date(2023,12,22), datetime.date(2022,11,22), datetime.date(2022,11,22)],
-        'last_updated_time': [datetime.time(11,0,0), datetime.time(11,0,0), datetime.time(11,0,0)],
+        'created_date': [datetime.date(2023, 12, 22), datetime.date(2022, 11, 22), datetime.date(2022, 11, 22)],
+        'created_time': [datetime.time(11, 0, 0), datetime.time(11, 0, 0), datetime.time(11, 0, 0)],
+        'last_updated_date': [datetime.date(2023, 12, 22), datetime.date(2022, 11, 22), datetime.date(2022, 11, 22)],
+        'last_updated_time': [datetime.time(11, 0, 0), datetime.time(11, 0, 0), datetime.time(11, 0, 0)],
         'design_id': ['d1', 'd2', 'd3'],
-        'sales_staff_id': [datetime.time(11,0,0), datetime.time(11,0,0), datetime.time(11,0,0)],
+        'sales_staff_id': [datetime.time(11, 0, 0), datetime.time(11, 0, 0), datetime.time(11, 0, 0)],
         'counterparty_id': ['c1', 'c2', 'c3'],
         'units_sold': ['10', '20', '30'],
         'unit_price': [1.23, 1.25, 1.26],
