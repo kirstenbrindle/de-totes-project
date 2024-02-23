@@ -61,3 +61,4 @@ def test_returns_a_dataframe():
     }
     result = make_fact_sales_order(df)
     assert isinstance(result, pd.core.frame.DataFrame) 
+
