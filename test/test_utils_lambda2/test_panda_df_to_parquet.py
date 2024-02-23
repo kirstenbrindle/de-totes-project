@@ -1,5 +1,5 @@
 from src.transform_handler2.panda_df_to_parquet import csv_parquet_converter
-import pytest
+# import pytest
 from moto import mock_aws
 import boto3
 import pandas as pd
@@ -28,7 +28,8 @@ def test_uploads_a_file_to_s3():
 
     csv_parquet_converter(mockedClient, 'test_bucket', 'table1', df)
 
-    assert 'table1/table1' in f"{mockedClient.list_objects_v2(Bucket='test_bucket',)}"
+    assert 'table1/table1' in \
+        f"{mockedClient.list_objects_v2(Bucket='test_bucket')}"
 
 
 @mock_aws
@@ -43,4 +44,3 @@ def test_uploads_a_parquet_file_to_s3():
     csv_parquet_converter(mockedClient, 'test_bucket', 'table1', df)
 
     assert '.parquet' in f"{mockedClient.list_objects_v2(Bucket='test_bucket', Prefix='table1')}"
-

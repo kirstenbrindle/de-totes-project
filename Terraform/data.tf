@@ -8,6 +8,11 @@ data "archive_file" "lambda1" {
   output_path = "${path.module}/../lambda1.zip"
 }
 
+data "archive_file" "layer_code1" {
+  type        = "zip"
+  source_dir = "${path.module}/../aws_utils/layer_code1"
+  output_path = "${path.module}/../aws_utils/layer_code1.zip"
+}
 
 # ORIGINAL LAYER:
 # data "archive_file" "lambda1_layer" {

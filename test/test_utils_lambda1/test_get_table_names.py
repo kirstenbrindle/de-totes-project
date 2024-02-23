@@ -15,7 +15,7 @@ def test_correct_table_names_are_returned():
     """
     mock_conn = MagicMock()
     mock_conn.run.return_value = [
-        ['counterparty'], ['addresses'], ['currency']]
+        ['counterparty'], ['addresses'], ['currency'], ['_prisma_migrations']]
     result = get_table_names(mock_conn)
     expected = ['addresses', 'counterparty', 'currency']
     assert result == expected

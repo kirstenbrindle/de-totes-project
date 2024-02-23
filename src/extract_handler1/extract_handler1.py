@@ -58,6 +58,7 @@ def lambda_handler(event, context):
         elif db.args[0]['C'] == '3D000':
             logger.error("DatabaseError: database does not exist")
         else:
+            logger.info(db)
             logger.error('A DatabaseError has occurred')
 
     except InterfaceError as i:
@@ -66,6 +67,7 @@ def lambda_handler(event, context):
         elif "connection is closed" in i.args[0]:
             logger.error("InterfaceError: connection is closed")
         else:
+            logger.info(i)
             logger.error("An InterfaceError has occurred")
 
     except Exception as e:
