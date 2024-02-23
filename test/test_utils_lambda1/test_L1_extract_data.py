@@ -177,18 +177,27 @@ def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
 
 
 @pytest.mark.describe("L1_extract_data")
-@pytest.mark.it("Test L1_extract_data runs a Select "
-                "query from the given table if boolean is "
+@pytest.mark.it("Test L1_extract_data does not write "
+                "to csv if boolean is "
                 "false and no new data")
+@patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
+@patch("src.extract_handler1.L1_extract_data.format_data")
 @patch("src.extract_handler1.L1_extract_data.get_timestamp")
 @mock_aws
-def test_L1_extract_data_test_database_false_no_new_data(
-        mock_s3, mock_bucket):
+def test_L1_extract_data_does_not_write(mock_get_timestamp,
+                                        mock_get_format_data,
+                                        mock_get_most_recent_file,
+                                        mock_s3, mock_bucket):
     """
     checks writes file from test database to mock s3 bucket if boolean false.
     """
-    with pytest.raises(SystemExit):
-        mock_conn = MagicMock()
-        mock_conn.run.return_value = []
-        L1_extract_data(mock_conn, mock_s3, "payment_type",
-                        False, "test-bucket")
+
+    mock_conn = MagicMock()
+    mock_conn.run.return_value = []
+    objects_list_before = mock_s3.list_objects_v2(
+        Bucket="test-bucket")
+    assert objects_list_before["KeyCount"] == 0
+    L1_extract_data(mock_conn, mock_s3, "currency", False, "test-bucket")
+    objects_list_after = mock_s3.list_objects_v2(
+        Bucket="test-bucket")
+    assert objects_list_after["KeyCount"] == 0
