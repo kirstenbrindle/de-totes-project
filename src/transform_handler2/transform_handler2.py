@@ -1,3 +1,15 @@
+import boto3
+import logging
+from src.transform_handler2.get_file_and_ingestion_bucket_name import (
+    get_file_and_ingestion_bucket_name)
+from src.transform_handler2.get_bucket_name_2 import (
+    get_bucket_name_2
+)
+
+logger = logging.getLogger('lambda2Logger')
+logger.setLevel(logging.INFO)
+
+
 def lambda_handler(event, context):
     '''Reads files from the ingestion bucket and
      reformat the data.
@@ -11,9 +23,13 @@ def lambda_handler(event, context):
         RuntimeError: An unexpected error occurred in execution. Other errors
         result in an informative log message.
     '''
-    # setup s3 client = s3
-    # ingestion_bucket, file_name = get_key_name(event["Records"])
-    # process_bucket_name = get_bucket_name_2(s3)
+
+    s3 = boto3.client('s3', region_name='eu-west-2')
+    ingestion_bucket, file_name = get_file_and_ingestion_bucket_name(
+        event["Records"])
+    process_bucket_name = get_bucket_name_2(s3)
+    print(process_bucket_name, '<<<< process bkt')
+    
     # boolean = is_bucket_empty(s3, process_bucket_name)
     # if boolean is true - get_most_recent_file() -
     # Variables for each - sales_order, design, address, currency,
@@ -29,5 +45,3 @@ def lambda_handler(event, context):
     # if file_name contains sales_order - invoke make_dim_sales_order().
     #  if file_name contains design - invoke make_dim_design() formatter func.
     # Output of dim sales order or dim design passed into write_to_parquet.
-
-    pass
