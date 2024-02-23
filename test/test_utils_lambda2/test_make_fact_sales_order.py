@@ -62,4 +62,5 @@ def test_returns_a_dataframe():
         'agreed_delivery_location_id': ['l1', 'l2', 'l3']
     }
     result = make_fact_sales_order(df)
-    assert isinstance(result, pd.core.frame.DataFrame)
+    assert isinstance(result, pd.core.frame.DataFrame) 
+
