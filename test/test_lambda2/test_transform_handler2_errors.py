@@ -34,3 +34,27 @@ def test_get_bucket_name_error(mock_gfaibn, mock_get_bucket_name2, caplog):
     lambda_handler({'Records': 'test'}, {})
     assert "There is no processed bucket ..." in caplog.text
     assert "ERROR" in caplog.text
+
+
+@pytest.mark.describe("transform_handler2")
+@pytest.mark.it("Test returns ClientError with correct message NoSuchBucket")
+@patch("src.transform_handler2.transform_handler2.write_to_parquet")
+@patch("src.transform_handler2.transform_handler2.get_bucket_name_2")
+@mock_aws
+def test_get_table_names_no_such_bucket(mock_get_bucket_name, mock_write_to_parquet, caplog):
+    """
+    Given:
+    A ClientError
+
+    Returns:
+    Correct log message
+    """
+    operation_name = 'ListObjectsV2'
+    parsed_response = {'Error': {'Code': 'NoSuchBucket',
+                       'Message': 'The specified bucket does not exist'}}
+    mock_get_bucket_name.return_value = "AHHHHH-bucket"
+    mock_write_to_parquet.side_effect = ClientError(
+        parsed_response, operation_name)
+    lambda_handler({}, {})
+    assert "No such bucket - AHHHHH-bucket" in caplog.text
+    assert "ERROR" in caplog.text
