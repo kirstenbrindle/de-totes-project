@@ -92,18 +92,21 @@ def lambda_handler(event, context):
             write_to_parquet(s3, processed_bucket,
                              'fact_sales_order', fact_sales_order_df)
         if 'counterparty' in file_name:
-            address_file = get_most_recent_file_2(s3, ingestion_bucket, 'address')
+            address_file = get_most_recent_file_2(
+                s3, ingestion_bucket, 'address')
             address_df = read_csv_to_df(s3, ingestion_bucket, address_file)
             dim_counterparty_df = make_dim_counterparty(df, address_df)
             write_to_parquet(s3, processed_bucket,
-                             'dim_counterparty', dim_counterparty_df)  
+                             'dim_counterparty', dim_counterparty_df)
         if 'staff' in file_name:
-            department_file = get_most_recent_file_2(s3, ingestion_bucket, 'department')
-            department_df = read_csv_to_df(s3, ingestion_bucket, department_file)
+            department_file = get_most_recent_file_2(
+                s3, ingestion_bucket, 'department')
+            department_df = read_csv_to_df(
+                s3, ingestion_bucket, department_file)
             dim_staff_df = make_dim_staff(df, department_df)
             write_to_parquet(s3, processed_bucket,
-                             'dim_staff', dim_staff_df)          
-            
+                             'dim_staff', dim_staff_df)
+
     except ValueError:
         logger.error("There is no processed bucket ...")
 
