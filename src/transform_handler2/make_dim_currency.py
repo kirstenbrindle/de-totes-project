@@ -1,4 +1,5 @@
-def make_dim_currency(df):
+def make_dim_currency(input_df):
+    df = input_df.copy()
     df['currency_name'] = [
         'British pound sterling',
         'United States dollar',

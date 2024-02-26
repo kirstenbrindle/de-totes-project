@@ -39,7 +39,7 @@ from src.transform_handler2.make_fact_sales_order import (
 from src.transform_handler2.write_to_parquet import (
     write_to_parquet
 )
-import time
+
 logger = logging.getLogger('lambda2Logger')
 logger.setLevel(logging.INFO)
 
@@ -58,51 +58,52 @@ def lambda_handler(event, context):
         result in an informative log message.
     '''
     try:
-        time.sleep(10)
         ingestion_bucket, file_name = get_file_and_ingestion_bucket_name(
             event['Records'])
         s3 = boto3.client('s3', region_name='eu-west-2')
 
         processed_bucket = get_bucket_name_2(s3)
-        table_names = ['sales_order', 'design', 'address', 'currency',
-                       'staff', 'department', 'counterparty']
 
         if is_bucket_empty_2(processed_bucket, s3):
-            recent_files = [get_most_recent_file_2(
-                s3, ingestion_bucket, table) for table in table_names]
-            dim_dfs = []
-            for file in recent_files:
-                result = read_csv_to_df(s3, ingestion_bucket, file)
-                dim_dfs.append(result)
-            dim_counterparty_df = make_dim_counterparty(dim_dfs[6], dim_dfs[2])
-            dim_currency_df = make_dim_currency(dim_dfs[3])
             dim_date_df = make_dim_date()
-            dim_design_df = make_dim_design(dim_dfs[1])
-            dim_location_df = make_dim_location(dim_dfs[2])
-            dim_staff_df = make_dim_staff(dim_dfs[4], dim_dfs[5])
-            fact_sales_order_df = make_fact_sales_order(dim_dfs[0])
+            write_to_parquet(s3, processed_bucket,
+                             'dim_date', dim_date_df)
 
-            write_to_parquet(s3, processed_bucket,
-                             'dim_counterparty', dim_counterparty_df)
-            write_to_parquet(s3, processed_bucket,
-                             'dim_currency', dim_currency_df)
-            write_to_parquet(s3, processed_bucket, 'dim_date', dim_date_df)
-            write_to_parquet(s3, processed_bucket, 'dim_design', dim_design_df)
-            write_to_parquet(s3, processed_bucket,
-                             'dim_location', dim_location_df)
-            write_to_parquet(s3, processed_bucket, 'dim_staff', dim_staff_df)
+        df = read_csv_to_df(s3, ingestion_bucket, file_name)
+
+        if 'sales_order' in file_name:
+            fact_sales_order_df = make_fact_sales_order(df)
             write_to_parquet(s3, processed_bucket,
                              'fact_sales_order', fact_sales_order_df)
-        else:
-            df = read_csv_to_df(s3, ingestion_bucket, file_name)
-            if 'sales_order' in file_name:
-                fact_sales_order_df = make_fact_sales_order(df)
-                write_to_parquet(s3, processed_bucket,
-                                 'fact_sales_order', fact_sales_order_df)
-            if 'design' in file_name:
-                dim_design_df = make_dim_design(df)
-                write_to_parquet(s3, processed_bucket,
-                                 'dim_design', dim_design_df)
+        if 'design' in file_name:
+            dim_design_df = make_dim_design(df)
+            write_to_parquet(s3, processed_bucket,
+                             'dim_design', dim_design_df)
+        if 'currency' in file_name:
+            dim_currency_df = make_dim_currency(df)
+            write_to_parquet(s3, processed_bucket,
+                             'dim_currency', dim_currency_df)
+        if 'address' in file_name:
+            dim_location_df = make_dim_location(df)
+            write_to_parquet(s3, processed_bucket,
+                             'dim_location', dim_location_df)
+        if 'sales_order' in file_name:
+            fact_sales_order_df = make_fact_sales_order(df)
+            write_to_parquet(s3, processed_bucket,
+                             'fact_sales_order', fact_sales_order_df)
+        if 'counterparty' in file_name:
+            address_file = get_most_recent_file_2(s3, ingestion_bucket, 'address')
+            address_df = read_csv_to_df(s3, ingestion_bucket, address_file)
+            dim_counterparty_df = make_dim_counterparty(df, address_df)
+            write_to_parquet(s3, processed_bucket,
+                             'dim_counterparty', dim_counterparty_df)  
+        if 'staff' in file_name:
+            department_file = get_most_recent_file_2(s3, ingestion_bucket, 'department')
+            department_df = read_csv_to_df(s3, ingestion_bucket, department_file)
+            dim_staff_df = make_dim_staff(df, department_df)
+            write_to_parquet(s3, processed_bucket,
+                             'dim_staff', dim_staff_df)          
+            
     except ValueError:
         logger.error("There is no processed bucket ...")
 
