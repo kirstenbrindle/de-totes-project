@@ -63,42 +63,53 @@ def lambda_handler(event, context):
         s3 = boto3.client('s3', region_name='eu-west-2')
 
         processed_bucket = get_bucket_name_2(s3)
+        logger.info(f'Reading {file_name} currently ...')
 
-        if is_bucket_empty_2(processed_bucket, s3):
-            dim_date_df = make_dim_date()
-            write_to_parquet(s3, processed_bucket,
-                             'dim_date', dim_date_df)
-
-        df = read_csv_to_df(s3, ingestion_bucket, file_name)
 
         if 'sales_order' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             fact_sales_order_df = make_fact_sales_order(df)
             write_to_parquet(s3, processed_bucket,
                              'fact_sales_order', fact_sales_order_df)
-        if 'design' in file_name:
+            
+        elif 'design' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             dim_design_df = make_dim_design(df)
             write_to_parquet(s3, processed_bucket,
                              'dim_design', dim_design_df)
-        if 'currency' in file_name:
+            
+        elif 'currency' in file_name:
+            dim_date_df = make_dim_date()
+            write_to_parquet(s3, processed_bucket,
+                             'dim_date', dim_date_df)
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             dim_currency_df = make_dim_currency(df)
             write_to_parquet(s3, processed_bucket,
                              'dim_currency', dim_currency_df)
-        if 'address' in file_name:
+            
+            
+        elif 'address' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             dim_location_df = make_dim_location(df)
             write_to_parquet(s3, processed_bucket,
                              'dim_location', dim_location_df)
-        if 'sales_order' in file_name:
+            
+        elif 'sales_order' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             fact_sales_order_df = make_fact_sales_order(df)
             write_to_parquet(s3, processed_bucket,
                              'fact_sales_order', fact_sales_order_df)
-        if 'counterparty' in file_name:
+            
+        elif 'counterparty' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             address_file = get_most_recent_file_2(
                 s3, ingestion_bucket, 'address')
             address_df = read_csv_to_df(s3, ingestion_bucket, address_file)
             dim_counterparty_df = make_dim_counterparty(df, address_df)
             write_to_parquet(s3, processed_bucket,
                              'dim_counterparty', dim_counterparty_df)
-        if 'staff' in file_name:
+        elif 'staff' in file_name:
+            df = read_csv_to_df(s3, ingestion_bucket, file_name)
             department_file = get_most_recent_file_2(
                 s3, ingestion_bucket, 'department')
             department_df = read_csv_to_df(
@@ -106,8 +117,10 @@ def lambda_handler(event, context):
             dim_staff_df = make_dim_staff(df, department_df)
             write_to_parquet(s3, processed_bucket,
                              'dim_staff', dim_staff_df)
-
-    except ValueError:
+        else:
+            logger.info("Non-MVP data: update not needed")
+    except ValueError as v:
+        logger.error(v)
         logger.error("There is no processed bucket ...")
 
     except ClientError as c:
