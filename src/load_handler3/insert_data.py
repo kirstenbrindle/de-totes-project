@@ -1,2 +1,2 @@
-def insert_data(conn, table_name, cols, new_data):
-    pass
+# def insert_data(conn, table_name, cols, new_data):
+#     pass
