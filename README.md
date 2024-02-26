@@ -35,7 +35,7 @@ In order to create a secret containing login credentials on AWS SecretsManager, 
 }
 ```
 
-The contents of this JSON file is accessed from the Secrets Manager and used in the Lambda handlers to access the totesys database.
+The contents of this JSON file is created through the command line aws secret manager and accessed in Lambda handlers to access the totesys database.
 
 
 ## Lambda 1

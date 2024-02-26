@@ -19,3 +19,4 @@ venv/
 db_credentials.json
 test_database.sql
 test_db_inserts.sql
+warehouse_credentials.json
