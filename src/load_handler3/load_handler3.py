@@ -19,11 +19,11 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    '''This function is triggered by a timed schedule 
-    -> reads the parquet files from the processed bucket
-    -> connects to warehouse database using credentials stored in SecretsManager
-    -> loads file contents to warehouse db
-    -> logs errors
+    '''This function is triggered by a timed schedule
+    - reads the parquet files from the processed bucket
+    - connects to warehouse database using credentials stored in SecretsManager
+    - loads file contents to warehouse db
+    - logs errors
     '''
     try:
         conn = Connection(**secrets_dict)
