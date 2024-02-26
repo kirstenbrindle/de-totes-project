@@ -1,12 +1,13 @@
 import pandas as pd
 
 
-def make_dim_counterparty(df1, df2):
+def make_dim_counterparty(input_df1, input_df2):
     '''takes 2 dataframes of counterparty and address
     renames columns to appropriate end table column names
     joins on address id - called legal_address_id in counterparty
     returns new dataframe'''
-
+    df2 = input_df2.copy()
+    df1 = input_df1.copy()
     df2.rename(columns={"address_id": "legal_address_id"}, inplace=True)
     df2.rename(columns={"address_line_1":
                         "counterparty_legal_address_line_1"}, inplace=True)

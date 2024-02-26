@@ -12,4 +12,4 @@ def make_dim_location(df):
         return dim_location_df
     except Exception as e:
         logger.info(e)
-        logger.info(f'{df}')
+        logger.info(f'{df.columns}')
