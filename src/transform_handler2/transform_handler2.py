@@ -58,14 +58,14 @@ def lambda_handler(event, context):
     '''
     try:
         ingestion_bucket, file_name = get_file_and_ingestion_bucket_name(
-            event["Records"])
+            event['Records'])
         s3 = boto3.client('s3', region_name='eu-west-2')
 
         processed_bucket = get_bucket_name_2(s3)
         table_names = ['sales_order', 'design', 'address', 'currency',
                     'staff', 'department', 'counterparty']
 
-        if is_bucket_empty_2(s3, processed_bucket):
+        if is_bucket_empty_2(processed_bucket, s3):
             recent_files = [get_most_recent_file_2(
                 s3, ingestion_bucket, table) for table in table_names]
             dim_dfs = [read_csv_to_df(s3, ingestion_bucket, file)
