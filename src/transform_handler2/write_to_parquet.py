@@ -8,7 +8,7 @@ logger = logging.getLogger('lambda2Logger')
 logger.setLevel(logging.INFO)
 
 
-def csv_parquet_converter(s3_client, bucket_name, olap_table, data):
+def write_to_parquet(s3_client, bucket_name, olap_table, data):
     table = pa.Table.from_pandas(data)
     file = io.BytesIO()
     papq.write_table(table, file)

@@ -1,4 +1,4 @@
-from src.transform_handler2.panda_df_to_parquet import csv_parquet_converter
+from src.transform_handler2.write_to_parquet import write_to_parquet
 
 from moto import mock_aws
 import boto3
@@ -26,7 +26,7 @@ def test_uploads_a_file_to_s3():
         Bucket="test_bucket", CreateBucketConfiguration={
             'LocationConstraint': 'eu-west-2'})
 
-    csv_parquet_converter(mockedClient, 'test_bucket', 'table1', df)
+    write_to_parquet(mockedClient, 'test_bucket', 'table1', df)
 
     response = mockedClient.list_objects_v2(Bucket='test_bucket')
     assert 'table1/table1' in response['Contents'][0]['Key']
@@ -41,7 +41,7 @@ def test_uploads_a_parquet_file_to_s3():
         Bucket="test_bucket", CreateBucketConfiguration={
             'LocationConstraint': 'eu-west-2'})
 
-    csv_parquet_converter(mockedClient, 'test_bucket', 'table1', df)
+    write_to_parquet(mockedClient, 'test_bucket', 'table1', df)
 
     response = mockedClient.list_objects_v2(Bucket='test_bucket',
                                             Prefix='table1')
