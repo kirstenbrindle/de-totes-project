@@ -12,7 +12,6 @@ resource "aws_s3_bucket" "code_bucket" {
 }
 
 #Resource to upload the zipped code to the code bucket
-
 resource "aws_s3_object" "L1_object" {
   bucket = aws_s3_bucket.code_bucket.id
   key    = "lambda1/lambda1.zip"
