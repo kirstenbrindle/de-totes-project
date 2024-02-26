@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_log_metric_filter" "error_log" {
-  name           = "TotesError"
+  name           = "TotesErrorL1"
   pattern        = "ERROR"
-  log_group_name = "/aws/lambda/lambda1" #aws_cloudwatch_log_group.lambda1_log_group.name
+  log_group_name = "/aws/lambda/${var.lambda1}" #aws_cloudwatch_log_group.lambda1_log_group.name
 
   metric_transformation {
     name      = "ErrorCount"
@@ -16,7 +16,7 @@ resource "aws_cloudwatch_log_metric_filter" "error_log" {
 
 
 resource "aws_cloudwatch_metric_alarm" "alert_errors" {
-  alarm_name          = "erroralarm"
+  alarm_name          = "ErrorAlarmL1"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   metric_name         = aws_cloudwatch_log_metric_filter.error_log.metric_transformation[0].name
