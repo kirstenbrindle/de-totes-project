@@ -79,7 +79,7 @@ def test_returns_a_filtered_and_merged_dataframe():
 @pytest.mark.describe("make_dim_staff")
 @pytest.mark.it("""Test returns a filtered and merged dataframe
                 when table order is irregular""")
-def test_returns_a_filtered_and_merged_dataframe_when_table_order_is_irregular():
+def test_returns_a_filtered_and_merged_df_when_order_is_irregular():
     data_staff = {
         'staff_id': ['1', '2', '3'],
         'first_name': ['Tom', 'Kirsten', 'Cinthya'],
