@@ -21,4 +21,4 @@ def get_most_recent_file_2(s3, bucket_name, table_name):
             last_modified_file = value["LastModified"]
             file_name = value["Key"]
             files_list.append(last_modified_file)
-    return file_name
+    return f'{file_name}'
