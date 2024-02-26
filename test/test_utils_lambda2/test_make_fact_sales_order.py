@@ -2,15 +2,13 @@ from src.transform_handler2.make_fact_sales_order import make_fact_sales_order
 import pytest
 import pandas as pd
 from datetime import datetime, date, time
-
-
 @pytest.mark.describe("make_fact_sales_order")
 @pytest.mark.it("Test returns a dataframe")
 def test_returns_a_dataframe():
     data_sales_order = {
         'sales_order_id': ['1', '2', '3'],
-        'created_at': [datetime.now(), datetime.now(), datetime.now()],
-        'last_updated': [datetime.now(), datetime.now(), datetime.now()],
+        'created_at': ["2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962"],
+        'last_updated': ["2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962"],
         'design_id': ['d1', 'd2', 'd3'],
         'staff_id': ['s4', 's5', 's6'],
         'counterparty_id': ['c1', 'c2', 'c3'],
@@ -24,19 +22,13 @@ def test_returns_a_dataframe():
     df = pd.DataFrame(data=data_sales_order)
     result = make_fact_sales_order(df)
     assert isinstance(result, pd.core.frame.DataFrame)
-
-
 @pytest.mark.describe("make_fact_sales_order")
 @pytest.mark.it("Test returns a formatted dataframe")
 def test_returns_a_formatted_dataframe():
     data_sales_order = {
         'sales_order_id': ['1', '2', '3'],
-        'created_at': [datetime(2023, 12, 22, 11, 0, 0),
-                       datetime(2022, 11, 22, 11, 0, 0),
-                       datetime(2021, 10, 22, 11, 0, 0)],
-        'last_updated': [datetime(2023, 12, 22, 11, 0, 0),
-                         datetime(2022, 11, 22, 11, 0, 0),
-                         datetime(2021, 10, 22, 11, 0, 0)],
+        'created_at': ["2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962"],
+        'last_updated': ["2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962", "2022-11-03 14:20:49.962"],
         'design_id': ['d1', 'd2', 'd3'],
         'staff_id': ['s4', 's5', 's6'],
         'counterparty_id': ['c1', 'c2', 'c3'],
@@ -51,18 +43,18 @@ def test_returns_a_formatted_dataframe():
     expected = {
         'sales_record_id': [1, 2, 3],
         'sales_order_id': ['1', '2', '3'],
-        'created_date': [date(2023, 12, 22),
-                         date(2022, 11, 22),
-                         date(2021, 10, 22)],
-        'created_time': [time(11, 0, 0),
-                         time(11, 0, 0),
-                         time(11, 0, 0)],
-        'last_updated_date': [date(2023, 12, 22),
-                              date(2022, 11, 22),
-                              date(2021, 10, 22)],
-        'last_updated_time': [time(11, 0, 0),
-                              time(11, 0, 0),
-                              time(11, 0, 0)],
+        'created_date': ['2022-11-03',
+                         '2022-11-03',
+                         '2022-11-03'],
+        'created_time': ['14:20:49.962',
+                         '14:20:49.962',
+                         '14:20:49.962'],
+        'last_updated_date': ['2022-11-03',
+                         '2022-11-03',
+                         '2022-11-03'],
+        'last_updated_time': ['14:20:49.962',
+                              '14:20:49.962',
+                              '14:20:49.962'],
         'design_id': ['d1', 'd2', 'd3'],
         'sales_staff_id': ['s4', 's5', 's6'],
         'counterparty_id': ['c1', 'c2', 'c3'],
