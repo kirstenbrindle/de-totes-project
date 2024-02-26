@@ -13,4 +13,3 @@ def make_dim_location(df):
     except Exception as e:
         logger.info(e)
         logger.info(f'{df}')
-    

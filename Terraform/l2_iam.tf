@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "s3_L2_document" {
     ]
     resources = [
       "${aws_s3_bucket.processed_bucket.arn}",
-      "${aws_s3_bucket.ingestion_bucket.arn}/*",
+      "${aws_s3_bucket.ingestion_bucket.arn}",
       "${aws_s3_bucket.code_bucket.arn}"
     ]
     effect = "Allow"
