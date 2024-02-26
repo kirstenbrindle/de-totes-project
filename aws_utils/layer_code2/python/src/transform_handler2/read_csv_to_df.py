@@ -39,3 +39,5 @@ Returns:
     except Exception as error:
         if error.response['Error']['Code'] == 'NoSuchKey':
             logger.error(error.response['Error']['Message'])
+            logger.info(error)
+            logger.info(file_name)
