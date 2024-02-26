@@ -23,6 +23,9 @@ Returns:
 """
     try:
         if file_name.endswith(".csv"):
+            file_name = file_name.replace('+', ' ')
+            file_name = file_name.replace('%', ':')
+            logger.info(f'currently reading from csv {file_name}')
             response = s3.get_object(
                 Bucket=bucket_name,
                 Key=file_name
