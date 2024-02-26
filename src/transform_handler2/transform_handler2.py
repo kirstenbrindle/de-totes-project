@@ -1,5 +1,6 @@
 import boto3
 import logging
+from botocore.exceptions import ClientError
 from src.transform_handler2.get_file_and_ingestion_bucket_name import (
     get_file_and_ingestion_bucket_name)
 from src.transform_handler2.get_bucket_name_2 import (
@@ -99,3 +100,11 @@ def lambda_handler(event, context):
     except ValueError:
         logger.error("There is no processed bucket ...")
         # ^^^ subject to change if more ValueErrors pop up^^^
+
+    except ClientError as c:
+        if c.response['Error']['Code'] == 'NoSuchBucket':
+            logger.error(f'No such bucket - {processed_bucket}')
+        else:
+            logger.info(c)
+            logger.error("A ClientError has occurred")
+
