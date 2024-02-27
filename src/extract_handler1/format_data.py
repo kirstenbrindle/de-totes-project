@@ -2,12 +2,12 @@
 def format_data(rows, column_names):
     """
     Args:
-    takes a tuple of lists (the result of the SELECT\
-    query on the payment_type) as the first argument.
+    takes a tuple of lists (the result of the SELECT
+    query) as the first argument.
     takes a list of column names as the second argument.
 
     Returns:
-    List of dictionaries containing rows of data with column\
+    List of dictionaries containing rows of data with column
     titles as keys.
     """
     if isinstance(rows, list):
@@ -27,5 +27,3 @@ def format_data(rows, column_names):
 
     payment_type_dict = dict(zip(column_names, nested_data_list))
     return payment_type_dict
-# potential errors
-# no rows or columns exist, could not connect to database.
