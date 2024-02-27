@@ -1,4 +1,3 @@
-# Creating the metric filter for L2...
 resource "aws_cloudwatch_log_metric_filter" "error_log2" {
   name           = "TotesErrorL2"
   pattern        = "ERROR"
@@ -11,7 +10,6 @@ resource "aws_cloudwatch_log_metric_filter" "error_log2" {
   }
 }
 
-#Creating alert for L2...
 resource "aws_cloudwatch_metric_alarm" "alert_errors_L2" {
   alarm_name          = "ErrorAlarmL2"
   comparison_operator = "GreaterThanOrEqualToThreshold"
