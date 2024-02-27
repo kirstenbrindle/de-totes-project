@@ -1,17 +1,10 @@
 from src.load_handler3.read_parquet import read_parquet
 from unittest.mock import patch
 import pytest
-import logging
 import os
 from moto import mock_aws
 import boto3
 import pandas as pd
-
-
-
-logger = logging.getLogger('test')
-logger.setLevel(logging.INFO)
-logger.propagate = True
 
 
 @pytest.fixture(scope="function")
