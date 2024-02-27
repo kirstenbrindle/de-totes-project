@@ -1,8 +1,7 @@
-from pg8000.native import DatabaseError, InterfaceError
+from pg8000.native import Connection, DatabaseError, InterfaceError
 import boto3
 import json
 import logging
-import psycopg2
 from botocore.exceptions import ClientError
 from src.load_handler3.get_file_and_bucket import get_file_and_bucket
 from src.load_handler3.get_table_name import get_table_name
@@ -26,14 +25,14 @@ def lambda_handler(event, context):
     - logs errors
     '''
     try:
-        conn = psycopg2.connect(**secrets_dict)
+        conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
         bucket_name, file_name = get_file_and_bucket(
             event['Records'])
         table_name = get_table_name(file_name)
         df = read_parquet(s3, bucket_name, file_name)
         upload_data(conn, table_name, df)
-
+        conn.commit()
     except ValueError:
         logger.error("Insert value error...")
         # ^^^ subject to change if more ValueErrors pop up^^^
