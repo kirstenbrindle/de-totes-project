@@ -2,6 +2,7 @@ from src.transform_handler2.transform_handler2 import lambda_handler
 import pytest
 from unittest.mock import patch
 from moto import mock_aws
+import boto3
 from botocore.exceptions import ClientError
 import os
 
@@ -16,13 +17,34 @@ def aws_credentials():
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
 
 
+@pytest.fixture(scope='function')
+def mock_s3(aws_credentials):
+    """Mocked s3 connection for tests"""
+    mock_s3 = boto3.client('s3')
+    return mock_s3
+
+
+@pytest.fixture
+def patch_fixture():
+    with patch("src.transform_handler2.transform_handler2."
+               "get_file_and_ingestion_bucket_name")\
+        as get_file_ing_bucket, \
+         patch("src.transform_handler2.transform_handler2.get_bucket_name_2")\
+            as get_pro_bucket, \
+         patch("src.transform_handler2.transform_handler2.read_csv_to_df")\
+            as read_csv, \
+         patch("src.transform_handler2.transform_handler2.write_to_parquet")\
+            as write_parquet:
+        yield (get_file_ing_bucket, get_pro_bucket,
+               read_csv, write_parquet)
+
+
 @pytest.mark.describe("lambda_handler2")
 @pytest.mark.it("Test returns ValueError with correct message")
-@patch("src.transform_handler2.transform_handler2.get_bucket_name_2")
-@patch('''src.transform_handler2.transform_handler2
-       .get_file_and_ingestion_bucket_name''')
 @mock_aws
-def test_get_bucket_name_error(mock_gfaibn, mock_get_bucket_name2, caplog):
+def test_get_bucket_name_error(patch_fixture, mock_s3, caplog):
+    (get_file_ing_bucket, get_pro_bucket,
+     read_csv, write_parquet) = patch_fixture
     """
     Given:
     A Value error when there is no processed bucket
@@ -30,8 +52,8 @@ def test_get_bucket_name_error(mock_gfaibn, mock_get_bucket_name2, caplog):
     Returns:
     log the correct message as an error
     """
-    mock_get_bucket_name2.side_effect = ValueError
-    mock_gfaibn.return_value = 'ingestion-bucket', 'test.csv'
+    get_pro_bucket.side_effect = ValueError
+    get_file_ing_bucket.return_value = 'ingestion-bucket', 'test.csv'
     lambda_handler({'Records': 'test'}, {})
     assert "There is no processed bucket ..." in caplog.text
     assert "ERROR" in caplog.text
@@ -39,14 +61,11 @@ def test_get_bucket_name_error(mock_gfaibn, mock_get_bucket_name2, caplog):
 
 @pytest.mark.describe("transform_handler2")
 @pytest.mark.it("Test returns ClientError with correct message NoSuchBucket")
-@patch('''src.transform_handler2.transform_handler2
-       .get_file_and_ingestion_bucket_name''')
-@patch("src.transform_handler2.transform_handler2.write_to_parquet")
-@patch("src.transform_handler2.transform_handler2.get_bucket_name_2")
+@patch("src.transform_handler2.transform_handler2.make_fact_sales_order")
 @mock_aws
-def test_get_table_names_no_such_bucket(mock_get_bucket_name,
-                                        mock_write_to_parquet,
-                                        mock_gfaibn, caplog):
+def test_client_err_no_such_bucket(fact_sales, patch_fixture, mock_s3, caplog):
+    (get_file_ing_bucket, get_pro_bucket,
+     read_csv, write_parquet) = patch_fixture
     """
     Given:
     A ClientError
@@ -57,9 +76,9 @@ def test_get_table_names_no_such_bucket(mock_get_bucket_name,
     operation_name = 'ListObjectsV2'
     parsed_response = {'Error': {'Code': 'NoSuchBucket',
                        'Message': 'The specified bucket does not exist'}}
-    mock_gfaibn.return_value = 'ingestion-bucket', 'test.csv'
-    mock_get_bucket_name.return_value = "AHHHHH-bucket"
-    mock_write_to_parquet.side_effect = ClientError(
+    get_file_ing_bucket.return_value = 'ingestion-bucket', 'sales_order'
+    get_pro_bucket.return_value = "AHHHHH-bucket"
+    write_parquet.side_effect = ClientError(
         parsed_response, operation_name)
     lambda_handler({'Records': 'test'}, {})
     assert "No such bucket - AHHHHH-bucket" in caplog.text
@@ -67,13 +86,14 @@ def test_get_table_names_no_such_bucket(mock_get_bucket_name,
 
 
 @pytest.mark.describe("lambda_handler 2")
-@pytest.mark.it("""Test returns ClientError with
-                message when other ClientErrors arise""")
-@patch("src.transform_handler2.transform_handler2.is_bucket_empty_2")
-@patch("src.transform_handler2.transform_handler2.get_bucket_name_2")
+@pytest.mark.it("Test returns ClientError with message when "
+                "other ClientErrors arise")
+@patch("src.transform_handler2.transform_handler2.make_fact_sales_order")
 @mock_aws
-def test_lambda_handler_2_client_err(mock_get_bucket_name,
-                                     mock_is_bucket_empty, caplog):
+def test_lambda_handler_2_client_err(
+        fact_sales, patch_fixture, mock_s3, caplog):
+    (get_file_ing_bucket, get_pro_bucket,
+     read_csv, write_parquet) = patch_fixture
     """
     Given:
     A ClientError
@@ -83,34 +103,21 @@ def test_lambda_handler_2_client_err(mock_get_bucket_name,
     """
     operation_name = 'UploadPartCopy'
     parsed_response = {'Error': {'Code': '500', 'Message': 'Error Uploading'}}
-    mock_get_bucket_name.return_value = "AHHHHH-bucket"
-    mock_is_bucket_empty.side_effect = ClientError(
+    get_file_ing_bucket.return_value = 'ingestion-bucket', 'sales_order'
+    get_pro_bucket.return_value = "AHHHHH-bucket"
+    write_parquet.side_effect = ClientError(
         parsed_response, operation_name)
-    event = {
-        "Records": [
-            {
-                "s3": {
-                    "bucket": {
-                        "name": "test-bucket"
-                    },
-                    "object": {
-                        "key": "test.csv"
-                    }
-                }
-            }
-        ],
-    }
-    lambda_handler(event, {})
+    lambda_handler({'Records': 'test'}, {})
     assert "A ClientError has occurred" in caplog.text
     assert "ERROR" in caplog.text
 
 
 @pytest.mark.describe("lambda_handler_2")
 @pytest.mark.it("Test handles any other Exceptions")
-@patch('''src.transform_handler2.transform_handler2
-       .get_file_and_ingestion_bucket_name''')
 @mock_aws
-def test_get_table_names_exceptions(mock_gfaibn, caplog):
+def test_other_exceptions(patch_fixture, mock_s3, caplog):
+    (get_file_ing_bucket, get_pro_bucket,
+     read_csv, write_parquet) = patch_fixture
     """
     Given:
     Any other Exceptions
@@ -120,22 +127,8 @@ def test_get_table_names_exceptions(mock_gfaibn, caplog):
     """
 
     with pytest.raises(RuntimeError):
-        mock_gfaibn.side_effect = Exception(
+        get_file_ing_bucket.side_effect = Exception(
             "Something bad has happened ...")
-        event = {
-            "Records": [
-                {
-                    "s3": {
-                        "bucket": {
-                            "name": "test-bucket"
-                        },
-                        "object": {
-                            "key": "test.csv"
-                        }
-                    }
-                }
-            ],
-        }
-        lambda_handler(event, {})
+        lambda_handler({'Records': 'test'}, {})
         assert "Something bad has happened ..." in caplog.text
         assert "ERROR" in caplog.text
