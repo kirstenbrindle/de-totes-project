@@ -5,6 +5,7 @@ import logging
 from botocore.exceptions import ClientError
 from src.load_handler3.get_columns import get_columns
 from src.load_handler3.get_file_and_processed_bucket_name import get_file_and_processed_bucket_name
+# rename for flake8 required
 from src.load_handler3.get_table_name import get_table_name
 from src.load_handler3.read_parquet import read_parquet
 from src.load_handler3.insert_data import insert_data
