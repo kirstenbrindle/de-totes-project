@@ -4,8 +4,8 @@ import json
 import logging
 from botocore.exceptions import ClientError
 from src.load_handler3.get_file_and_bucket import get_file_and_bucket
-from src.load_handler3.get_table_name import get_table_name
-from src.load_handler3.read_and_upload_wh import read_and_upload
+# from src.load_handler3.get_table_name import get_table_name
+from src.load_handler3.read_parquet import read_parquet
 
 secretm = boto3.client("secretsmanager", region_name='eu-west-2')
 secret_file_name = secretm.get_secret_value(
@@ -28,8 +28,8 @@ def lambda_handler(event, context):
         s3 = boto3.client('s3', region_name='eu-west-2')
         bucket_name, file_name = get_file_and_bucket(
             event['Records'])
-        table_name = get_table_name(file_name)
-        read_and_upload(s3, bucket_name, table_name, conn, file_name)
+        # table_name = get_table_name(file_name)
+        read_parquet(s3, bucket_name, file_name)
 
     except ValueError:
         logger.error("Insert value error...")
