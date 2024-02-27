@@ -37,14 +37,14 @@ def mock_bucket_two(mock_s3):
 
 @pytest.mark.describe('get bucket name')
 @pytest.mark.it('test get bucket name return correct name of ingestion bucket')
-def test_get_bucket_name(mock_bucket_one, mock_bucket_two):
+def test_get_bucket_name(mock_bucket_one, mock_bucket_two, mock_s3):
     expected = 'test-bucket-ingestion'
-    result = get_bucket_name()
+    result = get_bucket_name(mock_s3)
     assert result == expected
 
 
 @pytest.mark.describe('get bucket name')
 @pytest.mark.it('''test get bucket name raises error''')
-def test_get_bucket_name_error(mock_bucket_one):
+def test_get_bucket_name_error(mock_bucket_one, mock_s3):
     with pytest.raises(ValueError):
-        get_bucket_name()
+        get_bucket_name(mock_s3)
