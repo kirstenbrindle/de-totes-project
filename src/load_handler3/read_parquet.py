@@ -1,13 +1,12 @@
-import io
 import pandas as pd
-
+import os
 
 def read_parquet(s3, bucket_name, table_name, wh_conn, file_name):
     # read pq file from processed bucket that was triggered and save to df
-    
-    response = s3.get_object(Bucket=bucket_name, Key=file_name)
-    pq_content = response['Body'].read().decode('utf-8')
-    df = pd.read_parquet(io.StringIO(pq_content))
+    print(os.environ["AWS_ACCESS_KEY_ID"])
+    path = f's3://{bucket_name}/{file_name}'
+
+    df = pd.read_parquet(path)
 
     # loads to db and if table exists (which they do) inserts new values
     # do not want the DF index as a table column

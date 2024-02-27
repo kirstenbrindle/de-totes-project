@@ -28,12 +28,10 @@ def lambda_handler(event, context):
     try:
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
-        file_name = get_file_name(event['Records'])
-        new_data = read_parquet(s3, file_name)
-        # table_name = get_table_name(file_name)
-        # cols = get_columns(conn, table_name)
-        # insert_data(conn, table_name, cols, new_data)
-# ^^ DONT THINK WE ACTUALLY NEED THESE THREE STEPS ^^
+        processed_bucket, file_name = get_file_name(event['Records'])
+        # ^^^ adjust func when merged to get bucket also
+        table_name = get_table_name(file_name)
+        read_parquet(s3, processed_bucket, table_name, conn, file_name)
 
     except ValueError:
         logger.error("Insert value error...")
