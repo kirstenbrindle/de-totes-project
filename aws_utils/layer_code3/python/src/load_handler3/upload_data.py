@@ -1,21 +1,24 @@
-import psycopg2
-import pandas as pd
-import numpy as np
-import psycopg2.extras as extras
+from pg8000.native import identifier
+import logging
 
+logger = logging.getLogger('lambda3Logger')
+logger.setLevel(logging.INFO)
 
 def upload_data(conn, table_name, df):
-    tuples = [tuple(x) for x in df.to_numpy()]
-    cols = ','.join(list(df.columns))
+    df_tuples = [tuple(x) for x in df.to_numpy()]
 
-    query = "INSERT INTO %s(%s) VALUES %%s" % (table_name, cols)
-    cursor = conn.cursor()
-    try:
-        extras.execute_values(cursor, query, tuples)
-        conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Error: %s" % error)
-        conn.rollback()
-        cursor.close()
-    print("the dataframe is inserted")
-    cursor.close()
+    cols = ", ".join(df.columns)
+    logger.info(f'Columns: {cols}')
+
+    values = ''
+    for item in df_tuples:
+        if "O\'Keefe" in item:
+            item[2] = 'O''Keefe'
+        values += f"{item}, "
+    values = values[:-2]
+
+    insert_str = f"INSERT INTO {identifier(table_name)} "
+    insert_str += f"({cols}) "
+    insert_str += f"VALUES {values};"
+
+    conn.run(insert_str)
