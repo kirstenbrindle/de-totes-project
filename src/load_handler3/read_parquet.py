@@ -10,4 +10,3 @@ def read_parquet(s3, bucket_name, file_name):
     df = pd.read_parquet(BytesIO(object['Body'].read()))
 
     return df
-
