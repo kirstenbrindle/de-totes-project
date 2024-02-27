@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger('lambda3Logger')
 logger.setLevel(logging.INFO)
-# need to update file!!
+
 def read_and_upload(s3, bucket_name, table_name, wh_conn, file_name):
     try:
         # read pq file from processed bucket that was triggered and save to df
