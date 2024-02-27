@@ -14,7 +14,7 @@ def test_get_file_name_return_bucket_name_from_processed_bucket():
                         "name": "test-bucket"
                     },
                     "object": {
-                        "key": "testtable/currency/2022-2-27+11%00.parquet"
+                        "key": "testtable/currency/2022-2-27+11%3A00.parquet"
                     }
                 }
             }
@@ -36,7 +36,7 @@ def test_get_file_name_returns_correct_processed_file_name():
                         "name": "test-bucket"
                     },
                     "object": {
-                        "key": "testtable/currency/2022-2-27+11%00.parquet"
+                        "key": "testtable/currency/2022-2-27+11%3A00.parquet"
                     }
                 }
             }
