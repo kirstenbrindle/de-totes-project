@@ -8,7 +8,7 @@ def make_fact_sales_order(input_df):
     try:
         df = input_df.copy()
         created_at = df['created_at']
-        created_date = [n.split(' ')[0] for n in created_at]  # '2024-12-25'
+        created_date = [n.split(' ')[0] for n in created_at] #'2024-12-25'
         created_at_time = [t.split(' ')[1] for t in created_at]
         last_updated = df['last_updated']
         last_updated_date = [n.split(' ')[0] for n in last_updated]

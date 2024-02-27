@@ -14,7 +14,7 @@
 
 resource "aws_cloudwatch_event_rule" "scheduler" {
     name_prefix = "${var.lambda1}-"
-    schedule_expression = "rate(5 minutes)"
+    schedule_expression = "rate(2 minutes)"
 }
 
 resource "aws_lambda_permission" "allow_scheduler" {
