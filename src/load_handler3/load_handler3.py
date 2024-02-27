@@ -4,7 +4,8 @@ import json
 import logging
 from botocore.exceptions import ClientError
 from src.load_handler3.get_columns import get_columns
-from src.load_handler3.get_file_name import get_file_name
+from src.load_handler3.get_file_and_processed_bucket_name import get_file_and_processed_bucket_name
+# rename for flake8 required
 from src.load_handler3.get_table_name import get_table_name
 from src.load_handler3.read_parquet import read_parquet
 from src.load_handler3.insert_data import insert_data
@@ -28,10 +29,10 @@ def lambda_handler(event, context):
     try:
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
-        processed_bucket, file_name = get_file_name(event['Records'])
-        # ^^^ adjust func when merged to get bucket also
+        bucket_name, file_name = get_file_and_processed_bucket_name(
+            event['Records'])
         table_name = get_table_name(file_name)
-        read_parquet(s3, processed_bucket, table_name, conn, file_name)
+        read_parquet(s3, bucket_name, table_name, conn, file_name)
 
     except ValueError:
         logger.error("Insert value error...")
