@@ -14,7 +14,9 @@ def upload_data(conn, table_name, df):
     values = ''
     for item in df_tuples:
         if "O\'Keefe" in item:
+            item = list(item)
             item[2] = 'O''Keefe'
+            item = tuple(item)
         values += f"{item}, "
     values = values[:-2]
 

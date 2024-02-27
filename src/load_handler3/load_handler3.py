@@ -33,6 +33,7 @@ def lambda_handler(event, context):
         df = read_parquet(s3, bucket_name, file_name)
         upload_data(conn, table_name, df)
         conn.commit()
+        logger.info(f"Data from {file_name} has successfully been uploaded to data warehouse")
     except ValueError:
         logger.error("Insert value error...")
         # ^^^ subject to change if more ValueErrors pop up^^^
