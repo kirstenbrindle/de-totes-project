@@ -5,7 +5,7 @@ import logging
 from botocore.exceptions import ClientError
 from src.load_handler3.get_file_and_bucket import get_file_and_bucket
 from src.load_handler3.get_table_name import get_table_name
-from load_handler3.read_and_upload_wh import read_and_upload
+from src.load_handler3.read_and_upload_wh import read_and_upload
 
 secretm = boto3.client("secretsmanager", region_name='eu-west-2')
 secret_file_name = secretm.get_secret_value(
