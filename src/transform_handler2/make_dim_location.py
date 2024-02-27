@@ -5,6 +5,20 @@ logger.setLevel(logging.INFO)
 
 
 def make_dim_location(input_df):
+    """
+    This function takes a dataframe of address.\n
+    Renames `address_id` column to `location_id`\n
+    and returns filtered dataframe with columns\n
+    `location_id`, `address_line_1`, `address_line_2`,\n
+    `district`, `city`, `postal_code`, `country`, `phone`.
+
+    Args:
+    `input_df`: address dataframe
+    ---------------------------
+
+    Returns:
+    Formatted dataframe.
+    """
     try:
         df = input_df.copy()
         df.rename(columns={"address_id": "location_id"}, inplace=True)

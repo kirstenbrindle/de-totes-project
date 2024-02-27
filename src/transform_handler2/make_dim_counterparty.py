@@ -2,10 +2,24 @@ import pandas as pd
 
 
 def make_dim_counterparty(input_df1, input_df2):
-    '''takes 2 dataframes of counterparty and address
-    renames columns to appropriate end table column names
-    joins on address id - called legal_address_id in counterparty
-    returns new dataframe'''
+    """
+    This function takes 2 dataframes of counterparty \n
+    and address as input \n
+    joins dataframes on address_id and renames \n
+    columns to appropriaye end table column names \n
+    and returns single formatted dataframe.
+
+    Args:
+    `input_df1`: address dataframe
+    `input_df2`: counterparty dataframe
+    ---------------------------
+
+    Returns:
+    Formatted dataframe
+
+    Errors:
+    Raises no errors.
+    """
     df2 = input_df2.copy()
     df1 = input_df1.copy()
     df2.rename(columns={"address_id": "legal_address_id"}, inplace=True)
