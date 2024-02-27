@@ -1,4 +1,4 @@
-from load_handler3.get_file_and_bucket import (
+from src.load_handler3.get_file_and_bucket import (
     get_file_and_bucket)
 import pytest
 
