@@ -56,9 +56,41 @@ This lamba handler utilises the following util functions:
 - format_data
 - write_csv
 
+## Lambda 2
+
+### Description
+This lambda handler is triggered by an update to the ingestion bucket. The lambda handler reads the most recent file in the ingestion bucket and converts the file from csv to a dataframe. The lambda handler then transforms the data to the desired format and writes the transformed dataframe to a parquet file in each invocation and saves this to an s3 bucket (organised in sub-folders for each table).
+
+### Util functions
+This lamba handler utilises the following util functions:
+- get_bucket_name_2
+- get_file_and_ingestion_bucket_name
+- get_most_recent_file_2
+- make_dim_counterparty
+- make_dim_currency
+- make_dim_date
+- make_dim_design
+- make_dim_location
+- make_dim_staff
+- make_fact_sales_order
+- read_csv_to_df
+- transform_handler2
+- write_to_parquet
+
+## Lambda 3
+
+### Description
+This lambda handler is triggered by an update to the processed bucket. The lambda handler reads the most recent parquet file in the processed bucket and **?inserts data into data warehouse?**
+
+### Util functions
+This lamba handler utilises the following util functions:
+- read_parquet
+- get_file_and_processed_bucket_name
+- get_table_name
+- insert_data
+
+
 ### Deployment
 All required AWS infrastructure is deployed via Terraform (except for the aforementioned tf state bucket and SNS topic).
 
 The deployment is automated via a CI/CD pipeline carried out with GitHub Actions.
-
-<!-- Update throughout -->

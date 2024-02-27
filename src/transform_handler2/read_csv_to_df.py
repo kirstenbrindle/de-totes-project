@@ -10,7 +10,7 @@ def read_csv_to_df(s3, bucket_name, file_name):
     """
 This function reads a csv file and returns the contents as a dataframe.
 
-Arg:
+Args:
 
 `file_name`: string of the csv file name
 
@@ -18,6 +18,12 @@ Arg:
 Returns:
 
 `dataframe`: a dataframe
+
+Raises:
+`TypeError`
+`FileNotFoundError`
+`Exception`
+
 
 
 """

@@ -5,10 +5,23 @@ logger.setLevel(logging.INFO)
 
 
 def make_fact_sales_order(input_df):
+    """
+    This function takes a dataframe of sales_order,\n
+    splits columns `created_at` and `last_updated`\n
+    into columns `created_date`, `created_time`, `last_updated_date`,\n
+    `last_updated_time` and returns filtered dataframe.
+
+    Args:
+    `input_df`: sales_order dataframe
+    ---------------------------
+
+    Returns:
+    Formatted dataframe.
+    """
     try:
         df = input_df.copy()
         created_at = df['created_at']
-        created_date = [n.split(' ')[0] for n in created_at]  # '2024-12-25'
+        created_date = [n.split(' ')[0] for n in created_at]
         created_at_time = [t.split(' ')[1] for t in created_at]
         last_updated = df['last_updated']
         last_updated_date = [n.split(' ')[0] for n in last_updated]
