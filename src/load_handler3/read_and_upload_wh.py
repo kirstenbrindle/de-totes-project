@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 
-def read_parquet(s3, bucket_name, table_name, wh_conn, file_name):
+
+def read_and_upload(s3, bucket_name, table_name, wh_conn, file_name):
     # read pq file from processed bucket that was triggered and save to df
     print(os.environ["AWS_ACCESS_KEY_ID"])
     path = f's3://{bucket_name}/{file_name}'
