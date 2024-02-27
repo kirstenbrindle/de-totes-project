@@ -1,5 +1,5 @@
-from src.load_handler3.get_file_and_processed_bucket_name import (
-    get_file_and_processed_bucket_name)
+from load_handler3.get_file_and_bucket import (
+    get_file_and_bucket)
 import pytest
 
 
@@ -21,7 +21,7 @@ def test_get_file_name_return_bucket_name_from_processed_bucket():
         ],
     }
     expected = 'test-bucket'
-    result = get_file_and_processed_bucket_name(event['Records'])
+    result = get_file_and_bucket(event['Records'])
     assert result[0] == expected
 
 
@@ -43,5 +43,5 @@ def test_get_file_name_returns_correct_processed_file_name():
         ],
     }
     expected = 'testtable/currency/2022-2-27 11:00.parquet'
-    result = get_file_and_processed_bucket_name(event['Records'])
+    result = get_file_and_bucket(event['Records'])
     assert result[1] == expected

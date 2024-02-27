@@ -1,6 +1,4 @@
-
-
-def get_file_and_processed_bucket_name(records):
+def get_file_and_bucket(records):
     """
      This function extracts the bucket name and\n
      object from the records\n

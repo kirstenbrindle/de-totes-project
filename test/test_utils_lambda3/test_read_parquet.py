@@ -52,7 +52,8 @@
 # def test_reads_method_is_invoked(mock_s3, mock_bucket, db_conn):
 #     mock_s3.upload_file('test/test_parquet_file/test-pq.parquet',
 #                         'test-bucket', 'test/test-pq.parquet')
-#     read_parquet(mock_s3, 'test-bucket', 'test_currency', db_conn, 'test/test-pq.parquet')
+#     read_parquet(mock_s3, 'test-bucket',
+# 'test_currency', db_conn, 'test/test-pq.parquet')
 #     query = db_conn.run('SELECT * FROM test_currency')
 #     assert query == [[1, 'GBP', 'British pound sterling'],
 #                      [2, 'USD', 'United States dollar'],
