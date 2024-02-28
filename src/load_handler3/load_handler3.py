@@ -32,14 +32,15 @@ def lambda_handler(event, context):
         table_name = get_table_name(file_name)
         df = read_parquet(s3, bucket_name, file_name)
         upload_data(conn, table_name, df)
-        conn.commit()
-        logger.info(f"Data from {file_name} has successfully been uploaded to data warehouse")
+        logger.info(
+            f"Data from {file_name} has successfully been "
+            "uploaded to data warehouse")
     except ValueError:
-        logger.error("Insert value error...")
+        logger.error("There is no processed bucket...")
         # ^^^ subject to change if more ValueErrors pop up^^^
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchBucket':
-            logger.error('UPDATED WITH SOME CLIENT ERROR')
+            logger.error("There is no bucket...")
         else:
             logger.info(c)
             logger.error("A ClientError has occurred")
