@@ -5,7 +5,6 @@ def get_file_and_ingestion_bucket_name(records):
 
     Args:
         `records`: new events.
-        
     ---------------------------
 
     Returns:
