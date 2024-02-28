@@ -19,6 +19,9 @@ def test_returns_a_dataframe():
         'currency_name': ['British pound sterling',
                           'United States dollar',
                           'Euro'],
+        'last_updated': ['2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962']
     }
     row_labels = [1, 2, 3]
     df = pd.DataFrame(data=data, index=row_labels)
@@ -110,6 +113,9 @@ def test_returns_correct_column_types():
         'currency_code': ['ABC', 'DEF', 'GHI'],
         'rubbish3': ['1', '2', '3'],
         'rubbish4': ['ABC', 'DEF', 'GHI'],
+        'last_updated': ['2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962']
     }
     row_labels = [1, 2, 3]
     df = pd.DataFrame(data=data, index=row_labels)

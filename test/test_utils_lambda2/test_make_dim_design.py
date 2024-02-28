@@ -57,10 +57,12 @@ def test_returns_the_correct_columns_only():
         'design_name': ['a', 'b', 'c'],
         'file_location': ['a', 'b', 'c'],
         'file_name': ['a', 'b', 'c'],
-        'last_updated_date': ['2024-02-27', '2024-02-27', '2024-02-27'],
+        'last_updated_date': ['2022-11-03', '2022-11-03', '2022-11-03'],
         'last_updated_time': ['14:20:49.962', '14:20:49.962', '14:20:49.962']
     }
     row_labels = [1, 2, 3]
     expected_df = pd.DataFrame(data=expected, index=row_labels)
     result = make_dim_design(df)
+    print(expected_df, "<<<<<---expected")
+    print(result, "<<<<<--- result")
     assert result.equals(expected_df)

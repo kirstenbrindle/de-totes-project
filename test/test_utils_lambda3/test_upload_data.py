@@ -5,14 +5,14 @@ import pandas as pd
 
 
 @pytest.mark.describe("upload_data")
-@pytest.mark.it("test uploads data with mock db_conn")
-def test_uploads_data_into_test_db():
+@pytest.mark.it("test uses correct SQL query")
+def test_uploads_data_sql_query():
     """
     Given:
-    an s3 connection, table name and dataframe
+    A dataframe, table and connection.
 
     Returns:
-    Check correct run query is called to insert
+    Assertion of being called with correct query.
     """
     mock_conn = Mock()
     data = {
