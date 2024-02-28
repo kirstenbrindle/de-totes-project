@@ -25,7 +25,7 @@ def test_returns_correct_columns():
 def test_returns_correct_column_types():
     columns_int = ['year', 'month', 'day',
                    'day_of_week', 'quarter']
-    columns_varchar = ['day_name', 'month_name','date_id']
+    columns_varchar = ['day_name', 'month_name', 'date_id']
     result = make_dim_date(start='2022-11-01', end='2032-12-31')
     types = result.dtypes
     for col in columns_int:
@@ -34,21 +34,19 @@ def test_returns_correct_column_types():
         assert types[col] == 'object'
 
 
-
 @pytest.mark.describe("make_dim_date")
 @pytest.mark.it("Test returns correct contents")
 def test_returns_correct_contents():
 
     result = make_dim_date(start='2024-02-27', end='2024-02-27')
-    expected = {'date_id':[datetime.date(2024,2,27)],
-                'year':[2024], 
-                'month':[2],
-                'day':[27],
-                'day_of_week':[1],
-                'day_name':['Tuesday'],
-                'month_name':['February'],
-                'quarter':[1]}
-    
-    expected_df=pd.DataFrame(data=expected)
+    expected = {'date_id': [datetime.date(2024, 2, 27)],
+                'year': [2024],
+                'month': [2],
+                'day': [27],
+                'day_of_week': [1],
+                'day_name': ['Tuesday'],
+                'month_name': ['February'],
+                'quarter': [1]}
+
+    expected_df = pd.DataFrame(data=expected)
     assert result['date_id'].equals(expected_df['date_id'])
-   

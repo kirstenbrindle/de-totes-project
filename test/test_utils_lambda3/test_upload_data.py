@@ -18,4 +18,6 @@ def test_uploads_data_into_test_db():
     test_df = pd.DataFrame(data=data, index=row_labels)
     upload_data(mock_conn, 'test_currency', test_df)
     mock_conn.run.assert_called_with(
-        "INSERT INTO test_currency (currency_id, currency_code, currency_name) VALUES (1, 'GBP', 'British pound sterling'), (2, 'USD', 'United States dollar');")
+        "INSERT INTO test_currency (currency_id, currency_code, "
+        "currency_name) VALUES (1, 'GBP', 'British pound sterling'), "
+        "(2, 'USD', 'United States dollar');")

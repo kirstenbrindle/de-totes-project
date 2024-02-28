@@ -1,10 +1,9 @@
-import boto3
 import re
 
 
 def get_bucket_name(s3):
     """
-    This function takes an s3 connection \n
+    This function takes an s3 connection
     and returns ingestion bucket name.
 
     Args:
@@ -16,8 +15,7 @@ def get_bucket_name(s3):
 
     Errors:
         Raises ValueError if no bucket name.
-
-"""
+    """
     response = s3.list_buckets()
     bucket_list = [bucket['Name'] for bucket in response['Buckets']]
     matching_string = ''

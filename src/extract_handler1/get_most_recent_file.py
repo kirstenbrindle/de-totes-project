@@ -5,27 +5,20 @@ logger.setLevel(logging.INFO)
 
 
 def get_most_recent_file(s3, bucket_name, table_name):
-    '''
-    Get_most_recent_file function takes aws connection \n
-    and folder name as arguments and returns most recently updated \n
+    """
+    Get_most_recent_file function takes aws connection
+    and folder name as arguments and returns most recently updated
     file name in s3 bucket folder as output.
 
-    Arguments: conn (Aws connection) table_name(folder within s3 bucket).
-    '''
-    """
-     Get_most_recent_file function takes aws connection
-     and folder name as arguments and returns most recently updated
-     file name in s3 bucket folder as output.
-
-     Args:
+    Args:
         `s3` aws connection.
         `bucket_name` name of the bucket you want to access.
         `table_name` this is the name of the folder the files are in.
+    ---------------------------
 
-     ---------------------------
-     Returns:
+    Returns:
         The name of the file last uploaded to aws.
-     """
+    """
 
     try:
         objects_list = s3.list_objects_v2(
