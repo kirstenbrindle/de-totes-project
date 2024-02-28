@@ -36,9 +36,17 @@ def mock_bucket_two(mock_s3):
 
 
 @pytest.mark.describe('get bucket name')
-@pytest.mark.it('test get bucket name return correct name of processed bucket')
+@pytest.mark.it('test get bucket name returns correct '
+                'name of processed bucket')
 @mock_aws
 def test_get_bucket_name(mock_bucket_one, mock_bucket_two, mock_s3):
+    """
+    Given:
+    an s3 connection
+
+    Returns:
+    Correct bucket name for the processed bucket
+    """
     expected = 'test-bucket-processed'
     result = get_bucket_name_2(mock_s3)
     assert result == expected
@@ -48,5 +56,12 @@ def test_get_bucket_name(mock_bucket_one, mock_bucket_two, mock_s3):
 @pytest.mark.it('''test get bucket name raises error''')
 @mock_aws
 def test_get_bucket_name_error(mock_bucket_one, mock_s3):
+    """
+    Given:
+    an s3 connection
+
+    Returns:
+    ValueError when bucket name with "processed" in it cannot be found
+    """
     with pytest.raises(ValueError):
         get_bucket_name_2(mock_s3)

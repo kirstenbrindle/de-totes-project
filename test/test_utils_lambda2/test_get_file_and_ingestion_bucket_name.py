@@ -3,9 +3,16 @@ from src.transform_handler2.get_file_and_ingestion_bucket_name import (
 import pytest
 
 
-@pytest.mark.describe("get_the_file_name")
+@pytest.mark.describe("get_file_and_ingestion_bucket_name")
 @pytest.mark.it("Test returns correct bucket name")
-def test_get_file_name_return_bucket_name():
+def test_get_file_bucket_returns_bucket_name():
+    """
+    Given:
+    the Records key from an AWS lambda event
+
+    Returns:
+    Correct bucket name associated with the event
+    """
     event = {
         "Records": [
             {
@@ -25,9 +32,16 @@ def test_get_file_name_return_bucket_name():
     assert result[0] == expected
 
 
-@pytest.mark.describe("get_the_file_name")
+@pytest.mark.describe("get_file_and_ingestion_bucket_name")
 @pytest.mark.it("Test returns correct file name")
-def test_get_file_name_return_correct_file_name():
+def test_get_file_bucket_returns_correct_file_name():
+    """
+    Given:
+    the Records key from an AWS lambda event
+
+    Returns:
+    Correct file name that triggered the event
+    """
     event = {
         "Records": [
             {
