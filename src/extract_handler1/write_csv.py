@@ -5,10 +5,18 @@ import io
 
 def write_csv(table_name, bucket, s3, data):
     """
-    -> takes the output of SQL query
-    -> write to .csv file with file name of "{tableName}-datetime.now()"
-    -> uploads csv file to S3 ingestion bucket in folder/file format
-    """
+     This function takes data from an sql query and writes it to csv.
+
+     Args:
+        `table_name` the name of the table the data is from
+        `bucket` the name of the s3 bucket to write to
+        `s3` the aws connection
+        `data` the data from the query
+
+     ---------------------------
+     Returns:
+        no return
+     """
 
     # the file name
     current_dateTime = datetime.now()
