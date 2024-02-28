@@ -29,7 +29,9 @@ def make_fact_sales_order(input_df):
         df.rename(columns={'staff_id': 'sales_staff_id'}, inplace=True)
         df.rename(columns={'design_id': 'design_record_id'}, inplace=True)
         df.rename(columns={'currency_id': 'currency_record_id'}, inplace=True)
-        df.rename(columns={'counterparty_id': 'counterparty_record_id'}, inplace=True)
+        df.rename(
+            columns={'counterparty_id':
+                     'counterparty_record_id'}, inplace=True)
         df['created_date'] = created_date
         df['created_time'] = created_at_time
         df['last_updated_date'] = last_updated_date
@@ -49,4 +51,3 @@ def make_fact_sales_order(input_df):
     except Exception as e:
         logger.info("something has gone wrong in the make_fact_sales_order.py")
         logger.warning(e)
-

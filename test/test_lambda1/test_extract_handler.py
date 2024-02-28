@@ -20,7 +20,7 @@ def aws_credentials():
 def patch_fixture():
     with patch("src.extract_handler1.extract_handler1.get_table_names")\
         as mock_get_table_names, \
-         patch("src.extract_handler1.extract_handler1.is_bucket_empty")\
+        patch("src.extract_handler1.extract_handler1.is_bucket_empty")\
             as mock_is_bucket_empty, \
          patch("src.extract_handler1.extract_handler1.get_bucket_name")\
             as mock_get_bucket_name, \
@@ -40,9 +40,10 @@ def s3(aws_credentials):
 @pytest.mark.describe("lambda_handler")
 @pytest.mark.it("""Test lambda_handler invokes
                 get_table_names""")
-@patch("src.extract_handler1.extract_handler1.get_table_names")
 @mock_aws
-def test_lambda_handler_invokes_get_table_names(mock_get_table_names):
+def test_lambda_handler_invokes_get_table_names(patch_fixture):
+    (mock_get_table_names, mock_is_bucket_empty,
+     mock_get_bucket_name, mock_L1_extract_data) = patch_fixture
     assert mock_get_table_names.call_count == 0
     lambda_handler({}, {})
     assert mock_get_table_names.call_count == 1

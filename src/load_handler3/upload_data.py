@@ -1,12 +1,11 @@
 from pg8000.native import identifier
 import logging
-import pandas as pd
 
 logger = logging.getLogger('lambda3Logger')
 logger.setLevel(logging.INFO)
 
 
-def upload_data(conn, table_name, df):
+def upload_data(conn, table_name, input_df):
     """
     This function takes extracted file data from read_parquet,
     transforms to suitable SQL format and inputs
@@ -23,10 +22,12 @@ def upload_data(conn, table_name, df):
     """
     try:
         input_df.fillna(value='NULL', inplace=True)
-        df1 = input_df.replace("Democratic People\'s Republic of Korea", 'Democratic People''s Republic of Korea')
-        df2 = df1.replace("O\'Keefe",'O''Keefe')
-        df = df2.replace("irving.o\'keefe@terrifictotes.com",'irving.o''keefe@terrifictotes.com')
-        # df = input_df.replace("\'", "''", regex=True)
+        df1 = input_df.replace(
+            "Democratic People\'s Republic of Korea",
+            'Democratic People''s Republic of Korea')
+        df2 = df1.replace("O\'Keefe", 'O''Keefe')
+        df = df2.replace("irving.o\'keefe@terrifictotes.com",
+                         'irving.o''keefe@terrifictotes.com')
         df_tuples = [tuple(x) for x in df.to_numpy()]
         cols = ", ".join(df.columns)
         logger.info(f'Columns: {cols}')
@@ -44,4 +45,5 @@ def upload_data(conn, table_name, df):
         conn.run('COMMIT')
     except Exception as e:
         logger.error(e)
-        logger.warning(f'Something has gone wrong in upload_data.py with {table_name}')
+        logger.warning(
+            f'Something has gone wrong in upload_data.py with {table_name}')

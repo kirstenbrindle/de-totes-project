@@ -14,7 +14,7 @@ def test_returns_a_dataframe():
     A dataframe
     """
     data = {
-        'location_id': [1, 2, 3],
+        'address_id': [1, 2, 3],
         'address_line_1': ['a', 'b', 'c'],
         'address_line_2': ['a', 'b', 'c'],
         'district': ['a', 'b', 'c'],
@@ -67,7 +67,7 @@ def test_returns_the_correct_columns_only():
         'postal_code': ['a', 'b', 'c'],
         'country': ['a', 'b', 'c'],
         'phone': ['a', 'b', 'c'],
-        'last_updated_date': ['2024-02-27', '2024-02-27', '2024-02-27'],
+        'last_updated_date': ['2022-11-03', '2022-11-03', '2022-11-03'],
         'last_updated_time': ['14:20:49.962', '14:20:49.962', '14:20:49.962']
     }
     row_labels = [1, 2, 3]
