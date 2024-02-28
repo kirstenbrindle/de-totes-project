@@ -14,7 +14,7 @@ def upload_data(conn, table_name, input_df):
     Args:
         `conn`: connection to warehouse database
         `table_name`: table for data input
-        `df`: data for input
+        `df`: dataframe for input
     ---------------------------
 
     Returns:
