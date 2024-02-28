@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
+
 def make_dim_date(start='2022-11-01', end='2032-12-31'):
     """
     This function takes 2 strings as default date values
@@ -31,7 +32,7 @@ def make_dim_date(start='2022-11-01', end='2032-12-31'):
     dim_date_df["quarter"] = dim_date_df.date_id.dt.quarter
     date_time = dim_date_df["date_id"]
 
-    date=[str(n).split(' ')[0] for n in date_time]
+    date = [str(n).split(' ')[0] for n in date_time]
     dim_date_df["date_id"] = date
 
     dim_date_df['last_updated'] = str(datetime.now())
@@ -42,4 +43,3 @@ def make_dim_date(start='2022-11-01', end='2032-12-31'):
     dim_date_df['last_updated_time'] = last_updated_at_time
     dim_date_df.drop(columns=['last_updated'], inplace=True)
     return dim_date_df
-

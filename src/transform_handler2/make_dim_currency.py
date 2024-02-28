@@ -25,5 +25,7 @@ def make_dim_currency(input_df):
     df['last_updated_date'] = last_updated_date
     df['last_updated_time'] = last_updated_at_time
     df['currency_record_id'] = df['currency_id']
-    dim_currency_df = df[['currency_record_id','currency_id', 'currency_code', 'currency_name', 'last_updated_date', 'last_updated_time']]
+    dim_currency_df = df[['currency_record_id', 'currency_id',
+                          'currency_code', 'currency_name',
+                          'last_updated_date', 'last_updated_time']]
     return dim_currency_df

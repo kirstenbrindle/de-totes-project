@@ -1,5 +1,5 @@
 from src.load_handler3.upload_data import upload_data
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 import pytest
 import pandas as pd
 
@@ -24,8 +24,8 @@ def test_uploads_data_sql_query():
     row_labels = [0, 1]
     test_df = pd.DataFrame(data=data, index=row_labels)
     upload_data(mock_conn, 'test_currency', test_df)
-    mock_conn.run.assert_called_with(
-        "INSERT INTO test_currency "
-        "(currency_id, currency_code, currency_name) "
-        "VALUES (1, 'GBP', 'British pound sterling'), "
-        "(2, 'USD', 'United States dollar');")
+    calls = [call("INSERT INTO test_currency "
+                  "(currency_id, currency_code, currency_name) "
+                  "VALUES (1, 'GBP', 'British pound sterling'), "
+                  "(2, 'USD', 'United States dollar');"), call('COMMIT')]
+    mock_conn.run.assert_has_calls(calls)

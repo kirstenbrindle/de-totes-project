@@ -53,9 +53,9 @@ def lambda_handler(event, context):
         logger.info(
             f"Data from {file_name} has successfully been "
             "uploaded to data warehouse")
-        
-    except ValueError:
-        logger.error("There is no processed bucket...")
+
+    except ValueError as v:
+        logger.error(v)
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchBucket':
             logger.error("There is no bucket...")
