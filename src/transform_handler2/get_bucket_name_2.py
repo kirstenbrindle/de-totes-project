@@ -3,7 +3,7 @@ import re
 
 def get_bucket_name_2(s3):
     """
-    This function takes an s3 connection \n
+    This function takes an s3 connection
     and returns processed bucket name.
 
     Args:

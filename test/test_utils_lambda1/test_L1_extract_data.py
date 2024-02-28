@@ -25,12 +25,14 @@ def aws_credentials():
 
 @pytest.fixture
 def mock_s3(aws_credentials):
+    """Mocked S3 connection using mock credentials"""
     with mock_aws():
         yield boto3.client("s3", region_name='eu-west-2')
 
 
 @pytest.fixture
 def mock_bucket(mock_s3):
+    """Mocked S3 bucket"""
     mock_s3.create_bucket(
         Bucket='test-bucket',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'})
@@ -40,7 +42,12 @@ def mock_bucket(mock_s3):
 @pytest.mark.it("Test L1_extract_data select * from table if boolean is True")
 def test_L1_extract_data_runs_correct_query_if_boolean_true():
     """
-    checks select query is correct if boolean is true.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    Select all SQL query is called if bucket is empty
     """
     mock_conn = MagicMock()
     mock_s3 = Mock()
@@ -54,7 +61,12 @@ def test_L1_extract_data_runs_correct_query_if_boolean_true():
 @patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_invokes_get_most_recent_if_false(mock_recent_file):
     """
-    checks get_most_recent_file function is invoked if boolean is false.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    get_most_recent_file is invoked if bucket is not empty
     """
     mock_conn = MagicMock()
     mock_s3 = Mock()
@@ -71,7 +83,12 @@ def test_L1_extract_data_invokes_get_most_recent_if_false(mock_recent_file):
 @patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_invokes_get_timestamp_if_false(mock_gmrf, mock_gts):
     """
-    checks get_timestamp function is invoked if boolean is false.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    get_timestamp is invoked if bucket is not empty
     """
     mock_conn = MagicMock()
     mock_s3 = Mock()
@@ -89,7 +106,12 @@ def test_L1_extract_data_invokes_get_timestamp_if_false(mock_gmrf, mock_gts):
 @patch("src.extract_handler1.L1_extract_data.get_most_recent_file")
 def test_L1_extract_data_runs_correct_query_if_false(mock_gmrf, mock_gts):
     """
-    checks select query is correct if boolean is false.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    Checks if SQL query is correct if bucket is not empty
     """
     mock_conn = MagicMock()
     mock_s3 = MagicMock()
@@ -107,7 +129,12 @@ def test_L1_extract_data_runs_correct_query_if_false(mock_gmrf, mock_gts):
 @patch("src.extract_handler1.L1_extract_data.format_data")
 def test_L1_invokes_format_data_if_false(mock_fd, mock_gmrf, mock_gts):
     """
-    checks format_data function is invoked if boolean is false.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    format_data is invoked if bucket is not empty
     """
     mock_conn = MagicMock()
     mock_s3 = MagicMock()
@@ -138,7 +165,12 @@ def test_L1_invokes_format_data_if_false(mock_fd, mock_gmrf, mock_gts):
 def test_L1_extract_data_writes_csv_file_to_s3_bucket(
         mock_fd, mock_gmrf, mock_gts, mock_s3, mock_bucket):
     """
-    checks it writes file to s3 bucket with mocks.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    file correctly written to S3 bucket
     """
     mock_conn = MagicMock()
     objects_list_before = mock_s3.list_objects_v2(
@@ -157,7 +189,12 @@ def test_L1_extract_data_writes_csv_file_to_s3_bucket(
 @mock_aws
 def test_L1_extract_data_test_database_false(mock_s3, mock_bucket):
     """
-    checks writes file from test database to mock s3 bucket if boolean false.
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
+
+    Returns:
+    file correctly written to S3 bucket from test database if boolean is false
     """
     mock_conn = MagicMock()
     mock_s3.put_object(
@@ -189,9 +226,14 @@ def test_L1_extract_data_does_not_write(mock_get_timestamp,
                                         mock_get_most_recent_file,
                                         mock_s3, mock_bucket):
     """
-    checks writes file from test database to mock s3 bucket if boolean false.
-    """
+    Given:
+    Database connection, S3 connection, table_name,
+    boolean (if bucket is empty) and bucket_name
 
+    Returns:
+    file not written to S3 bucket from test database if
+    boolean is false and no new file created
+    """
     mock_conn = MagicMock()
     mock_conn.run.return_value = []
     objects_list_before = mock_s3.list_objects_v2(

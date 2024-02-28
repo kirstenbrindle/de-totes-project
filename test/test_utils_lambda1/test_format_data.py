@@ -8,7 +8,7 @@ import pytest
 def test_format_data_returns_formatted_single_row():
     """
     Given:
-    a single row from payment_type table once L1_extract_data is invoked
+    A single row from payment_type table once L1_extract_data is invoked
 
     Returns:
     List of dictionaries with column names(keys)
@@ -32,7 +32,7 @@ def test_format_data_returns_formatted_single_row():
 def test_format_data_returns_formatted_multiple_rows():
     """
     Given:
-    rows from payment_type table once L1_extract_data is invoked
+    Multiple rows from payment_type table once L1_extract_data is invoked
 
     Returns:
     List of dictionaries with column names(keys)

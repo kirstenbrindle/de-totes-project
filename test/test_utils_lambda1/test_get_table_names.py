@@ -11,7 +11,7 @@ def test_correct_table_names_are_returned():
     a database connection
 
     Returns:
-    list of table names in that database.
+    list of all table names in given database
     """
     mock_conn = MagicMock()
     mock_conn.run.return_value = [
