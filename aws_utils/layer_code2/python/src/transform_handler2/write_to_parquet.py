@@ -9,6 +9,20 @@ logger.setLevel(logging.INFO)
 
 
 def write_to_parquet(s3_client, bucket_name, olap_table, data):
+    """
+    This function takes a dataframe and rewrites
+    the dataframe to the s3 processed bucket as a parquet file.
+
+    Args:
+        `s3_client`: s3 client connection
+        `bucket_name`: s3 bucket_name
+        `olap_table`: table name
+        `data`: dataframe
+    ---------------------------
+
+    Returns:
+        No return value.
+    """
     table = pa.Table.from_pandas(data)
     file = io.BytesIO()
     papq.write_table(table, file)
@@ -17,14 +31,3 @@ def write_to_parquet(s3_client, bucket_name, olap_table, data):
         Body=file.getvalue(),
         Key=f'{olap_table}/{olap_table}-{datetime.now()}.parquet'
     )
-
-
-'''
-takes 4 arguments:
-the s3 conenction,
-the name of the bucket you want it to save in,
-the name of the OLAP table the new data is for
-and the dataframe as a variable
-
-converts
-'''
