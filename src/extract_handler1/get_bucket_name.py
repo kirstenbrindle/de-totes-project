@@ -8,14 +8,14 @@ def get_bucket_name(s3):
     and returns ingestion bucket name.
 
     Args:
-    `s3`: s3 client connection
+        `s3`: s3 client connection
     ---------------------------
 
     Returns:
-    String of ingestion bucket name.
+        String of ingestion bucket name.
 
     Errors:
-    Raises ValueError if no bucket name.
+        Raises ValueError if no bucket name.
 
 """
     response = s3.list_buckets()

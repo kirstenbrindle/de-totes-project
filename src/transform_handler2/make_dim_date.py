@@ -35,4 +35,4 @@ def make_dim_date(start='2022-11-01', end='2032-12-31'):
     return dim_date_df
 
 
-#str(n).split(' ')[0]
+# str(n).split(' ')[0]

@@ -11,14 +11,12 @@ def get_timestamp(latest_file: str) -> str:
 
     Args:
 
-    `latest_file`: string of the file name
+        `latest_file`: string of the file name
 
     ---------------------------
     Returns:
 
-    `timestamp`: a string of the timestamp in the file name
-
-
+        `timestamp`: a string of the timestamp in the file name
     """
     try:
         split_file = latest_file.split("-", 1)

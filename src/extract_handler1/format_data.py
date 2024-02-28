@@ -1,14 +1,18 @@
 
 def format_data(rows, column_names):
     """
+    This function pairs data with its column name.
+
     Args:
-    takes a tuple of lists (the result of the SELECT
-    query) as the first argument.
-    takes a list of column names as the second argument.
+    `   rows` a tuple of lists (the result of the SELECT
+        query)..
+        `column_names` a list of column names as the second argument.
+    ---------------------------
 
     Returns:
-    List of dictionaries containing rows of data with column
-    titles as keys.
+        List of dictionaries containing rows of data with column
+        titles as keys.
+
     """
     if isinstance(rows, list):
         rows_list = [list(rows)]

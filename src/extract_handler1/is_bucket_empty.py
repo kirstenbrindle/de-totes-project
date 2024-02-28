@@ -8,8 +8,7 @@ def is_bucket_empty(bucket_name, s3):
 
     ---------------------------
     Returns:
-
-    `boolean`: True if bucket is empty, false otherwise
+        `boolean`: True if bucket is empty, false otherwise
 
 
     """
