@@ -3,22 +3,22 @@ import pandas as pd
 
 def make_dim_counterparty(input_df1, input_df2):
     """
-    This function takes 2 dataframes of counterparty \n
-    and address as input \n
-    joins dataframes on address_id and renames \n
-    columns to appropriaye end table column names \n
+    This function takes 2 dataframes of counterparty
+    and address as input.
+    Joins dataframes on address_id and renames
+    columns to appropriate end table column names
     and returns single formatted dataframe.
 
     Args:
-    `input_df1`: address dataframe
-    `input_df2`: counterparty dataframe
+        `input_df1`: address dataframe
+        `input_df2`: counterparty dataframe
     ---------------------------
 
     Returns:
-    Formatted dataframe
+        Formatted dataframe
 
     Errors:
-    Raises no errors.
+        Raises no errors.
     """
     df2 = input_df2.copy()
     df1 = input_df1.copy()

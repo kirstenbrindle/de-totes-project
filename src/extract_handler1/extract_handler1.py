@@ -27,15 +27,14 @@ def lambda_handler(event, context):
 
     Args:
         event: takes an aws event
-
     ---------------------------
+
     Returns:
         nothing
 
     Raises:
         RuntimeError: An unexpected error occurred in execution. Other errors
         result in an informative log message.
-
     """
     try:
         conn = Connection(**secrets_dict)
@@ -48,7 +47,6 @@ def lambda_handler(event, context):
 
     except ValueError:
         logger.error("There is no ingestion bucket ...")
-        # ^^^ subject to change if more ValueErrors pop up^^^
 
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchBucket':

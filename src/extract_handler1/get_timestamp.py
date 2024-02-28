@@ -7,15 +7,13 @@ logger.setLevel(logging.INFO)
 def get_timestamp(latest_file: str) -> str:
     """
     This function takes the file name of the most recent file in a bucket \n
-    sub-folder and reutrns the timestamp contained in the file name.
+    sub-folder and returns the timestamp contained in the file name.
 
     Args:
-
         `latest_file`: string of the file name
-
     ---------------------------
-    Returns:
 
+    Returns:
         `timestamp`: a string of the timestamp in the file name
     """
     try:

@@ -9,7 +9,6 @@ def get_table_names(conn):
     Returns:
         `table_names`: a List of table names sorted in alphabetical \n
         order.
-
     """
 
     query = conn.run("SELECT table_name "
