@@ -40,6 +40,13 @@ def mock_bucket(mock_s3):
 @mock_aws
 @patch("src.transform_handler2.read_csv_to_df.pd")
 def test_reads_method_is_invoked(mock_pd, mock_s3, mock_bucket):
+    """
+    Given:
+    A s3 connection, ingestion bucket name and existing csv file
+
+    Returns:
+    A dataframe. Check pandas read method is invoked using a mock.
+    """
     assert mock_pd.read_csv.call_count == 0
     mock_s3.upload_file('test/test_csv_files/test1.csv',
                         'test-bucket', 'test/test1.csv')
@@ -51,6 +58,13 @@ def test_reads_method_is_invoked(mock_pd, mock_s3, mock_bucket):
 @pytest.mark.it("test pandas returns dataframe with file contents")
 @mock_aws
 def test_returns_dataframe(mock_s3, mock_bucket):
+    """
+    Given:
+    A s3 connection, ingestion bucket name and existing csv file
+
+    Returns:
+    A dataframe with the correct data
+    """
     mock_s3.upload_file('test/test_csv_files/test1.csv',
                         'test-bucket', 'test/test1.csv')
     data = {
@@ -69,6 +83,13 @@ def test_returns_dataframe(mock_s3, mock_bucket):
 @mock_aws
 def test_logs_error_when_passed_incorrect_file_path(
         mock_s3, mock_bucket, caplog):
+    """
+    Given:
+    A s3 connection, ingestion bucket name and incorrect csv file
+
+    Returns:
+    An error message in logger
+    """
     with caplog.at_level(logging.INFO):
         read_csv_to_df(mock_s3, 'test-bucket', "test/test_csv_files/test4.csv")
         assert "The specified key does not exist." in caplog.text
@@ -79,6 +100,13 @@ def test_logs_error_when_passed_incorrect_file_path(
 @mock_aws
 def test_logs_error_when_passed_incorrect_file_type(
         mock_s3, mock_bucket, caplog):
+    """
+    Given:
+    A s3 connection, ingestion bucket name and file in incorrect format
+
+    Returns:
+    An error message in logger
+    """
     with caplog.at_level(logging.INFO):
         read_csv_to_df(mock_s3, 'test-bucket', "requirements.txt")
         assert "File type incorrect, must be csv format" in caplog.text
