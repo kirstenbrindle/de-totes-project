@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger('lambda3Logger')
 logger.setLevel(logging.INFO)
 
+
 def get_file_and_bucket(records):
     """
      This function extracts the bucket name and\n
