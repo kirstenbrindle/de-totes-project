@@ -4,7 +4,7 @@ from io import BytesIO
 
 def read_parquet(s3, bucket_name, file_name):
     """
-    This function reads file from the processed bucket
+    This function reads a file from the processed bucket
     and transforms data to a dataframe.
 
     Args:
