@@ -34,6 +34,13 @@ def mock_bucket(mock_s3):
 @pytest.mark.it("test pandas read method is invoked")
 @patch("src.load_handler3.read_parquet.pd")
 def test_reads_method_is_invoked(mock_pd, mock_s3, mock_bucket):
+    """
+    Given:
+    A file from the event which needs to be read.
+
+    Returns:
+    A call count of read_parquet increased by one.
+    """
     assert mock_pd.read_parquet.call_count == 0
     mock_s3.upload_file('test/test_parquet_file/test-pq.parquet',
                         'test-bucket', 'test/test-pq.parquet')
@@ -45,6 +52,13 @@ def test_reads_method_is_invoked(mock_pd, mock_s3, mock_bucket):
 @pytest.mark.it("test pandas returns dataframe with file contents")
 @mock_aws
 def test_returns_dataframe(mock_s3, mock_bucket):
+    """
+    Given:
+    A test csv file which needs to be read.
+
+    Returns:
+    A data frame with the correct contents.
+    """
     mock_s3.upload_file('test/test_parquet_file/test-pq.parquet',
                         'test-bucket', 'test/test-pq.parquet')
     data = {

@@ -6,6 +6,13 @@ import pytest
 @pytest.mark.describe("get_the_file_name")
 @pytest.mark.it("Test returns correct processed bucket name")
 def test_get_file_name_return_bucket_name_from_processed_bucket():
+    """
+    Given:
+    An event in which a new file is uploaded to the target bucket.
+
+    Returns:
+    A string containing the name of the target bucket.
+    """
     event = {
         "Records": [
             {
@@ -28,6 +35,13 @@ def test_get_file_name_return_bucket_name_from_processed_bucket():
 @pytest.mark.describe("get_the_file_name")
 @pytest.mark.it("Test returns correct file name")
 def test_get_file_name_returns_correct_processed_file_name():
+    """
+    Given:
+    An event in which a new file is uploaded to the target bucket.
+
+    Returns:
+    A string containing the name of the uploaded file.
+    """
     event = {
         "Records": [
             {

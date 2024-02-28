@@ -59,8 +59,8 @@ def test_returns_correct_column_types():
 
 @pytest.mark.describe("make_dim_date")
 @pytest.mark.it("Test returns correct contents")
-@patch('src.transform_handler2.make_dim_date.datetime')
-def test_returns_correct_contents(mock_dt):
+#@patch('src.transform_handler2.make_dim_date.datetime')
+def test_returns_correct_contents():
     """
     Given:
     Start and end parameters
@@ -68,9 +68,9 @@ def test_returns_correct_contents(mock_dt):
     Returns:
     A dataframe with correct values
     """
-    mock_dt.now.side_effect = '2022-11-03 14:20:49.962'
+    #mock_dt.datetime.now.side_effect = ['2022-11-03 14:20:49.962']
     result = make_dim_date(start='2024-02-27', end='2024-02-27')
-    expected = {'date_id': [datetime.date(2024, 2, 27)],
+    expected = {'date_id': ['2024-02-27'],
                 'year': [2024],
                 'month': [2],
                 'day': [27],

@@ -5,8 +5,15 @@ import pandas as pd
 
 
 @pytest.mark.describe("upload_data")
-@pytest.mark.it("test uploads data with test_db")
-def test_uploads_data_into_test_db():
+@pytest.mark.it("test uses correct SQL query")
+def test_uploads_data_sql_query():
+    """
+    Given:
+    A dataframe, table and connection.
+
+    Returns:
+    Assertion of being called with correct query.
+    """
     mock_conn = Mock()
     data = {
         'currency_id': [1, 2],
