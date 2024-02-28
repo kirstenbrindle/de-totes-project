@@ -6,17 +6,17 @@ logger.setLevel(logging.INFO)
 
 def make_fact_sales_order(input_df):
     """
-    This function takes a dataframe of sales_order,\n
-    splits columns `created_at` and `last_updated`\n
-    into columns `created_date`, `created_time`, `last_updated_date`,\n
+    This function takes a dataframe of sales_order,
+    splits columns `created_at` and `last_updated`
+    into columns `created_date`, `created_time`, `last_updated_date`,
     `last_updated_time` and returns filtered dataframe.
 
     Args:
-    `input_df`: sales_order dataframe
+        `input_df`: sales_order dataframe
     ---------------------------
 
     Returns:
-    Formatted dataframe.
+        Formatted dataframe.
     """
     try:
         df = input_df.copy()
@@ -49,3 +49,4 @@ def make_fact_sales_order(input_df):
     except Exception as e:
         logger.info("something has gone wrong in the make_fact_sales_order.py")
         logger.warning(e)
+

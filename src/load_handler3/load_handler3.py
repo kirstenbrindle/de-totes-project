@@ -18,12 +18,29 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    '''This function is triggered by a timed schedule
-    - reads the parquet files from the processed bucket
-    - connects to warehouse database using credentials stored in SecretsManager
-    - loads file contents to warehouse db
-    - logs errors
-    '''
+    """
+    This function takes data from parquet file
+    which is contained in the processed bucket and
+    inputs into correct postgres warehouse database table.
+    Connection to warehouse database is made
+    through credentials stored on AWS Secrets Manager.
+
+    Args:
+        `event`: triggered when new file is input into
+        processed bucket
+    ---------------------------
+
+    Returns:
+        No return value
+
+    Raises:
+        `RuntimeError`: An unexpected error occurred in execution.
+        Other errors that result in an informative log message:
+        `ValueError`
+        `ClientError`
+        `DatabaseError`:
+        `InterfaceError`:
+    """
     try:
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
@@ -32,14 +49,16 @@ def lambda_handler(event, context):
         table_name = get_table_name(file_name)
         df = read_parquet(s3, bucket_name, file_name)
         upload_data(conn, table_name, df)
+
+        logger.info(
+            f"Data from {file_name} has successfully been "
+            "uploaded to data warehouse")
         
-        logger.info(f"Data from {file_name} has successfully been uploaded to data warehouse")
     except ValueError:
-        logger.error("Insert value error...")
-        # ^^^ subject to change if more ValueErrors pop up^^^
+        logger.error("There is no processed bucket...")
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchBucket':
-            logger.error('UPDATED WITH SOME CLIENT ERROR')
+            logger.error("There is no bucket...")
         else:
             logger.info(c)
             logger.error("A ClientError has occurred")

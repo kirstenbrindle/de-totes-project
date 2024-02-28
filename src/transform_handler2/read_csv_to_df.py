@@ -8,25 +8,20 @@ logger.setLevel(logging.INFO)
 
 def read_csv_to_df(s3, bucket_name, file_name):
     """
-This function reads a csv file and returns the contents as a dataframe.
+    This function reads a csv file and returns the contents as a dataframe.
 
-Args:
+    Args:
+        `file_name`: string of the csv file name
+    ---------------------------
 
-`file_name`: string of the csv file name
+    Returns:
+        `dataframe`: a dataframe
 
----------------------------
-Returns:
-
-`dataframe`: a dataframe
-
-Raises:
-`TypeError`
-`FileNotFoundError`
-`Exception`
-
-
-
-"""
+    Raises:
+        `TypeError`
+        `FileNotFoundError`
+        `Exception`
+    """
     try:
         if file_name.endswith(".csv"):
             file_name = file_name.replace('+', ' ')

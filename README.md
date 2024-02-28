@@ -37,6 +37,13 @@ In order to create a secret containing login credentials on AWS SecretsManager, 
 
 The contents of this JSON file is created through the command line aws secret manager and accessed in Lambda handlers to access the totesys database.
 
+You will then need to repeat this process to store the credentials for the data warehouse in a separate secret.
+
+## Deployment
+All required AWS infrastructure is deployed via Terraform (except for the aforementioned tf state bucket and SNS topic).
+
+The deployment is automated via a CI/CD pipeline carried out with GitHub Actions.
+
 
 ## Lambda 1
 
@@ -63,8 +70,9 @@ This lambda handler is triggered by an update to the ingestion bucket. The lambd
 
 ### Util functions
 This lamba handler utilises the following util functions:
-- get_bucket_name_2
+
 - get_file_and_ingestion_bucket_name
+- get_bucket_name_2
 - get_most_recent_file_2
 - make_dim_counterparty
 - make_dim_currency
@@ -74,23 +82,19 @@ This lamba handler utilises the following util functions:
 - make_dim_staff
 - make_fact_sales_order
 - read_csv_to_df
-- transform_handler2
 - write_to_parquet
 
 ## Lambda 3
 
 ### Description
-This lambda handler is triggered by an update to the processed bucket. The lambda handler reads the most recent parquet file in the processed bucket and **?inserts data into data warehouse?**
+This lambda handler is triggered by an update to the processed bucket. The lambda handler reads the most recent parquet file in the processed bucket, converts the data into a dataframe and inserts it into the correct table in the data warehouse.
 
 ### Util functions
 This lamba handler utilises the following util functions:
-- read_parquet
-- get_file_and_processed_bucket_name
+
+- get_file_and_bucket
 - get_table_name
-- insert_data
+- read_parquet
+- upload_data
 
 
-### Deployment
-All required AWS infrastructure is deployed via Terraform (except for the aforementioned tf state bucket and SNS topic).
-
-The deployment is automated via a CI/CD pipeline carried out with GitHub Actions.

@@ -18,20 +18,24 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    '''Connects to Totesys database using
+    """
+    Connects to Totesys database using
     credentials stored in SecretsManager.
-
     When the database is updated, the handler
     checks what data is new and writes
     to a csv file in the ingestion bucket.
 
+    Args:
+        event: takes an aws event
+    ---------------------------
+
     Returns:
-        None
+        nothing
 
     Raises:
         RuntimeError: An unexpected error occurred in execution. Other errors
         result in an informative log message.
-    '''
+    """
     try:
         conn = Connection(**secrets_dict)
         s3 = boto3.client('s3', region_name='eu-west-2')
@@ -43,7 +47,6 @@ def lambda_handler(event, context):
 
     except ValueError:
         logger.error("There is no ingestion bucket ...")
-        # ^^^ subject to change if more ValueErrors pop up^^^
 
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchBucket':

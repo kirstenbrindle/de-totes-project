@@ -1,15 +1,18 @@
 def get_most_recent_file_2(s3, bucket_name, table_name):
-    '''
-    Get_most_recent_file function takes aws connection \n
-    and bucket name as arguments and returns most recently updated \n
+    """
+    Get_most_recent_file function takes aws connection
+    and bucket name as arguments and returns most recently updated
     file name in s3 bucket folder as output.
 
     Args:
     `s3` AWS connection
     `bucket_name` s3 ingestion bucket name
     `table_name` folder within s3 ingestion bucket
-    '''
+    ---------------------------
 
+    Returns:
+        `file_name`: The file name the last modified file.
+    """
     objects_list = s3.list_objects_v2(
         Bucket=bucket_name, Prefix=table_name)
     files_list = []

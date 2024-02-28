@@ -3,14 +3,12 @@ def get_table_names(conn):
     This function retrieves the table names from the database.
 
     Args:
-    `conn`: database connection
+        `conn`: database connection
 
     ---------------------------
     Returns:
-
-    `table_names`: a List of table names sorted in alphabetical \n
-    order.
-
+        `table_names`: a List of table names sorted in alphabetical \n
+        order.
     """
 
     query = conn.run("SELECT table_name "

@@ -42,21 +42,24 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    '''Reads files from the ingestion bucket and
-     reformats the data.
-
+    """
+    Reads files from the ingestion bucket and reformats the data.
     Writes the data as parquet files into the processed bucket.
+
+    Args:
+        `event`: event trigger when new file is input into ingestion bucket
+    ---------------------------
 
     Returns:
         None
 
     Raises:
-        `RuntimeError` An unexpected error occurred in execution.\n
+        `RuntimeError` An unexpected error occurred in execution.
         Other errors result in an informative log message.
         `ValueError`
         `ClientError`
         `Exception`
-    '''
+    """
     try:
         ingestion_bucket, file_name = get_file_and_ingestion_bucket_name(
             event['Records'])

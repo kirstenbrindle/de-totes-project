@@ -19,12 +19,14 @@ def aws_credentials():
 
 @pytest.fixture
 def mock_s3(aws_credentials):
+    """Mocked S3 connection using mock credentials"""
     with mock_aws():
         yield boto3.client("s3", region_name='eu-west-2')
 
 
 @pytest.fixture
 def mock_bucket(mock_s3):
+    """Mocked S3 bucket"""
     mock_s3.create_bucket(
         Bucket='test-bucket',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'})
@@ -35,6 +37,13 @@ def mock_bucket(mock_s3):
                 "with folder when passed a table_name")
 @patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_with_folder(mock_datetime, mock_bucket, mock_s3):
+    """
+    Given:
+    S3 connection, bucket_name, table_name and SQL data
+
+    Returns:
+    A folder and file name
+    """
     mock_datetime.now.side_effect = [datetime(2024, 2, 15, 1, 1, 15)]
     table_name = 'testing'
     bucket = 'test-bucket'
@@ -56,6 +65,13 @@ def test_writes_csv_file_with_folder(mock_datetime, mock_bucket, mock_s3):
                 "a csv file to the correct bucket")
 @patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
+    """
+    Given:
+    S3 connection, bucket_name, table_name and SQL data
+
+    Returns:
+    A folder and file name to correct s3 bucket
+    """
     mock_datetime.now.side_effect = [datetime(2024, 2, 15, 1, 1, 15)]
     table_name = 'testing'
     bucket = 'test-bucket'
@@ -79,6 +95,13 @@ def test_writes_csv_file_in_folder(mock_datetime, mock_bucket, mock_s3):
 @pytest.mark.it('writes multiple csv files to the same folder')
 @patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_to_same_folder(mock_datetime, mock_bucket, mock_s3):
+    """
+    Given:
+    S3 connection, bucket_name, table_name and SQL data
+
+    Returns:
+    A folder and multiple files to s3 bucket
+    """
     mock_datetime.now.side_effect = [
         datetime(2024, 2, 15, 1, 1, 15), datetime(2024, 2, 16, 1, 1, 10)]
     table_name = 'testing'
@@ -108,6 +131,13 @@ def test_writes_csv_file_to_same_folder(mock_datetime, mock_bucket, mock_s3):
 @pytest.mark.it('writes multiple csv files to different folders')
 @patch('src.extract_handler1.write_csv.datetime')
 def test_writes_csv_file_to_diff_folder(mock_datetime, mock_bucket, mock_s3):
+    """
+    Given:
+    S3 connection, bucket_name, table_name and SQL data
+
+    Returns:
+    Multiple folders and files to same s3 bucket
+    """
     mock_datetime.now.side_effect = [
         datetime(2024, 2, 15, 1, 1, 15), datetime(2024, 2, 16, 1, 1, 10)]
     table_name = 'testing'
@@ -129,7 +159,6 @@ def test_writes_csv_file_to_diff_folder(mock_datetime, mock_bucket, mock_s3):
     write_csv(table_name1, bucket, mock_s3, data1)
     response = mock_s3.list_objects_v2(Bucket=bucket)
     listed_objects = [file['Key'] for file in response['Contents']]
-    # needs to be in alphabetical order!!
     assert listed_objects == [
         f'mock/mock-{datetime(2024, 2, 16, 1, 1, 10)}.csv',
         f'testing/testing-{datetime(2024,2,15,1,1,15)}.csv']

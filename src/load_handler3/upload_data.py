@@ -6,7 +6,21 @@ logger = logging.getLogger('lambda3Logger')
 logger.setLevel(logging.INFO)
 
 
-def upload_data(conn, table_name, input_df):
+def upload_data(conn, table_name, df):
+    """
+    This function takes extracted file data from read_parquet,
+    transforms to suitable SQL format and inputs
+    data into correct table in warehouse database
+
+    Args:
+        `conn`: connection to warehouse database
+        `table_name`: table for data input
+        `df`: data for input
+    ---------------------------
+
+    Returns:
+        Nothing to return
+    """
     try:
         input_df.fillna(value='NULL', inplace=True)
         df1 = input_df.replace("Democratic People\'s Republic of Korea", 'Democratic People''s Republic of Korea')
@@ -14,7 +28,6 @@ def upload_data(conn, table_name, input_df):
         df = df2.replace("irving.o\'keefe@terrifictotes.com",'irving.o''keefe@terrifictotes.com')
         # df = input_df.replace("\'", "''", regex=True)
         df_tuples = [tuple(x) for x in df.to_numpy()]
-
         cols = ", ".join(df.columns)
         logger.info(f'Columns: {cols}')
 
