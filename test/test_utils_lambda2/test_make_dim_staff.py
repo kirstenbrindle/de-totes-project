@@ -20,7 +20,9 @@ def test_returns_a_dataframe():
         'department_id': ['a', 'b', 'c'],
         'email_address': ['a', 'b', 'c'],
         'created_at': ['a', 'b', 'c'],
-        'last_updated': ['a', 'b', 'c']
+        'last_updated': ['2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962',
+                         '2022-11-03 14:20:49.962']
     }
     df = pd.DataFrame(data=data_staff)
     data_department = {
@@ -41,9 +43,8 @@ def test_returns_a_dataframe():
         'department_name': ['a', 'b', 'c'],
         'location': ['a', 'b', 'c'],
         'email_address': ['a', 'b', 'c'],
-        'last_updated': ['2022-11-03 14:20:49.962',
-                         '2022-11-03 14:20:49.962',
-                         '2022-11-03 14:20:49.962']
+        'last_updated_date': ['2024-02-27', '2024-02-27', '2024-02-27'],
+        'last_updated_time': ['14:20:49.962', '14:20:49.962', '14:20:49.962']
     }
     pd.DataFrame(data=data_dim_staff)
     result = make_dim_staff(df, df_2)
@@ -90,7 +91,7 @@ def test_returns_a_filtered_and_merged_dataframe():
         'department_name': ['health', 'food', 'tech'],
         'location': ['Manchester', 'Chester', 'Liverpool'],
         'email_address': ['a', 'b', 'c'],
-        'last_updated_date': ['2024-02-27', '2024-02-27', '2024-02-27'],
+        'last_updated_date': ['2022-11-03', '2022-11-03', '2022-11-03'],
         'last_updated_time': ['14:20:49.962', '14:20:49.962', '14:20:49.962']
     }
     df_dim_staff = pd.DataFrame(data=data_dim_staff)
@@ -142,7 +143,7 @@ def test_returns_a_filtered_and_merged_df_when_order_is_irregular():
         'department_name': ['g', 'f', 'z'],
         'location': ['Liverpool', 'Chester', 'Manchester'],
         'email_address': ['a', 'b', 'c'],
-        'last_updated_date': ['2024-02-27', '2024-02-27', '2024-02-27'],
+        'last_updated_date': ['2022-11-03', '2022-11-03', '2022-11-03'],
         'last_updated_time': ['14:20:49.962', '14:20:49.962', '14:20:49.962']
     }
 

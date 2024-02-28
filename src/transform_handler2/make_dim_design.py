@@ -18,6 +18,7 @@ def make_dim_design(input_df):
     df['last_updated_date'] = last_updated_date
     df['last_updated_time'] = last_updated_at_time
     df['design_record_id'] = df['design_id']
-    dim_design_df = df[['design_record_id','design_id', 'design_name',
-                        'file_location', 'file_name', 'last_updated_date', 'last_updated_time']]
+    dim_design_df = df[['design_record_id', 'design_id', 'design_name',
+                        'file_location', 'file_name',
+                        'last_updated_date', 'last_updated_time']]
     return dim_design_df

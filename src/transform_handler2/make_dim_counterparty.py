@@ -42,7 +42,7 @@ def make_dim_counterparty(input_df1, input_df2):
     df1['last_updated_time'] = last_updated_at_time
     df_counterp = pd.merge(df1, df2, how='inner', on='legal_address_id')
     df_counterp['counterparty_record_id'] = df_counterp['counterparty_id']
-    filtered_merge = df_counterp[['counterparty_record_id','counterparty_id',
+    filtered_merge = df_counterp[['counterparty_record_id', 'counterparty_id',
                                   'counterparty_legal_name',
                                   'counterparty_legal_address_line_1',
                                   'counterparty_legal_address_line_2',
@@ -51,6 +51,6 @@ def make_dim_counterparty(input_df1, input_df2):
                                   'counterparty_legal_postal_code',
                                   'counterparty_legal_country',
                                   'counterparty_legal_phone_number',
-                                  'last_updated_date','last_updated_time']]
+                                  'last_updated_date', 'last_updated_time']]
 
     return filtered_merge

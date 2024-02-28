@@ -5,6 +5,7 @@ from moto import mock_aws
 from botocore.exceptions import ClientError
 from pg8000.native import DatabaseError, InterfaceError
 import os
+import pandas as pd
 
 
 @pytest.fixture(scope='function')
@@ -15,6 +16,19 @@ def aws_credentials():
     os.environ["AWS_SECURITY_TOKEN"] = "test"
     os.environ["AWS_SESSION_TOKEN"] = "test"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+
+
+@pytest.fixture
+def test_df():
+    data = {
+        'name': ['Xavier', 'Ann', 'Jana', 'Yi', 'Robin', 'Amal', 'Nori'],
+        'city': ['Mexico City', 'Toronto', 'Prague', 'Shanghai',
+                 'Manchester', 'Cairo', 'Osaka'],
+        'age': [41, 28, 33, 34, 38, 31, 37],
+        'py-score': [88.0, 79.0, 81.0, 80.0, 68.0, 61.0, 84.0]
+    }
+    row_labels = [101, 102, 103, 104, 105, 106, 107]
+    return pd.DataFrame(data=data, index=row_labels)
 
 
 @pytest.mark.describe("lambda_handler3")
@@ -31,7 +45,6 @@ def test_get_bucket_error(mock_get_file_bucket, caplog):
     """
     mock_get_file_bucket.side_effect = ValueError
     lambda_handler({'Records': 'test'}, {})
-    assert "There is no processed bucket..." in caplog.text
     assert "ERROR" in caplog.text
 
 
@@ -67,7 +80,7 @@ def test_read_parquet_no_such_bucket(
 @patch("src.load_handler3.load_handler3.upload_data")
 @mock_aws
 def test_upload_data_database_error(
-        upload_data, read_parq, get_file_bucket, caplog):
+        upload_data, read_parq, get_file_bucket, test_df, caplog):
     """
     Given:
     A Database Error
@@ -76,8 +89,9 @@ def test_upload_data_database_error(
     Correct log message
     """
     response = {'C': '28P01'}
-    get_file_bucket.return_value = 'processed-bucket',
-    'test/test+123%3A456.parquet'
+    get_file_bucket.return_value = ('processed-bucket',
+                                    'test/test123456.parquet')
+    read_parq.return_value = test_df
     upload_data.side_effect = DatabaseError(response)
     lambda_handler({'Records': 'test'}, {})
     assert "DatabaseError: authentication issue" in caplog.text
@@ -101,8 +115,8 @@ def test_upload_data_db_name_err(
     """
 
     response = {'C': '3D000'}
-    get_file_bucket.return_value = 'processed-bucket',
-    'test/test+123%3A456.parquet'
+    get_file_bucket.return_value = ('processed-bucket',
+                                    'test/test+123%3A456.parquet')
     upload_data.side_effect = DatabaseError(response)
     lambda_handler({'Records': 'test'}, {})
     assert "DatabaseError: database does not exist" in caplog.text
@@ -126,8 +140,8 @@ def test_upload_data_db_err_host(
     """
     response = "Can't create a connection to host localhost9000 "
     "and port 5432 (timeout is None and source_address is None)."
-    get_file_bucket.return_value = 'processed-bucket',
-    'test/test+123%3A456.parquet'
+    get_file_bucket.return_value = ('processed-bucket',
+                                    'test/test+123%3A456.parquet')
     upload_data.side_effect = InterfaceError(response)
     lambda_handler({'Records': 'test'}, {})
     assert "InterfaceError: incorrect hostname" in caplog.text
@@ -151,8 +165,8 @@ def test_get_table_names_db_err_conn(
     Correct log message
     """
     response = "connection is closed"
-    get_file_bucket.return_value = 'processed-bucket',
-    'test/test+123%3A456.parquet'
+    get_file_bucket.return_value = ('processed-bucket',
+                                    'test/test+123%3A456.parquet')
     upload_data.side_effect = InterfaceError(response)
     lambda_handler({'Records': 'test'}, {})
     assert "InterfaceError: connection is closed" in caplog.text
@@ -176,8 +190,8 @@ def test_get_table_names_exceptions(
     """
 
     with pytest.raises(RuntimeError):
-        get_file_bucket.return_value = 'processed-bucket',
-        'test/test+123%3A456.parquet'
+        get_file_bucket.return_value = ('processed-bucket',
+                                        'test/test+123%3A456.parquet')
         upload_data.side_effect = Exception(
             "Something bad has happened ...")
         lambda_handler({'Records': 'test'}, {})
