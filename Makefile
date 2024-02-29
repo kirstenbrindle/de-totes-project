@@ -97,7 +97,7 @@ unit-tests:
 
 ## Run the coverage check
 check-coverage:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest && coverage report -m)
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' --omit 'aws_utils/*' -m pytest && coverage report -m)
 
 ## Run all checks
 run-checks: security-test run-flake unit-tests check-coverage

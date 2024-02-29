@@ -42,6 +42,14 @@ def patch_fixture():
 @pytest.mark.it("Test lambda_handler3 invokes get_file_bucket")
 @mock_aws
 def test_lambda_handler2_invokes_get_file_bucket(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check get_file_and_bucket util function is invoked
+    if no errors
+    """
     (get_file_bucket, get_table,
      read_parquet, upload) = patch_fixture
     get_file_bucket.return_value = 'processed-bucket', 'test.parquet'
@@ -54,6 +62,14 @@ def test_lambda_handler2_invokes_get_file_bucket(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler3 invokes get_table")
 @mock_aws
 def test_lambda_handler2_invokes_get_table(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check get_table_name util function is invoked
+    if no errors
+    """
     (get_file_bucket, get_table,
      read_parquet, upload) = patch_fixture
     get_file_bucket.return_value = 'processed-bucket', 'test.parquet'
@@ -66,6 +82,14 @@ def test_lambda_handler2_invokes_get_table(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler3 invokes read_parquet if no errors")
 @mock_aws
 def test_lambda_handler2_invokes_read_parquet(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check read_parquet util function is invoked
+    if no errors
+    """
     (get_file_bucket, get_table,
      read_parquet, upload) = patch_fixture
     get_file_bucket.return_value = 'processed-bucket', 'test.parquet'
@@ -78,6 +102,14 @@ def test_lambda_handler2_invokes_read_parquet(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler3 invokes upload_data if no error")
 @mock_aws
 def test_lambda_handler3_invokes_upload_data(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check upload_data util function is invoked
+    if no errors
+    """
     (get_file_bucket, get_table,
      read_parquet, upload) = patch_fixture
     get_file_bucket.return_value = 'processed_Bucket', 'sales_order.parquet'
@@ -90,6 +122,14 @@ def test_lambda_handler3_invokes_upload_data(patch_fixture, mock_s3):
 @pytest.mark.it("Test logs message if data uploaded successfully")
 @mock_aws
 def test_logs_success_message(patch_fixture, mock_s3, caplog):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event and successfully
+    uploads data
+
+    Returns:
+    Logs an info message to inform that data has been uploaded
+    """
     (get_file_bucket, get_table,
      read_parquet, upload) = patch_fixture
     get_file_bucket.return_value = 'processed', 'test.parquet'

@@ -11,8 +11,8 @@ logger.setLevel(logging.INFO)
 
 def L1_extract_data(conn, s3, table_name, boolean, bucket_name):
     """
-    This function takes a database connection, s3 client, table_name \n
-    boolean value and bucket_name. Function extracts any new data \n
+    This function takes a database connection, s3 client, table_name
+    boolean value and bucket_name. Function extracts any new data
     from the database and writes to csv file within s3 bucket.
 
     Args:

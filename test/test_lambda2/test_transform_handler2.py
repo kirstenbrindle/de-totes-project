@@ -43,6 +43,14 @@ def patch_fixture():
                 "get_file_and_ingestion_bucket_name")
 @mock_aws
 def test_lambda_handler2_invokes_get_file_ing_bucket(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check get_file_and_ingestion_bucket_name 
+    util function is invoked
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion-bucket', 'test.csv'
@@ -55,6 +63,13 @@ def test_lambda_handler2_invokes_get_file_ing_bucket(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler2 invokes get_bucket_name_2")
 @mock_aws
 def test_lambda_handler2_invokes_get_pro_bucket(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check get_bucket_name_2 util function is invoked
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion-bucket', 'test.csv'
@@ -67,6 +82,14 @@ def test_lambda_handler2_invokes_get_pro_bucket(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler2 invokes read_csv_to_df if no error")
 @mock_aws
 def test_lambda_handler2_invokes_read_csv(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check read_csv_to_df util function is invoked
+    if no errors
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'sales_order'
@@ -79,6 +102,14 @@ def test_lambda_handler2_invokes_read_csv(patch_fixture, mock_s3):
 @pytest.mark.it("Test lambda_handler2 invokes write_to_parquet if no error")
 @mock_aws
 def test_lambda_handler2_invokes_write_parquet(patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check write_to_parquet util function is invoked
+    if no errors
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'sales_order'
@@ -94,6 +125,14 @@ def test_lambda_handler2_invokes_write_parquet(patch_fixture, mock_s3):
 @mock_aws
 def test_lambda_handler2_invokes_formatting_function(
         dim_design, fact_sales, patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event
+
+    Returns:
+    No return. Check formatting util function relating to the correct
+    data warehouse table is invoked if no errors
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'sales_order'
@@ -114,6 +153,14 @@ def test_lambda_handler2_invokes_formatting_function(
 @mock_aws
 def test_lambda_handler2_invokes_dim_date(
         dim_date, dim_curr, patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event to the 'currency'
+    sub-folder
+
+    Returns:
+    No return. Check make_dim_date util function is invoked
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'currency'
@@ -133,6 +180,14 @@ def test_lambda_handler2_invokes_dim_date(
 @mock_aws
 def test_lambda_handler2_invokes_get_most_recent_file_2(
         dim_staff, dim_cp, get_file, patch_fixture, mock_s3):
+    """
+    Given:
+    lambda_handler is invoked by an s3 put object event to the 'counterparty'
+    or 'staff' sub-folder
+
+    Returns:
+    No return. Check get_most_recent_file_2 util function is invoked
+    """
     (get_file_ing_bucket, get_pro_bucket,
      read_csv, write_parquet) = patch_fixture
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'counterparty'
@@ -156,10 +211,11 @@ def test_get_bucket_name_error(patch_fixture, mock_s3, caplog):
      read_csv, write_parquet) = patch_fixture
     """
     Given:
-    A Value error when there is no processed bucket
+    lambda_handler is invoked by an s3 put object event to a
+    sub-folder for a non-MVP table
 
     Returns:
-    log the correct message as an error
+    Logs an info message to inform that no update is needed
     """
     get_file_ing_bucket.return_value = 'ingestion_Bucket', 'nonsense'
     lambda_handler({'Records': 'test'}, {})

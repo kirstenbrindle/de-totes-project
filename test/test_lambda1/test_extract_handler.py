@@ -54,6 +54,13 @@ def test_lambda_handler_invokes_get_table_names(patch_fixture):
                 get_bucket_name""")
 @mock_aws
 def test_lambda_handler_invokes_get_bucket_name(patch_fixture, s3):
+    """
+    Given:
+    lambda_handler is invoked by the scheduler
+
+    Returns:
+    No return. Check get_bucket_name util function is invoked
+    """
     (mock_get_table_names, mock_is_bucket_empty,
      mock_get_bucket_name, mock_L1_extract_data) = patch_fixture
     mock_get_bucket_name.return_value = 'ingestion_bucket'
@@ -68,6 +75,13 @@ def test_lambda_handler_invokes_get_bucket_name(patch_fixture, s3):
                 is_bucket_empty""")
 @mock_aws
 def test_lambda_handler_invokes_is_bucket_empty(patch_fixture, s3):
+    """
+    Given:
+    lambda_handler is invoked by the scheduler
+
+    Returns:
+    No return. Check is_bucket_empty util function is invoked
+    """
     (mock_get_table_names, mock_is_bucket_empty,
      mock_get_bucket_name, mock_L1_extract_data) = patch_fixture
     mock_get_bucket_name.return_value = 'ingestion_bucket'
@@ -82,6 +96,14 @@ def test_lambda_handler_invokes_is_bucket_empty(patch_fixture, s3):
                 relative to number of tables in bucket""")
 @mock_aws
 def test_lambda_handler_invokes_L1_extract_data(patch_fixture, s3):
+    """
+    Given:
+    lambda_handler is invoked by the scheduler
+
+    Returns:
+    No return. Check L1_extract_data util function is invoked
+    the correct amount of times
+    """
     (mock_get_table_names, mock_is_bucket_empty,
      mock_get_bucket_name, mock_L1_extract_data) = patch_fixture
     mock_get_bucket_name.return_value = 'ingestion_bucket'

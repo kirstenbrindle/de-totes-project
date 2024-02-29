@@ -6,7 +6,7 @@ logger.setLevel(logging.INFO)
 
 def get_most_recent_file(s3, bucket_name, table_name):
     """
-    Get_most_recent_file function takes aws connection
+    Get_most_recent_file function takes an aws connection, bucket name
     and folder name as arguments and returns most recently updated
     file name in s3 bucket folder as output.
 
