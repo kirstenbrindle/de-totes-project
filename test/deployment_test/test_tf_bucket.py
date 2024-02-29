@@ -10,6 +10,13 @@ import boto3
 @mock_aws
 @patch('builtins.input', return_value="test_bucket_43754852")
 def test_a_new_bucket_is_created(mock_input):
+    """
+    Given:
+    bucket_maker is invoked
+
+    Returns:
+    No return. Check a bucket has been created using a mock s3 connection.
+    """
     s3 = boto3.client("s3")
     response_before_function = s3.list_buckets()
     assert len(response_before_function['Buckets']) == 0
@@ -23,6 +30,14 @@ def test_a_new_bucket_is_created(mock_input):
 @mock_aws
 @patch('builtins.input', return_value="test_bucket_43754852")
 def test_a_new_bucket_is_created_with_input_name(mock_input):
+    """
+    Given:
+    bucket_maker is invoked
+
+    Returns:
+    No return. Check a bucket with the correct name has been 
+    created using a mock s3 connection.
+    """
     s3 = boto3.client("s3")
     bucket_maker()
     response = s3.list_buckets()

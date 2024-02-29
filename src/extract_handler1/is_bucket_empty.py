@@ -2,8 +2,9 @@ def is_bucket_empty(bucket_name, s3):
     """
     This function checks if the bucket is empty and return a boolean
 
-    Arg:
+    Args:
         `bucket_name`: string of the bucket name
+        `s3`: connection to aws s3 via boto3
     ---------------------------
 
     Returns:

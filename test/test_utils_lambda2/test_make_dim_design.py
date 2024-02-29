@@ -63,6 +63,4 @@ def test_returns_the_correct_columns_only():
     row_labels = [1, 2, 3]
     expected_df = pd.DataFrame(data=expected, index=row_labels)
     result = make_dim_design(df)
-    print(expected_df, "<<<<<---expected")
-    print(result, "<<<<<--- result")
     assert result.equals(expected_df)
