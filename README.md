@@ -45,15 +45,15 @@ All required AWS infrastructure is deployed via Terraform (except for the aforem
 The deployment is automated via a CI/CD pipeline carried out with GitHub Actions.
 
 
-## Lambda 1
+## Lambda 1 (extract_handler1)
 
 ### Description
-This lambda handler operates on a 5 minute schedule and checks all table in the totesys database for new data at each invocation.
+This lambda handler operates on a 2 minute schedule and checks all table in the totesys database for new data at each invocation.
 If new data is found, it writes this data to a csv file and saves it in a designated S3 bucket (organised in sub-folders for each table).
 
 
 ### Util functions
-This lamba handler utilises the following util functions:
+This lambda handler utilises the following util functions:
 - get_table_names
 - get_bucket_name
 - is_bucket_empty
@@ -63,13 +63,13 @@ This lamba handler utilises the following util functions:
 - format_data
 - write_csv
 
-## Lambda 2
+## Lambda 2 (transform_handler2)
 
 ### Description
 This lambda handler is triggered by an update to the ingestion bucket. The lambda handler reads the most recent file in the ingestion bucket and converts the file from csv to a dataframe. The lambda handler then transforms the data to the desired format and writes the transformed dataframe to a parquet file in each invocation and saves this to an s3 bucket (organised in sub-folders for each table).
 
 ### Util functions
-This lamba handler utilises the following util functions:
+This lambda handler utilises the following util functions:
 
 - get_file_and_ingestion_bucket_name
 - get_bucket_name_2
@@ -84,7 +84,7 @@ This lamba handler utilises the following util functions:
 - read_csv_to_df
 - write_to_parquet
 
-## Lambda 3
+## Lambda 3 (load_handler3)
 
 ### Description
 This lambda handler is triggered by an update to the processed bucket. The lambda handler reads the most recent parquet file in the processed bucket, converts the data into a dataframe and inserts it into the correct table in the data warehouse.

@@ -3,7 +3,7 @@ import boto3
 
 def bucket_maker():
     """
-    When run, this function prompts the user for a bucket name \n
+    When run, this function prompts the user for a bucket name
     and creates an s3 bucket with that name.
     """
     s3 = boto3.client("s3")

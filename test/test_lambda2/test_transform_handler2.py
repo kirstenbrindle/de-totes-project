@@ -48,7 +48,7 @@ def test_lambda_handler2_invokes_get_file_ing_bucket(patch_fixture, mock_s3):
     lambda_handler is invoked by an s3 put object event
 
     Returns:
-    No return. Check get_file_and_ingestion_bucket_name 
+    No return. Check get_file_and_ingestion_bucket_name
     util function is invoked
     """
     (get_file_ing_bucket, get_pro_bucket,

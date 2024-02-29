@@ -35,7 +35,7 @@ def test_a_new_bucket_is_created_with_input_name(mock_input):
     bucket_maker is invoked
 
     Returns:
-    No return. Check a bucket with the correct name has been 
+    No return. Check a bucket with the correct name has been
     created using a mock s3 connection.
     """
     s3 = boto3.client("s3")
