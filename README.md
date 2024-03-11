@@ -35,12 +35,12 @@ In order to create a secret containing login credentials on AWS SecretsManager, 
 }
 ```
 
-The contents of this JSON file is created through the command line aws secret manager and accessed in Lambda handlers to access the totesys database.
+The contents of this JSON file is created through the command line AWS Secrets Manager and accessed in Lambda handlers to access the totesys database.
 
 You will then need to repeat this process to store the credentials for the data warehouse in a separate secret.
 
 ## Deployment
-All required AWS infrastructure is deployed via Terraform (except for the aforementioned tf state bucket and SNS topic).
+All required AWS infrastructure is deployed via Terraform (except for the aforementioned tf state bucket, SNS topic and secrets).
 
 The deployment is automated via a CI/CD pipeline carried out with GitHub Actions.
 
@@ -48,8 +48,8 @@ The deployment is automated via a CI/CD pipeline carried out with GitHub Actions
 ## Lambda 1 (extract_handler1)
 
 ### Description
-This lambda handler operates on a 2 minute schedule and checks all table in the totesys database for new data at each invocation.
-If new data is found, it writes this data to a csv file and saves it in a designated S3 bucket (organised in sub-folders for each table).
+This lambda handler operates on a 2 minute schedule and checks all tables in the totesys database for new data at each invocation.
+If new data is found, it writes this data to a csv file and saves it to a designated S3 bucket (ingestion bucket - organised in sub-folders for each table).
 
 
 ### Util functions
@@ -66,7 +66,7 @@ This lambda handler utilises the following util functions:
 ## Lambda 2 (transform_handler2)
 
 ### Description
-This lambda handler is triggered by an update to the ingestion bucket. The lambda handler reads the most recent file in the ingestion bucket and converts the file from csv to a dataframe. The lambda handler then transforms the data to the desired format and writes the transformed dataframe to a parquet file in each invocation and saves this to an s3 bucket (organised in sub-folders for each table).
+This lambda handler is triggered by an update to the ingestion bucket. The lambda handler reads the most recent file in the ingestion bucket and converts the file from csv to a dataframe. The lambda handler then transforms the data to the desired format and writes the transformed dataframe to a parquet file and saves it to a designated S3 bucket (processed bucket - organised in sub-folders for each table).
 
 ### Util functions
 This lambda handler utilises the following util functions:
